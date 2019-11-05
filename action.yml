@@ -1,0 +1,19 @@
+name: 'Android Emulator Runner'
+description: 'Installs, configures and starts an Android Emulator directly on macOS virtual machines.'
+author: 'Reactive Circus'
+inputs:
+  api-level:
+    description: 'API level of the system image - e.g. 23 for Android Marshmallow, 29 for Android 10'
+    required: true
+  target:
+    description: 'target of the system image - default of google_apis'
+    default: 'google_apis'
+  abi:
+    description: 'cpu/abi of the system image - x86 or x86_64'
+    default: 'x86'
+  headless:
+    description: 'whether to launch emulator in headless mode - true or false'
+    default: 'true'
+runs:
+  using: 'node12'
+  main: 'lib/main.js'

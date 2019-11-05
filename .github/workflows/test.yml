@@ -1,0 +1,23 @@
+name: "Test android-emulator-runner"
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  test:
+    runs-on: macOS-latest
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
+    - run: npm ci
+    - run: npm run build
+    - run: npm test
+    - uses: ./
+      with: 
+        api-level: 23
+        target: google_apis
+        abi: x86
+        headless: true
