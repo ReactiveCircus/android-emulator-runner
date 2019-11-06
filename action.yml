@@ -7,7 +7,7 @@ inputs:
     required: true
   target:
     description: 'target of the system image - default of google_apis'
-    default: 'google_apis'
+    default: 'default'
   abi:
     description: 'cpu/abi of the system image - x86 or x86_64'
     default: 'x86'
