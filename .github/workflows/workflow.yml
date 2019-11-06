@@ -1,4 +1,4 @@
-name: "Test android-emulator-runner"
+name: Main workflow
 on:
   pull_request:
   push:

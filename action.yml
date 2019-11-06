@@ -3,16 +3,16 @@ description: 'Installs, configures and starts an Android Emulator directly on ma
 author: 'Reactive Circus'
 inputs:
   api-level:
-    description: 'API level of the system image - e.g. 23 for Android Marshmallow, 29 for Android 10'
+    description: 'API level of the platform and system image - e.g. 23 for Android Marshmallow, 29 for Android 10'
     required: true
   target:
-    description: 'target of the system image - default of google_apis'
+    description: 'target of the system image - default or google_apis'
     default: 'default'
   abi:
-    description: 'cpu/abi of the system image - x86 or x86_64'
+    description: 'CPU / ABI of the system image - x86 or x86_64'
     default: 'x86'
   headless:
-    description: 'whether to launch emulator in headless mode - true or false'
+    description: 'whether to launch emulator in without UI - true or false'
     default: 'true'
 runs:
   using: 'node12'
