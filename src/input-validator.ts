@@ -1,5 +1,3 @@
-import { isNumber } from "util";
-
 export const MIN_API_LEVEL = 21;
 export const VALID_TARGETS: Array<string> = ['default', 'google_apis'];
 export const VALID_ABIS: Array<string> = ['x86', 'x86_64'];

@@ -18,10 +18,11 @@ jobs:
       with:
         fetch-depth: 1
 
-    - name: build and test
+    - name: build, test and lint
       run: |
         npm install
         npm run build
+        npm run lint
         npm test
 
     - name: run action

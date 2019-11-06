@@ -1,5 +1,5 @@
 import * as core from '@actions/core';
-import { InputOptions } from "@actions/core/lib/core";
+import { InputOptions } from '@actions/core/lib/core';
 import { installAndroidSdk } from './sdk-installer';
 import { checkApiLevel, checkTarget, checkAbi, checkHeadless } from './input-validator';
 
@@ -11,7 +11,7 @@ async function run() {
     }
 
     // API level of the platform and system image
-    const apiLevel = core.getInput('api-level', <InputOptions>{required: true});
+    const apiLevel = core.getInput('api-level', { required: true } as InputOptions);
     checkApiLevel(apiLevel);
     console.log(`API level: ${apiLevel}`);
 
