@@ -9,7 +9,7 @@ const SDK_URL = 'https://dl.google.com/android/repository/sdk-tools-darwin-43337
  * Downloads and installs the Android SDK for the macOS platform, including SDK platform for the chosen API level, latest build tools, platform tools, Android Emulator,
  * and the system image for the chosen API level, cpu/abi, and target.
  */
-export async function installAndroidSdk(apiLevel: number, abi: string, target: string): Promise<void> {
+export async function installAndroidSdk(apiLevel: number, target: string, abi: string): Promise<void> {
   // download Android SDK if not already installed
   if (fs.existsSync(`${process.env.ANDROID_HOME}/tools/bin/sdkmanager`)) {
     console.log('Android SDK already installed.');
@@ -21,8 +21,7 @@ export async function installAndroidSdk(apiLevel: number, abi: string, target: s
 
   // install specific SDK tools
   console.log('Installing build tools, platform tools, platform and system image.');
-  await exec.exec(`yes | ${process.env.ANDROID_HOME}/tools/bin/sdkmanager --licenses`);
-  await exec.exec(`${process.env.ANDROID_HOME}/tools/bin/sdkmanager --update`);
+  await exec.exec(`echo "y" | ${process.env.ANDROID_HOME}/tools/bin/sdkmanager --licenses > /dev/null`);
   await exec.exec(`${process.env.ANDROID_HOME}/tools/bin/sdkmanager "build-tools;${BUILD_TOOLS_VERSION}"`);
   await exec.exec(`${process.env.ANDROID_HOME}/tools/bin/sdkmanager "platform-tools"`);
   await exec.exec(`${process.env.ANDROID_HOME}/tools/bin/sdkmanager "platforms;android-${apiLevel}"`);
