@@ -2,7 +2,6 @@ import * as exec from '@actions/exec';
 import * as tc from '@actions/tool-cache';
 import * as fs from 'fs';
 
-const BUILD_TOOLS_VERSION = '29.0.2';
 const SDK_URL = 'https://dl.google.com/android/repository/sdk-tools-darwin-4333796.zip';
 
 /**
@@ -21,9 +20,9 @@ export async function installAndroidSdk(apiLevel: number, target: string, abi: s
 
   // install specific SDK tools
   console.log('Installing build tools, platform tools, platform and system image.');
-  await exec.exec(`echo "y" | ${process.env.ANDROID_HOME}/tools/bin/sdkmanager --licenses > /dev/null`);
-  await exec.exec(`${process.env.ANDROID_HOME}/tools/bin/sdkmanager "build-tools;${BUILD_TOOLS_VERSION}"`);
-  await exec.exec(`${process.env.ANDROID_HOME}/tools/bin/sdkmanager "platform-tools"`);
-  await exec.exec(`${process.env.ANDROID_HOME}/tools/bin/sdkmanager "platforms;android-${apiLevel}"`);
-  await exec.exec(`${process.env.ANDROID_HOME}/tools/bin/sdkmanager "system-images;android-${apiLevel};${target};${abi}"`);
+  const sdkmangerPath = `${process.env.ANDROID_HOME}/tools/bin/sdkmanager`;
+  await exec.exec(`echo "y" | ${sdkmangerPath} --licenses > /dev/null`);
+  await exec.exec(`${sdkmangerPath} tools platform-tools "platforms;android-${apiLevel}"`);
+  await exec.exec(`${sdkmangerPath} "system-images;android-${apiLevel};${target};${abi}"`);
+  await exec.exec(`bash -c \\"${sdkmangerPath} --update > /dev/null"`);
 }

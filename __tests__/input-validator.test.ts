@@ -97,3 +97,24 @@ describe('headless validator tests', () => {
     expect(func2).not.toThrow();
   });
 });
+
+describe('disable-animations validator tests', () => {
+  it('Throws if disable-animations is not a boolean', () => {
+    const func = () => {
+      validator.checkDisableAnimations('yes');
+    };
+    expect(func).toThrowError(`Input for input.disable-animations should be either 'true' or 'false'.`);
+  });
+
+  it('Validates successfully if disable-animations is either true or false', () => {
+    const func1 = () => {
+      validator.checkDisableAnimations('true');
+    };
+    expect(func1).not.toThrow();
+
+    const func2 = () => {
+      validator.checkDisableAnimations('false');
+    };
+    expect(func2).not.toThrow();
+  });
+});

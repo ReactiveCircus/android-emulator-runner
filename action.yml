@@ -17,6 +17,9 @@ inputs:
   headless:
     description: 'whether to launch emulator in without UI - true or false'
     default: 'true'
+  disable-animations:
+    description: 'whether to disable animations - true or false'
+    default: 'true'
 runs:
   using: 'node12'
   main: 'lib/main.js'

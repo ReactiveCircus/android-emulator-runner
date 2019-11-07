@@ -1,7 +1,7 @@
 import * as core from '@actions/core';
-import { InputOptions } from '@actions/core/lib/core';
 import { installAndroidSdk } from './sdk-installer';
-import { checkApiLevel, checkTarget, checkAbi, checkHeadless } from './input-validator';
+import { checkApiLevel, checkTarget, checkAbi, checkHeadless, checkDisableAnimations } from './input-validator';
+import { launchEmulator } from './emulator-launcher';
 
 async function run() {
   try {
@@ -11,8 +11,9 @@ async function run() {
     }
 
     // API level of the platform and system image
-    const apiLevel = core.getInput('api-level', { required: true } as InputOptions);
-    checkApiLevel(apiLevel);
+    const apiLevelInput = core.getInput('api-level', { required: true });
+    checkApiLevel(apiLevelInput);
+    const apiLevel = Number(apiLevelInput);
     console.log(`API level: ${apiLevel}`);
 
     // target of the system image
@@ -26,12 +27,24 @@ async function run() {
     console.log(`cpu/abi: ${abi}`);
 
     // headless mode
-    const headless = core.getInput('headless');
-    checkHeadless(headless);
+    const headlessInput = core.getInput('headless');
+    checkHeadless(headlessInput);
+    const headless = headlessInput === 'true';
     console.log(`headless mode: ${headless}`);
 
+    // disable animations
+    const disableAnimationsInput = core.getInput('disable-animations');
+    checkDisableAnimations(disableAnimationsInput);
+    const disableAnimations = disableAnimationsInput === 'true';
+    console.log(`disable animations: ${disableAnimations}`);
+
     // install SDK
-    await installAndroidSdk(Number(apiLevel), target, abi);
+    await installAndroidSdk(apiLevel, target, abi);
+
+    // launch emulator
+    // TODO get from input (source list of all profiles)
+    const device = 'Nexus 6P';
+    await launchEmulator(apiLevel, target, abi, device, headless, disableAnimations);
 
     // TODO start emulator
   } catch (error) {
