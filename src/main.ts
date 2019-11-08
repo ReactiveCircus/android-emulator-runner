@@ -56,7 +56,7 @@ async function run() {
     try {
       await exec.exec(`${script}`);
     } catch (error) {
-      console.error(error.message);
+      core.setFailed(error.message);
     }
 
     // finally kill the emulator
