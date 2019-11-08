@@ -44,8 +44,7 @@ async function run() {
     console.log(`disable animations: ${disableAnimations}`);
 
     // custom scrpt to run
-    const scriptInput = core.getInput('script', { required: true });
-    const commands = scriptInput.split(/\r?\n/);
+    const script = core.getInput('script', { required: true });
 
     // install SDK
     await installAndroidSdk(apiLevel, target, arch);
@@ -54,9 +53,11 @@ async function run() {
     await launchEmulator(apiLevel, target, arch, profile, headless, disableAnimations);
 
     // execute the custom script
-    commands.forEach(async command => {
-      await exec.exec(`${command}`);
-    });
+    try {
+      await exec.exec(`${script}`);
+    } catch (error) {
+      console.error(error.message);
+    }
 
     // finally kill the emulator
     await killEmulator();
