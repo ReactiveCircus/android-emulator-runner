@@ -34,6 +34,4 @@ jobs:
         profile: Nexus 6
         headless: true
         disable-animations: true
-        script: |
-          adb devices -l
-          adb --help
+        script: adb devices -l
