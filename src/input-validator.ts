@@ -1,6 +1,6 @@
 export const MIN_API_LEVEL = 21;
 export const VALID_TARGETS: Array<string> = ['default', 'google_apis'];
-export const VALID_ABIS: Array<string> = ['x86', 'x86_64'];
+export const VALID_ARCHS: Array<string> = ['x86', 'x86_64'];
 
 export function checkApiLevel(apiLevel: string): void {
   if (isNaN(Number(apiLevel)) || !Number.isInteger(Number(apiLevel))) {
@@ -17,9 +17,9 @@ export function checkTarget(target: string): void {
   }
 }
 
-export function checkAbi(abi: string): void {
-  if (!VALID_ABIS.includes(abi)) {
-    throw new Error(`Value for input.abi '${abi}' is unknown. Supported options: ${VALID_ABIS}.`);
+export function checkArch(arch: string): void {
+  if (!VALID_ARCHS.includes(arch)) {
+    throw new Error(`Value for input.arch '${arch}' is unknown. Supported options: ${VALID_ARCHS}.`);
   }
 }
 

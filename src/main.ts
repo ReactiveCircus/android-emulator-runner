@@ -1,7 +1,8 @@
 import * as core from '@actions/core';
 import { installAndroidSdk } from './sdk-installer';
-import { checkApiLevel, checkTarget, checkAbi, checkHeadless, checkDisableAnimations } from './input-validator';
-import { launchEmulator } from './emulator-launcher';
+import { checkApiLevel, checkTarget, checkArch, checkHeadless, checkDisableAnimations } from './input-validator';
+import { launchEmulator, killEmulator } from './emulator-manager';
+import * as exec from '@actions/exec';
 
 async function run() {
   try {
@@ -21,10 +22,14 @@ async function run() {
     checkTarget(target);
     console.log(`target: ${target}`);
 
-    // CPU / ABI of the system image
-    const abi = core.getInput('abi');
-    checkAbi(abi);
-    console.log(`cpu/abi: ${abi}`);
+    // CPU architecture of the system image
+    const arch = core.getInput('arch');
+    checkArch(arch);
+    console.log(`CPI architecture: ${arch}`);
+
+    // Hardware profile used for creating the AVD
+    const profile = core.getInput('profile');
+    console.log(`Hardware profile: ${profile}`);
 
     // headless mode
     const headlessInput = core.getInput('headless');
@@ -38,16 +43,26 @@ async function run() {
     const disableAnimations = disableAnimationsInput === 'true';
     console.log(`disable animations: ${disableAnimations}`);
 
+    // custom scrpt to run
+    const scriptInput = core.getInput('script', { required: true });
+    const commands = scriptInput.split(/\r?\n/);
+
     // install SDK
-    await installAndroidSdk(apiLevel, target, abi);
+    await installAndroidSdk(apiLevel, target, arch);
 
-    // launch emulator
-    // TODO get from input (source list of all profiles)
-    const device = 'Nexus 6P';
-    await launchEmulator(apiLevel, target, abi, device, headless, disableAnimations);
+    // launch an emulator
+    await launchEmulator(apiLevel, target, arch, profile, headless, disableAnimations);
 
-    // TODO start emulator
+    // execute the custom script
+    commands.forEach(async command => {
+      await exec.exec(`${command}`);
+    });
+
+    // finally kill the emulator
+    await killEmulator();
   } catch (error) {
+    // kill the emulator so the action can exit
+    await killEmulator();
     core.setFailed(error.message);
   }
 }

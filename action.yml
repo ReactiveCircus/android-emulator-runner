@@ -11,15 +11,20 @@ inputs:
   target:
     description: 'target of the system image - default or google_apis'
     default: 'default'
-  abi:
-    description: 'CPU / ABI of the system image - x86 or x86_64'
+  arch:
+    description: 'CPU architecture of the system image - x86 or x86_64'
     default: 'x86'
+  profile:
+    description: 'Hardware profile used for creating the AVD - e.g. `Nexus 6`.'
   headless:
     description: 'whether to launch emulator in without UI - true or false'
     default: 'true'
   disable-animations:
     description: 'whether to disable animations - true or false'
     default: 'true'
+  script:
+    description: 'custom script to run - e.g. `./gradlew connectedCheck`'
+    required: true
 runs:
   using: 'node12'
   main: 'lib/main.js'

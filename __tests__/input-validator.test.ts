@@ -56,22 +56,22 @@ describe('target validator tests', () => {
   });
 });
 
-describe('abi validator tests', () => {
-  it('Throws if abi is unknown', () => {
+describe('arch validator tests', () => {
+  it('Throws if arch is unknown', () => {
     const func = () => {
-      validator.checkAbi('some-abi');
+      validator.checkArch('some-arch');
     };
-    expect(func).toThrowError(`Value for input.abi 'some-abi' is unknown. Supported options: ${validator.VALID_ABIS}`);
+    expect(func).toThrowError(`Value for input.arch 'some-arch' is unknown. Supported options: ${validator.VALID_ARCHS}`);
   });
 
-  it('Validates successfully with valid abi', () => {
+  it('Validates successfully with valid arch', () => {
     const func1 = () => {
-      validator.checkAbi('x86');
+      validator.checkArch('x86');
     };
     expect(func1).not.toThrow();
 
     const func2 = () => {
-      validator.checkAbi('x86_64');
+      validator.checkArch('x86_64');
     };
     expect(func2).not.toThrow();
   });

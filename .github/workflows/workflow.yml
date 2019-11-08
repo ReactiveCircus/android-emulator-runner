@@ -8,7 +8,7 @@ on:
 jobs:
   test:
     runs-on: macOS-latest
-    timeout-minutes: 20
+    timeout-minutes: 10
     strategy:
       matrix:
         api-level: [21, 23, 29]
@@ -27,9 +27,13 @@ jobs:
 
     - name: run action
       uses: ./
-      with: 
+      with:
         api-level: ${{ matrix.api-level }}
         target: default
-        abi: x86
+        arch: x86
+        profile: Nexus 6
         headless: true
         disable-animations: true
+        script: |
+          adb devices -l
+          adb --help
