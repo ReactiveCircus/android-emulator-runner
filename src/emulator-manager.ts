@@ -14,7 +14,7 @@ export async function launchEmulator(apiLevel: number, target: string, arch: str
     await exec.exec(`${AVD_MANAGER_PATH} create avd --force -n test --abi "${target}/${arch}" --package "system-images;android-${apiLevel};${target};${arch}" --device "${profile}"`);
   } else {
     console.log(`Creating AVD without custom profile.`);
-    await exec.exec(`bash -c \\"echo no | ${AVD_MANAGER_PATH} create avd --force -n test --abi '${target}/${arch}' --package 'system-images;android-${apiLevel};${target};${arch}'`);
+    await exec.exec(`bash -c \\"echo no | ${AVD_MANAGER_PATH} create avd --force -n test --abi '${target}/${arch}' --package 'system-images;android-${apiLevel};${target};${arch}'"`);
   }
 
   // start emulator
