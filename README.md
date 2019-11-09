@@ -6,9 +6,67 @@
 
 A GitHub Action for installing, configuring and running Android Emulators on macOS virtual machines.
 
-TODO
+The old ARM-based emulators were slow and are no longer supported by Google. The modern Intel Atom (x86 and x86_64) emulators require hardware acceleration (HAXM on Mac & Windows, QEMU on Linux) from the host to run fast. This presents a challenge on CI as to be able to run hardware accelerated emulators within a docker container, **KVM** must be supported by the host VM which isn't the case for cloud-based CI providers due to infrastructural limits.
 
-This action must be run on a **macOS** VM, e.g. `macOS-latest` or `macOS-10.14`.
+The **masOS** VM provided by **GitHub Actions** has **HAXM** installed so we are able to create a new AVD instance, launch an emulator with hardware acceleration, and run our Android instrumented tests directly on the VM.
+
+This Action automates the process by doing the following:
+
+- Install / update the required **Android SDK** components including `build-tools`, `platform-tools`, `platform` (for the required API level), `emulator` and `system-images` (for the required API level).
+- Create a new instance of **AVD** with the required [configurations](#configurations).
+- Launch a new Emulator with the required [configurations](#configurations).
+- Wait until the Emulator is booted and ready for use.
+- Run a custom script provided by the user of the action - e.g. `./gradlew connectedCheck`.
+- Kill the Emulator and the finish the action.
+
+## Usage
+
+Note that this action must be run on a **macOS** VM, e.g. `macOS-latest` or `macOS-10.14`.
+
+A workflow that uses **android-emulator-runner** to run your instrumented on **API 29**:
+
+```
+jobs:
+  test:
+    runs-on: macOS-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
+
+    - name: run tests
+      uses: reactivecircus/android-emulator-runner@v1
+      with:
+        api-level: 29
+        script: ./gradlew connectedCheck
+```
+
+We can also leverage GitHub Actions's build matrix to test across multiple configurations:
+
+```
+jobs:
+  test:
+    runs-on: macOS-latest
+    strategy:
+      matrix:
+        api-level: [21, 23, 29]
+        target: [default, google_apis]
+    steps:
+    - name: checkout
+      uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
+
+    - name: run tests
+      uses: reactivecircus/android-emulator-runner@v1
+      with:
+        api-level: ${{ matrix.api-level }}
+        target: ${{ matrix.target }}
+        arch: x86_64
+        profile: Nexus 6
+        script: ./gradlew connectedCheck
+```
 
 ## Configurations
 
@@ -21,9 +79,3 @@ This action must be run on a **macOS** VM, e.g. `macOS-latest` or `macOS-10.14`.
 | `headless` | Optional | `true` | Whether to launch emulator without UI - `true` or `false`. When set to `true` this is equivalent to running the emulator with `emulator -no-window`. |
 | `disable-animations` | Optional | `true` | Whether to disable animations - `true` or `false`. |
 | `script` | Required | N/A | Custom script to run - e.g. to run Android instrumented tests on the emulator: `./gradlew connectedCheck` |
-
-## Usage
-
-```
-TODO
-```
