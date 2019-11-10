@@ -10,14 +10,14 @@ The old ARM-based emulators were slow and are no longer supported by Google. The
 
 The **masOS** VM provided by **GitHub Actions** has **HAXM** installed so we are able to create a new AVD instance, launch an emulator with hardware acceleration, and run our Android instrumented tests directly on the VM.
 
-This Action automates the process by doing the following:
+This action automates the process by doing the following:
 
 - Install / update the required **Android SDK** components including `build-tools`, `platform-tools`, `platform` (for the required API level), `emulator` and `system-images` (for the required API level).
-- Create a new instance of **AVD** with the required [configurations](#configurations).
-- Launch a new Emulator with the required [configurations](#configurations).
+- Create a new instance of **AVD** with the provided [configurations](#configurations).
+- Launch a new Emulator with the provided [configurations](#configurations).
 - Wait until the Emulator is booted and ready for use.
-- Run a custom script provided by the user of the action - e.g. `./gradlew connectedCheck`.
-- Kill the Emulator and the finish the action.
+- Run a custom script provided by user once the Emulator is up and running - e.g. `./gradlew connectedCheck`.
+- Kill the Emulator and finish the action.
 
 ## Usage
 
