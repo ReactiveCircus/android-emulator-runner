@@ -8,7 +8,8 @@ A GitHub Action for installing, configuring and running Android Emulators on mac
 
 The old ARM-based emulators were slow and are no longer supported by Google. The modern Intel Atom (x86 and x86_64) emulators require hardware acceleration (HAXM on Mac & Windows, QEMU on Linux) from the host to run fast. This presents a challenge on CI as to be able to run hardware accelerated emulators within a docker container, **KVM** must be supported by the host VM which isn't the case for cloud-based CI providers due to infrastructural limits.
 
-The **masOS** VM provided by **GitHub Actions** has **HAXM** installed so we are able to create a new AVD instance, launch an emulator with hardware acceleration, and run our Android instrumented tests directly on the VM.
+The **masOS** VM provided by **GitHub Actions** has **HAXM** installed so we are able to create a new AVD instance, launch an emulator with hardware acceleration, and run our Android 
+tests directly on the VM.
 
 This action automates the process by doing the following:
 
@@ -23,7 +24,7 @@ This action automates the process by doing the following:
 
 Note that this action must be run on a **macOS** VM, e.g. `macOS-latest` or `macOS-10.14`.
 
-A workflow that uses **android-emulator-runner** to run your instrumented on **API 29**:
+A workflow that uses **android-emulator-runner** to run your instrumented tests on **API 29**:
 
 ```
 jobs:
