@@ -14,13 +14,13 @@ export async function launchEmulator(apiLevel: number, target: string, arch: str
     await exec.exec(`${AVD_MANAGER_PATH} create avd --force -n test --abi "${target}/${arch}" --package "system-images;android-${apiLevel};${target};${arch}" --device "${profile}"`);
   } else {
     console.log(`Creating AVD without custom profile.`);
-    await exec.exec(`bash -c \\"echo no | ${AVD_MANAGER_PATH} create avd --force -n test --abi '${target}/${arch}' --package 'system-images;android-${apiLevel};${target};${arch}'"`);
+    await exec.exec(`sh -c \\"echo no | ${AVD_MANAGER_PATH} create avd --force -n test --abi '${target}/${arch}' --package 'system-images;android-${apiLevel};${target};${arch}'"`);
   }
 
   // start emulator
   console.log('Starting emulator.');
   const noWindow = headless ? '-no-window' : '';
-  await exec.exec(`bash -c \\"${process.env.ANDROID_HOME}/emulator/emulator -avd test ${noWindow} -no-snapshot -noaudio -no-boot-anim &"`);
+  await exec.exec(`sh -c \\"${process.env.ANDROID_HOME}/emulator/emulator -avd test ${noWindow} -no-snapshot -noaudio -no-boot-anim &"`);
 
   // wait for emulator to complete booting
   await waitForDevice();
