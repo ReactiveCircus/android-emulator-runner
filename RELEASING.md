@@ -5,6 +5,7 @@ Refer to the [recommendeations for versioning and releasing actions](https://git
 ## New major release
 
 - From `master` branch, run `npm run build && npm test --clean && npm run lint` to make sure `lib/*.js` are up-to-date.
+- Update `CHANGELOG.md`, push change with "Prepare for release X.Y.Z." (where X.Y.Z is the new version).
 - Create a new branch e.g. `release/v1`, comment out `node_modules/` in `.gitignore`, commit the change (do not commit yet `node_modules`).
 - Run `npm prune --production`.
 - Now commit the changes (the pruned `node_modules`).
@@ -17,6 +18,7 @@ Refer to the [recommendeations for versioning and releasing actions](https://git
 ## New minor / patch release
 
 - From `master` branch, run `npm run build && npm test --clean && npm run lint` to make sure `lib/*.js` are up-to-date.
+- Update `CHANGELOG.md`, push change with "Prepare for release X.Y.Z." (where X.Y.Z is the new version).
 - Merge from `master` into the release branch e.g. `release/v1`.
 - Run `npm prune --production`.
 - Commit merged changes (and the pruned `node_modules`).
