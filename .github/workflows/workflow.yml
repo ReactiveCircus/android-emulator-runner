@@ -29,8 +29,8 @@ jobs:
       uses: ./
       with:
         api-level: ${{ matrix.api-level }}
-        target: default
-        arch: x86
+        target: google_apis
+        arch: x86_64
         profile: Nexus 6
         headless: true
         disable-animations: true

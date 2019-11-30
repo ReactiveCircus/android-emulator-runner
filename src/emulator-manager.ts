@@ -1,6 +1,6 @@
 import * as exec from '@actions/exec';
 
-const EMULATOR_BOOT_TIMEOUT_SECONDS = 120;
+const EMULATOR_BOOT_TIMEOUT_SECONDS = 300;
 const AVD_MANAGER_PATH = `${process.env.ANDROID_HOME}/tools/bin/avdmanager`;
 const ADB_PATH = `${process.env.ANDROID_HOME}/platform-tools/adb`;
 
