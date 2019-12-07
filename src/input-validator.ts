@@ -23,12 +23,6 @@ export function checkArch(arch: string): void {
   }
 }
 
-export function checkHeadless(headless: string): void {
-  if (headless !== 'true' && headless !== 'false') {
-    throw new Error(`Input for input.headless should be either 'true' or 'false'.`);
-  }
-}
-
 export function checkDisableAnimations(disableAnimations: string): void {
   if (disableAnimations !== 'true' && disableAnimations !== 'false') {
     throw new Error(`Input for input.disable-animations should be either 'true' or 'false'.`);

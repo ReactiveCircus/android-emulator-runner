@@ -1,6 +1,6 @@
 import * as core from '@actions/core';
 import { installAndroidSdk } from './sdk-installer';
-import { checkApiLevel, checkTarget, checkArch, checkHeadless, checkDisableAnimations } from './input-validator';
+import { checkApiLevel, checkTarget, checkArch, checkDisableAnimations } from './input-validator';
 import { launchEmulator, killEmulator } from './emulator-manager';
 import * as exec from '@actions/exec';
 
@@ -31,11 +31,9 @@ async function run() {
     const profile = core.getInput('profile');
     console.log(`Hardware profile: ${profile}`);
 
-    // headless mode
-    const headlessInput = core.getInput('headless');
-    checkHeadless(headlessInput);
-    const headless = headlessInput === 'true';
-    console.log(`headless mode: ${headless}`);
+    // emulator options
+    const emulatorOptions = core.getInput('emulator-options').trim();
+    console.log(`emulator options: ${emulatorOptions}`);
 
     // disable animations
     const disableAnimationsInput = core.getInput('disable-animations');
@@ -46,14 +44,14 @@ async function run() {
     // custom scrpt to run
     const script = core.getInput('script', { required: true });
 
-    // install SDK
-    await installAndroidSdk(apiLevel, target, arch);
-
-    // launch an emulator
-    await launchEmulator(apiLevel, target, arch, profile, headless, disableAnimations);
-
-    // execute the custom script
     try {
+      // install SDK
+      await installAndroidSdk(apiLevel, target, arch);
+
+      // launch an emulator
+      await launchEmulator(apiLevel, target, arch, profile, emulatorOptions, disableAnimations);
+
+      // execute the custom script
       await exec.exec(`${script}`);
     } catch (error) {
       core.setFailed(error.message);

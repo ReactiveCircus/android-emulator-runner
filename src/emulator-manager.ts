@@ -7,7 +7,7 @@ const ADB_PATH = `${process.env.ANDROID_HOME}/platform-tools/adb`;
 /**
  * Creates and launches a new AVD instance with the specified configurations.
  */
-export async function launchEmulator(apiLevel: number, target: string, arch: string, profile: string, headless: boolean, disableAnimations: boolean): Promise<void> {
+export async function launchEmulator(apiLevel: number, target: string, arch: string, profile: string, emulatorOptions: string, disableAnimations: boolean): Promise<void> {
   // create a new AVD
   if (profile.trim() !== '') {
     console.log(`Creating AVD with custom profile ${profile}`);
@@ -19,8 +19,15 @@ export async function launchEmulator(apiLevel: number, target: string, arch: str
 
   // start emulator
   console.log('Starting emulator.');
-  const noWindow = headless ? '-no-window' : '';
-  await exec.exec(`sh -c \\"${process.env.ANDROID_HOME}/emulator/emulator -avd test ${noWindow} -no-snapshot -noaudio -no-boot-anim &"`);
+  await exec.exec(`sh -c \\"${process.env.ANDROID_HOME}/emulator/emulator -avd test ${emulatorOptions} &"`, [], {
+    listeners: {
+      stderr: (data: Buffer) => {
+        if (data.toString().includes('invalid command-line parameter')) {
+          throw new Error(data.toString());
+        }
+      }
+    }
+  });
 
   // wait for emulator to complete booting
   await waitForDevice();
@@ -71,7 +78,7 @@ async function waitForDevice(): Promise<void> {
         break;
       }
     } catch (error) {
-      console.error(error.message);
+      console.log(error.message);
     }
 
     if (attempts < maxAttemps) {
