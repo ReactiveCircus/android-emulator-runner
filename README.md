@@ -37,7 +37,7 @@ jobs:
         fetch-depth: 1
 
     - name: run tests
-      uses: reactivecircus/android-emulator-runner@v1
+      uses: reactivecircus/android-emulator-runner@v2
       with:
         api-level: 29
         script: ./gradlew connectedCheck
@@ -60,7 +60,7 @@ jobs:
         fetch-depth: 1
 
     - name: run tests
-      uses: reactivecircus/android-emulator-runner@v1
+      uses: reactivecircus/android-emulator-runner@v2
       with:
         api-level: ${{ matrix.api-level }}
         target: ${{ matrix.target }}
@@ -81,6 +81,4 @@ jobs:
 | `disable-animations` | Optional | `true` | Whether to disable animations - `true` or `false`. |
 | `script` | Required | N/A | Custom script to run - e.g. to run Android instrumented tests on the emulator: `./gradlew connectedCheck` |
 
-Default `emulator-options`:
-
-`-no-window -no-snapshot -noaudio -no-boot-anim`
+Default `emulator-options`: `-no-window -no-snapshot -noaudio -no-boot-anim`.
