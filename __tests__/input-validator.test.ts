@@ -77,27 +77,6 @@ describe('arch validator tests', () => {
   });
 });
 
-describe('headless validator tests', () => {
-  it('Throws if headless is not a boolean', () => {
-    const func = () => {
-      validator.checkHeadless('yes');
-    };
-    expect(func).toThrowError(`Input for input.headless should be either 'true' or 'false'.`);
-  });
-
-  it('Validates successfully if headless is either true or false', () => {
-    const func1 = () => {
-      validator.checkHeadless('true');
-    };
-    expect(func1).not.toThrow();
-
-    const func2 = () => {
-      validator.checkHeadless('false');
-    };
-    expect(func2).not.toThrow();
-  });
-});
-
 describe('disable-animations validator tests', () => {
   it('Throws if disable-animations is not a boolean', () => {
     const func = () => {
