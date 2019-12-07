@@ -16,9 +16,9 @@ inputs:
     default: 'x86'
   profile:
     description: 'Hardware profile used for creating the AVD - e.g. `Nexus 6`.'
-  headless:
-    description: 'whether to launch emulator in without UI - true or false'
-    default: 'true'
+  emulator-options:
+    description: 'command-line options used when launching the emulator - e.g. `-no-snapshot -camera-back emulated`.'
+    default: '-no-window -no-snapshot -noaudio -no-boot-anim'
   disable-animations:
     description: 'whether to disable animations - true or false'
     default: 'true'
