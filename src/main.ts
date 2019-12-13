@@ -3,6 +3,7 @@ import { installAndroidSdk } from './sdk-installer';
 import { checkApiLevel, checkTarget, checkArch, checkDisableAnimations } from './input-validator';
 import { launchEmulator, killEmulator } from './emulator-manager';
 import * as exec from '@actions/exec';
+import { parseScript } from './script-parser';
 
 async function run() {
   try {
@@ -25,7 +26,7 @@ async function run() {
     // CPU architecture of the system image
     const arch = core.getInput('arch');
     checkArch(arch);
-    console.log(`CPI architecture: ${arch}`);
+    console.log(`CPU architecture: ${arch}`);
 
     // Hardware profile used for creating the AVD
     const profile = core.getInput('profile');
@@ -41,8 +42,13 @@ async function run() {
     const disableAnimations = disableAnimationsInput === 'true';
     console.log(`disable animations: ${disableAnimations}`);
 
-    // custom scrpt to run
-    const script = core.getInput('script', { required: true });
+    // custom script to run
+    const scriptInput = core.getInput('script', { required: true });
+    const scripts = parseScript(scriptInput);
+    console.log(`Script:`);
+    scripts.forEach(async (script: string) => {
+      console.log(`${script}`);
+    });
 
     try {
       // install SDK
@@ -50,12 +56,18 @@ async function run() {
 
       // launch an emulator
       await launchEmulator(apiLevel, target, arch, profile, emulatorOptions, disableAnimations);
-
-      // execute the custom script
-      await exec.exec(`${script}`);
     } catch (error) {
       core.setFailed(error.message);
     }
+
+    // execute the custom script
+    scripts.forEach(async (script: string) => {
+      try {
+        await exec.exec(`${script}`);
+      } catch (error) {
+        core.setFailed(error.message);
+      }
+    });
 
     // finally kill the emulator
     await killEmulator();
