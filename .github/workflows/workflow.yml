@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - master
+    paths-ignore:
+      - '**.md'
 
 jobs:
   test:
@@ -32,6 +34,8 @@ jobs:
         target: google_apis
         arch: x86_64
         profile: Nexus 6
-        emulator-options: -no-window -no-snapshot -noaudio -no-boot-anim -camera-back emulated
+        emulator-options: -no-window -no-snapshot -noaudio -no-boot-anim -camera-back none
         disable-animations: true
-        script: adb devices -l
+        script: |
+          adb reconnect
+          adb devices -l

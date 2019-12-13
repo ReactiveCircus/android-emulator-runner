@@ -49,7 +49,7 @@ export async function killEmulator(): Promise<void> {
   try {
     await exec.exec(`${ADB_PATH} -s emulator-5554 emu kill`);
   } catch (error) {
-    console.log('No emulator running on port 5554');
+    console.log(error.message);
   }
 }
 
@@ -57,7 +57,6 @@ export async function killEmulator(): Promise<void> {
  * Wait for emulator to boot.
  */
 async function waitForDevice(): Promise<void> {
-  const adbPath = `${process.env.ANDROID_HOME}/platform-tools/adb`;
   let booted = false;
   let attempts = 0;
   const retryInterval = 2; // retry every 2 seconds
@@ -65,7 +64,7 @@ async function waitForDevice(): Promise<void> {
   while (!booted) {
     try {
       let result = '';
-      await exec.exec(`${adbPath} shell getprop sys.boot_completed`, [], {
+      await exec.exec(`${ADB_PATH} shell getprop sys.boot_completed`, [], {
         listeners: {
           stdout: (data: Buffer) => {
             result += data.toString();

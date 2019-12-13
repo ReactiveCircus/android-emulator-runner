@@ -1,5 +1,9 @@
 # Change Log
 
+## v2.1.0
+
+* Added support for multi-line script.
+
 ## v2.0.0
 
 * Added action input `emulator-options` for providing command-line options used when launching the emulator. Default value is `-no-window -no-snapshot -noaudio -no-boot-anim`.
