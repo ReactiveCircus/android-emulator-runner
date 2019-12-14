@@ -17,8 +17,8 @@ inputs:
   profile:
     description: 'Hardware profile used for creating the AVD - e.g. `Nexus 6`.'
   emulator-options:
-    description: 'command-line options used when launching the emulator - e.g. `-no-snapshot -camera-back emulated`.'
-    default: '-no-window -no-snapshot -noaudio -no-boot-anim'
+    description: 'command-line options used when launching the emulator - e.g. `-no-window -no-snapshot -camera-back emulated`.'
+    default: '-no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim'
   disable-animations:
     description: 'whether to disable animations - true or false'
     default: 'true'
