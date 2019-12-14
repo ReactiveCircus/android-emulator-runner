@@ -77,8 +77,9 @@ jobs:
 | `target` | Optional | `default` | Target of the system image - `default` or `google_apis`. |
 | `arch` | Optional | `x86` | CPU architecture of the system image - `x86` or `x86_64`. |
 | `profile` | Optional | N/A | Hardware profile used for creating the AVD - e.g. `Nexus 6`. For a list of all profiles available, run `$ANDROID_HOME/tools/bin/avdmanager list` and refer to the results under "Available Android Virtual Devices". |
-| `emulator-options` | Optional | See below | Command-line options used when launching the emulator (replacing all default options) - e.g. `-no-snapshot -camera-back emulated`. |
+| `emulator-options` | Optional | See below | Command-line options used when launching the emulator (replacing all default options) - e.g. `-no-window -no-snapshot -camera-back emulated`. |
 | `disable-animations` | Optional | `true` | Whether to disable animations - `true` or `false`. |
+| `emulator-build` | Optional | N/A | Build number of a specific version of the emulator binary to use e.g. `6061023` for emulator v29.3.0.0. |
 | `script` | Required | N/A | Custom script to run - e.g. to run Android instrumented tests on the emulator: `./gradlew connectedCheck` |
 
-Default `emulator-options`: `-no-window -no-snapshot -noaudio -no-boot-anim`.
+Default `emulator-options`: `-no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim`.

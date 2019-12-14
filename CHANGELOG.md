@@ -1,5 +1,11 @@
 # Change Log
 
+## v2.2.0
+
+* Fixed an issue where emulator is killed prematurely.
+* Added `-gpu swiftshader_indirect` to default `launch-options`.
+* Added support for pinning a specific `emulator-build` - e.g. `6061023` for emulator **v29.3.0.0**.
+
 ## v2.1.0
 
 * Added support for multi-line script.
