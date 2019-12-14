@@ -1,6 +1,6 @@
 import * as core from '@actions/core';
 import { installAndroidSdk } from './sdk-installer';
-import { checkApiLevel, checkTarget, checkArch, checkDisableAnimations } from './input-validator';
+import { checkApiLevel, checkTarget, checkArch, checkDisableAnimations, checkEmulatorBuild } from './input-validator';
 import { launchEmulator, killEmulator } from './emulator-manager';
 import * as exec from '@actions/exec';
 import { parseScript } from './script-parser';
@@ -42,6 +42,14 @@ async function run() {
     const disableAnimations = disableAnimationsInput === 'true';
     console.log(`disable animations: ${disableAnimations}`);
 
+    // emulator build
+    const emulatorBuildInput = core.getInput('emulator-build');
+    if (emulatorBuildInput) {
+      checkEmulatorBuild(emulatorBuildInput);
+      console.log(`using emulator build: ${emulatorBuildInput}`);
+    }
+    const emulatorBuild = !emulatorBuildInput ? undefined : emulatorBuildInput;
+
     // custom script to run
     const scriptInput = core.getInput('script', { required: true });
     const scripts = parseScript(scriptInput);
@@ -50,10 +58,10 @@ async function run() {
       console.log(`${script}`);
     });
 
-    try {
-      // install SDK
-      await installAndroidSdk(apiLevel, target, arch);
+    // install SDK
+    await installAndroidSdk(apiLevel, target, arch, emulatorBuild);
 
+    try {
       // launch an emulator
       await launchEmulator(apiLevel, target, arch, profile, emulatorOptions, disableAnimations);
     } catch (error) {
