@@ -39,7 +39,6 @@ jobs:
         profile: Nexus 6
         emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none
         disable-animations: true
-        emulator-build: 6031357
         script: |
           ./gradlew help
           ./gradlew connectedDebugAndroidTest
