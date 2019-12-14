@@ -22,6 +22,8 @@ inputs:
   disable-animations:
     description: 'whether to disable animations - true or false'
     default: 'true'
+  emulator-build:
+    description: 'build number of a specific version of the emulator binary to use e.g. `6061023` for emulator v29.3.0.0.'
   script:
     description: 'custom script to run - e.g. `./gradlew connectedCheck`'
     required: true

@@ -28,3 +28,9 @@ export function checkDisableAnimations(disableAnimations: string): void {
     throw new Error(`Input for input.disable-animations should be either 'true' or 'false'.`);
   }
 }
+
+export function checkEmulatorBuild(emulatorBuild: string): void {
+  if (isNaN(Number(emulatorBuild)) || !Number.isInteger(Number(emulatorBuild))) {
+    throw new Error(`Unexpected emulator build: '${emulatorBuild}'.`);
+  }
+}

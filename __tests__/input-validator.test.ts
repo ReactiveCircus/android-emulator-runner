@@ -97,3 +97,26 @@ describe('disable-animations validator tests', () => {
     expect(func2).not.toThrow();
   });
 });
+
+describe('emulator-build validator tests', () => {
+  it('Throws if emulator-build is not a number', () => {
+    const func = () => {
+      validator.checkEmulatorBuild('abc123');
+    };
+    expect(func).toThrowError(`Unexpected emulator build: 'abc123'.`);
+  });
+
+  it('Throws if emulator-build is not an integer', () => {
+    const func = () => {
+      validator.checkEmulatorBuild('123.123');
+    };
+    expect(func).toThrowError(`Unexpected emulator build: '123.123'.`);
+  });
+
+  it('Validates successfully with valid emulator-build', () => {
+    const func = () => {
+      validator.checkEmulatorBuild('6061023');
+    };
+    expect(func).not.toThrow();
+  });
+});
