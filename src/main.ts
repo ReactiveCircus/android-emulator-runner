@@ -61,13 +61,13 @@ async function run() {
     }
 
     // execute the custom script
-    scripts.forEach(async (script: string) => {
-      try {
+    try {
+      for (const script of scripts) {
         await exec.exec(`${script}`);
-      } catch (error) {
-        core.setFailed(error.message);
       }
-    });
+    } catch (error) {
+      core.setFailed(error.message);
+    }
 
     // finally kill the emulator
     await killEmulator();
