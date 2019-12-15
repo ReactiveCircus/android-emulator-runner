@@ -16,9 +16,7 @@ jobs:
         api-level: [21, 23, 29]
     steps:
     - name: checkout
-      uses: actions/checkout@v1
-      with:
-        fetch-depth: 1
+      uses: actions/checkout@v2
 
     - name: build, test and lint
       run: |
