@@ -16,9 +16,7 @@ jobs:
         api-level: [21, 23, 29]
     steps:
     - name: checkout
-      uses: actions/checkout@v1
-      with:
-        fetch-depth: 1
+      uses: actions/checkout@v2
 
     - name: build, test and lint
       run: |
@@ -29,6 +27,11 @@ jobs:
 
     - name: Prepare test fixture
       run: cp -a ./test-fixture/* ./
+
+    - name: Java 13
+      uses: actions/setup-java@v1
+      with:
+        java-version: 13
 
     - name: run action
       uses: ./

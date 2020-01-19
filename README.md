@@ -32,9 +32,7 @@ jobs:
     runs-on: macOS-latest
     steps:
     - name: checkout
-      uses: actions/checkout@v1
-      with:
-        fetch-depth: 1
+      uses: actions/checkout@v2
 
     - name: run tests
       uses: reactivecircus/android-emulator-runner@v2
@@ -55,9 +53,7 @@ jobs:
         target: [default, google_apis]
     steps:
     - name: checkout
-      uses: actions/checkout@v1
-      with:
-        fetch-depth: 1
+      uses: actions/checkout@v2
 
     - name: run tests
       uses: reactivecircus/android-emulator-runner@v2
