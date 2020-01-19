@@ -1,5 +1,9 @@
 # Change Log
 
+## v2.3.0
+
+* Added support for running the action with Java 9+ by forcing SDK manager and AVD manager to use Java 8.
+
 ## v2.2.0
 
 * Fixed an issue where emulator is killed prematurely.
