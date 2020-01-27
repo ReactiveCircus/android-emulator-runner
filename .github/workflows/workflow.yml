@@ -18,6 +18,9 @@ jobs:
     - name: checkout
       uses: actions/checkout@v2
 
+    - name: validate gradle wrapper
+      uses: gradle/wrapper-validation-action@v1
+
     - name: build, test and lint
       run: |
         npm install
