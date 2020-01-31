@@ -1,5 +1,9 @@
 # Change Log
 
+## v2.3.1
+
+* Bumped Android Build tools to 29.0.3.
+
 ## v2.3.0
 
 * Added support for running the action with Java 9+ by forcing SDK manager and AVD manager to use Java 8.
