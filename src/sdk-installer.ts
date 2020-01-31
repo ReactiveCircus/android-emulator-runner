@@ -1,6 +1,6 @@
 import * as exec from '@actions/exec';
 
-const BUILD_TOOLS_VERSION = '29.0.2';
+const BUILD_TOOLS_VERSION = '29.0.3';
 
 /**
  * Installs & updates the Android SDK for the macOS platform, including SDK platform for the chosen API level, latest build tools, platform tools, Android Emulator,
