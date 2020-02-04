@@ -79,7 +79,7 @@ async function run() {
     // execute the custom script
     try {
       for (const script of scripts) {
-        await exec.exec(`${script}`);
+        await exec.exec(`sh -c \\"${script}"`);
       }
     } catch (error) {
       core.setFailed(error.message);

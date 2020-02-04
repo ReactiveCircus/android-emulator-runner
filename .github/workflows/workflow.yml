@@ -46,5 +46,6 @@ jobs:
         emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none
         disable-animations: true
         script: |
+          echo $GITHUB_REPOSITORY
           ./gradlew help
           ./gradlew connectedDebugAndroidTest

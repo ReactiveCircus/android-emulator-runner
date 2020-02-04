@@ -1,5 +1,9 @@
 # Change Log
 
+## v2.3.2
+
+* Fixed an issue where environment variables are escaped in script.
+
 ## v2.3.1
 
 * Bumped Android Build tools to 29.0.3.
