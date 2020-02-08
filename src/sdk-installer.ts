@@ -7,9 +7,9 @@ const BUILD_TOOLS_VERSION = '29.0.3';
  * and the system image for the chosen API level, CPU arch, and target.
  */
 export async function installAndroidSdk(apiLevel: number, target: string, arch: string, emulatorBuild?: string): Promise<void> {
-  const sdkmangerPath = `${process.env.ANDROID_HOME}/tools/bin/sdkmanager`;
+  const sdkmanagerPath = `${process.env.ANDROID_HOME}/tools/bin/sdkmanager`;
   console.log('Installing latest build tools, platform tools, and platform.');
-  await exec.exec(`sh -c \\"${sdkmangerPath} --install 'build-tools;${BUILD_TOOLS_VERSION}' platform-tools 'platforms;android-${apiLevel}' > /dev/null"`);
+  await exec.exec(`sh -c \\"${sdkmanagerPath} --install 'build-tools;${BUILD_TOOLS_VERSION}' platform-tools 'platforms;android-${apiLevel}' > /dev/null"`);
   if (emulatorBuild) {
     console.log(`Installing emulator build ${emulatorBuild}.`);
     await exec.exec(`curl -fo emulator.zip https://dl.google.com/android/repository/emulator-darwin-${emulatorBuild}.zip`);
@@ -18,8 +18,8 @@ export async function installAndroidSdk(apiLevel: number, target: string, arch: 
     await exec.exec(`rm -f emulator.zip`);
   } else {
     console.log('Installing latest emulator.');
-    await exec.exec(`sh -c \\"${sdkmangerPath} --install emulator > /dev/null"`);
+    await exec.exec(`sh -c \\"${sdkmanagerPath} --install emulator > /dev/null"`);
   }
   console.log('Installing system images.');
-  await exec.exec(`sh -c \\"${sdkmangerPath} --install 'system-images;android-${apiLevel};${target};${arch}' > /dev/null"`);
+  await exec.exec(`sh -c \\"${sdkmanagerPath} --install 'system-images;android-${apiLevel};${target};${arch}' > /dev/null"`);
 }
