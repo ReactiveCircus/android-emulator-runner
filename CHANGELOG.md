@@ -1,5 +1,9 @@
 # Change Log
 
+## v2.4.0
+
+* Added support for setting custom `working-directory` - e.g. `./android` if your root Gradle project is under the `./android` sub-directory within your repository.
+
 ## v2.3.2
 
 * Fixed an issue where environment variables are escaped in script.
