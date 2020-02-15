@@ -51,6 +51,13 @@ async function run() {
     }
     const emulatorBuild = !emulatorBuildInput ? undefined : emulatorBuildInput;
 
+    // custom working directory
+    const workingDirectoryInput = core.getInput('working-directory');
+    if (workingDirectoryInput) {
+      console.log(`custom working directory: ${workingDirectoryInput}`);
+    }
+    const workingDirectory = !workingDirectoryInput ? undefined : workingDirectoryInput;
+
     // custom script to run
     const scriptInput = core.getInput('script', { required: true });
     const scripts = parseScript(scriptInput);
@@ -78,6 +85,10 @@ async function run() {
 
     // execute the custom script
     try {
+      // move to custom working directory if set
+      if (workingDirectory) {
+        process.chdir(workingDirectory);
+      }
       for (const script of scripts) {
         await exec.exec(`sh -c \\"${script}"`);
       }
