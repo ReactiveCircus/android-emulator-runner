@@ -17,14 +17,14 @@ describe('api-level validator tests', () => {
 
   it('Throws if api-level is lower than min API supported', () => {
     const func = () => {
-      validator.checkApiLevel('20');
+      validator.checkApiLevel('14');
     };
     expect(func).toThrowError(`Minimum API level supported is ${validator.MIN_API_LEVEL}.`);
   });
 
   it('Validates successfully with valid api-level', () => {
     const func1 = () => {
-      validator.checkApiLevel('21');
+      validator.checkApiLevel('15');
     };
     expect(func1).not.toThrow();
 
