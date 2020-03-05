@@ -1,4 +1,4 @@
-export const MIN_API_LEVEL = 21;
+export const MIN_API_LEVEL = 15;
 export const VALID_TARGETS: Array<string> = ['default', 'google_apis'];
 export const VALID_ARCHS: Array<string> = ['x86', 'x86_64'];
 

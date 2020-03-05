@@ -13,7 +13,7 @@ jobs:
     timeout-minutes: 10
     strategy:
       matrix:
-        api-level: [21, 23, 29]
+        api-level: [16, 21, 23, 29]
     steps:
     - name: checkout
       uses: actions/checkout@v2
@@ -37,7 +37,7 @@ jobs:
       uses: ./
       with:
         api-level: ${{ matrix.api-level }}
-        target: google_apis
+        target: default
         arch: x86
         profile: Nexus 6
         emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none
@@ -45,5 +45,6 @@ jobs:
         working-directory: ./test-fixture/
         script: |
           echo $GITHUB_REPOSITORY
+          adb devices
           ./gradlew help
           ./gradlew connectedDebugAndroidTest

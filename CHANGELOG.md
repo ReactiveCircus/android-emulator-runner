@@ -1,5 +1,10 @@
 # Change Log
 
+## v2.5.0
+
+* Added support for API 15-19 system images.
+* Switched to the new SDK command-line tools which supports running `sdkmanager` and `avdmanager` with Java 9+.
+
 ## v2.4.0
 
 * Added support for setting custom `working-directory` - e.g. `./android` if your root Gradle project is under the `./android` sub-directory within your repository.

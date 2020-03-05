@@ -1,8 +1,6 @@
 import * as exec from '@actions/exec';
 
 const EMULATOR_BOOT_TIMEOUT_SECONDS = 300;
-const AVD_MANAGER_PATH = `${process.env.ANDROID_HOME}/tools/bin/avdmanager`;
-const ADB_PATH = `${process.env.ANDROID_HOME}/platform-tools/adb`;
 
 /**
  * Creates and launches a new AVD instance with the specified configurations.
@@ -11,10 +9,10 @@ export async function launchEmulator(apiLevel: number, target: string, arch: str
   // create a new AVD
   if (profile.trim() !== '') {
     console.log(`Creating AVD with custom profile ${profile}`);
-    await exec.exec(`${AVD_MANAGER_PATH} create avd --force -n test --abi "${target}/${arch}" --package "system-images;android-${apiLevel};${target};${arch}" --device "${profile}"`);
+    await exec.exec(`avdmanager create avd --force -n test --abi "${target}/${arch}" --package "system-images;android-${apiLevel};${target};${arch}" --device "${profile}"`);
   } else {
     console.log(`Creating AVD without custom profile.`);
-    await exec.exec(`sh -c \\"echo no | ${AVD_MANAGER_PATH} create avd --force -n test --abi '${target}/${arch}' --package 'system-images;android-${apiLevel};${target};${arch}'"`);
+    await exec.exec(`sh -c \\"echo no | avdmanager create avd --force -n test --abi '${target}/${arch}' --package 'system-images;android-${apiLevel};${target};${arch}'"`);
   }
 
   // start emulator
@@ -31,14 +29,14 @@ export async function launchEmulator(apiLevel: number, target: string, arch: str
 
   // wait for emulator to complete booting
   await waitForDevice();
-  await exec.exec(`${ADB_PATH} shell input keyevent 82`);
+  await exec.exec(`adb shell input keyevent 82`);
 
   // disable animations
   if (disableAnimations) {
     console.log('Disabling animations.');
-    await exec.exec(`${ADB_PATH} shell settings put global window_animation_scale 0.0`);
-    await exec.exec(`${ADB_PATH} shell settings put global transition_animation_scale 0.0`);
-    await exec.exec(`${ADB_PATH} shell settings put global animator_duration_scale 0.0`);
+    await exec.exec(`adb shell settings put global window_animation_scale 0.0`);
+    await exec.exec(`adb shell settings put global transition_animation_scale 0.0`);
+    await exec.exec(`adb shell settings put global animator_duration_scale 0.0`);
   }
 }
 
@@ -47,7 +45,7 @@ export async function launchEmulator(apiLevel: number, target: string, arch: str
  */
 export async function killEmulator(): Promise<void> {
   try {
-    await exec.exec(`${ADB_PATH} -s emulator-5554 emu kill`);
+    await exec.exec(`adb -s emulator-5554 emu kill`);
   } catch (error) {
     console.log(error.message);
   }
@@ -64,7 +62,7 @@ async function waitForDevice(): Promise<void> {
   while (!booted) {
     try {
       let result = '';
-      await exec.exec(`${ADB_PATH} shell getprop sys.boot_completed`, [], {
+      await exec.exec(`adb shell getprop sys.boot_completed`, [], {
         listeners: {
           stdout: (data: Buffer) => {
             result += data.toString();
