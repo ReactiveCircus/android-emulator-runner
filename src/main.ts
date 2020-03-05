@@ -4,7 +4,6 @@ import { checkApiLevel, checkTarget, checkArch, checkDisableAnimations, checkEmu
 import { launchEmulator, killEmulator } from './emulator-manager';
 import * as exec from '@actions/exec';
 import { parseScript } from './script-parser';
-import { getCurrentJavaHome, getJavaHomeV8, setJavaHome } from './java-version-manager';
 
 async function run() {
   try {
@@ -66,10 +65,6 @@ async function run() {
       console.log(`${script}`);
     });
 
-    // use Java 8 for sdkmanager and avdmanager
-    const defaultJavaHome = await getCurrentJavaHome();
-    setJavaHome(await getJavaHomeV8());
-
     // install SDK
     await installAndroidSdk(apiLevel, target, arch, emulatorBuild);
 
@@ -79,9 +74,6 @@ async function run() {
     } catch (error) {
       core.setFailed(error.message);
     }
-
-    // use default JAVA_HOME for running custom script
-    setJavaHome(defaultJavaHome);
 
     // execute the custom script
     try {

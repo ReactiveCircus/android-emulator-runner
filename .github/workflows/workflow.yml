@@ -45,5 +45,6 @@ jobs:
         working-directory: ./test-fixture/
         script: |
           echo $GITHUB_REPOSITORY
+          adb devices
           ./gradlew help
           ./gradlew connectedDebugAndroidTest
