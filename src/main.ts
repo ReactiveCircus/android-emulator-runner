@@ -7,9 +7,13 @@ import { parseScript } from './script-parser';
 
 async function run() {
   try {
-    // only support running on macOS
+    // only support running on macOS or Linux
     if (process.platform !== 'darwin') {
-      throw new Error('This action is expected to be run within a macOS virtual machine to enable hardware acceleration.');
+      if (process.platform === 'linux') {
+        console.warn(`You're running a Linux VM. Please consider using a macOS VM instead to take advantage of hardware acceleration support with x86 / x86_64 system images.`);
+      } else {
+        throw new Error('Unsupported virtual machine: please use either macos or ubuntu VM.');
+      }
     }
 
     // API level of the platform and system image
@@ -25,7 +29,7 @@ async function run() {
 
     // CPU architecture of the system image
     const arch = core.getInput('arch');
-    checkArch(arch);
+    checkArch(arch, process.platform === 'linux');
     console.log(`CPU architecture: ${arch}`);
 
     // Hardware profile used for creating the AVD

@@ -59,21 +59,43 @@ describe('target validator tests', () => {
 describe('arch validator tests', () => {
   it('Throws if arch is unknown', () => {
     const func = () => {
-      validator.checkArch('some-arch');
+      validator.checkArch('some-arch', false);
     };
     expect(func).toThrowError(`Value for input.arch 'some-arch' is unknown. Supported options: ${validator.VALID_ARCHS}`);
   });
 
+  it('Throws if running on Linux but arch is not armeabi-v7a or arm64-v8a', () => {
+    const func1 = () => {
+      validator.checkArch('x86', true);
+    };
+    expect(func1).toThrowError(`Only one of ARM-based system images (${validator.VALID_ARCHS_FOR_LINUX}) are supported when running on a Linux VM.`);
+
+    const func2 = () => {
+      validator.checkArch('x86_64', true);
+    };
+    expect(func2).toThrowError(`Only one of ARM-based system images (${validator.VALID_ARCHS_FOR_LINUX}) are supported when running on a Linux VM.`);
+  });
+
   it('Validates successfully with valid arch', () => {
     const func1 = () => {
-      validator.checkArch('x86');
+      validator.checkArch('x86', false);
     };
     expect(func1).not.toThrow();
 
     const func2 = () => {
-      validator.checkArch('x86_64');
+      validator.checkArch('x86_64', false);
     };
     expect(func2).not.toThrow();
+
+    const func3 = () => {
+      validator.checkArch('armeabi-v7a', true);
+    };
+    expect(func3).not.toThrow();
+
+    const func4 = () => {
+      validator.checkArch('arm64-v8a', true);
+    };
+    expect(func4).not.toThrow();
   });
 });
 

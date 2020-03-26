@@ -22,14 +22,14 @@ This action automates the process by doing the following:
 
 ## Usage
 
-Note that this action must be run on a **macOS** VM, e.g. `macOS-latest` or `macOS-10.14`.
+Note that this action must be run on a **macOS** VM, e.g. `macos-latest` or `macos-10.15`.
 
 A workflow that uses **android-emulator-runner** to run your instrumented tests on **API 29**:
 
 ```
 jobs:
   test:
-    runs-on: macOS-latest
+    runs-on: macos-latest
     steps:
     - name: checkout
       uses: actions/checkout@v2
@@ -46,7 +46,7 @@ We can also leverage GitHub Actions's build matrix to test across multiple confi
 ```
 jobs:
   test:
-    runs-on: macOS-latest
+    runs-on: macos-latest
     strategy:
       matrix:
         api-level: [21, 23, 29]
