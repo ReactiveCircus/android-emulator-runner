@@ -9,11 +9,17 @@ on:
 
 jobs:
   test:
-    runs-on: macOS-latest
-    timeout-minutes: 10
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
     strategy:
       matrix:
-        api-level: [16, 21, 23, 29]
+        os: [macos-latest, ubuntu-latest]
+        api-level: [16, 23, 29]
+        exclude:
+          - os: ubuntu-latest
+            api-level: 23
+          - os: ubuntu-latest
+            api-level: 29
     steps:
     - name: checkout
       uses: actions/checkout@v2
