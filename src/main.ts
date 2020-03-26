@@ -7,9 +7,15 @@ import { parseScript } from './script-parser';
 
 async function run() {
   try {
-    // only support running on macOS
+    // only support running on macOS or Linux
     if (process.platform !== 'darwin') {
-      throw new Error('This action is expected to be run within a macOS virtual machine to enable hardware acceleration.');
+      if (process.platform === 'linux') {
+        console.warn(
+          `You're running a Linux VM where hardware acceleration is not available. Please consider using a macOS VM instead to take advantage of native hardware acceleration support provided by HAXM.`
+        );
+      } else {
+        throw new Error('Unsupported virtual machine: please use either macos or ubuntu VM.');
+      }
     }
 
     // API level of the platform and system image
@@ -68,12 +74,8 @@ async function run() {
     // install SDK
     await installAndroidSdk(apiLevel, target, arch, emulatorBuild);
 
-    try {
-      // launch an emulator
-      await launchEmulator(apiLevel, target, arch, profile, emulatorOptions, disableAnimations);
-    } catch (error) {
-      core.setFailed(error.message);
-    }
+    // launch an emulator
+    await launchEmulator(apiLevel, target, arch, profile, emulatorOptions, disableAnimations);
 
     // execute the custom script
     try {
