@@ -1,6 +1,7 @@
 import * as exec from '@actions/exec';
 
-const EMULATOR_BOOT_TIMEOUT_SECONDS = 300;
+const EMULATOR_BOOT_TIMEOUT_SECONDS_MAC = 300;
+const EMULATOR_BOOT_TIMEOUT_SECONDS_LINUX = 600;
 
 /**
  * Creates and launches a new AVD instance with the specified configurations.
@@ -58,7 +59,7 @@ async function waitForDevice(): Promise<void> {
   let booted = false;
   let attempts = 0;
   const retryInterval = 2; // retry every 2 seconds
-  const maxAttemps = EMULATOR_BOOT_TIMEOUT_SECONDS / 2;
+  const maxAttemps = (process.platform === 'darwin' ? EMULATOR_BOOT_TIMEOUT_SECONDS_MAC : EMULATOR_BOOT_TIMEOUT_SECONDS_LINUX) / 2;
   while (!booted) {
     try {
       let result = '';

@@ -72,12 +72,8 @@ async function run() {
     // install SDK
     await installAndroidSdk(apiLevel, target, arch, emulatorBuild);
 
-    try {
-      // launch an emulator
-      await launchEmulator(apiLevel, target, arch, profile, emulatorOptions, disableAnimations);
-    } catch (error) {
-      core.setFailed(error.message);
-    }
+    // launch an emulator
+    await launchEmulator(apiLevel, target, arch, profile, emulatorOptions, disableAnimations);
 
     // execute the custom script
     try {
