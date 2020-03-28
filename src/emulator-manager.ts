@@ -1,7 +1,7 @@
 import * as exec from '@actions/exec';
 
 const EMULATOR_BOOT_TIMEOUT_SECONDS_MAC = 300;
-const EMULATOR_BOOT_TIMEOUT_SECONDS_LINUX = 600;
+const EMULATOR_BOOT_TIMEOUT_SECONDS_LINUX = 2100;
 
 /**
  * Creates and launches a new AVD instance with the specified configurations.
