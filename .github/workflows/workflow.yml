@@ -10,40 +10,16 @@ on:
 jobs:
   test:
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 160
+    timeout-minutes: 15
     strategy:
       matrix:
         os: [macos-latest, ubuntu-latest]
-        api-level: [16, 24, 29]
-        arch: [x86, arm64-v8a]
+        api-level: [16, 23, 29]
         exclude:
           - os: ubuntu-latest
-            api-level: 16
-            arch: x86
-          - os: ubuntu-latest
-            api-level: 16
-            arch: arm64-v8a
-          - os: ubuntu-latest
-            api-level: 24
-            arch: x86
+            api-level: 23
           - os: ubuntu-latest
             api-level: 29
-            arch: x86
-          - os: ubuntu-latest
-            api-level: 29
-            arch: arm64-v8a
-          - os: macos-latest
-            api-level: 16
-            arch: arm64-v8a
-          - os: macos-latest
-            api-level: 24
-            arch: x86
-          - os: macos-latest
-            api-level: 24
-            arch: arm64-v8a
-          - os: macos-latest
-            api-level: 29
-            arch: arm64-v8a
     steps:
     - name: checkout
       uses: actions/checkout@v2
@@ -68,7 +44,7 @@ jobs:
       with:
         api-level: ${{ matrix.api-level }}
         target: default
-        arch: ${{ matrix.arch }}
+        arch: x86
         profile: Nexus 6
         emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none
         disable-animations: true
