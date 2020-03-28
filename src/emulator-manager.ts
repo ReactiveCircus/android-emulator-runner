@@ -22,7 +22,7 @@ export async function launchEmulator(apiLevel: number, target: string, arch: str
   if (process.platform === 'linux') {
     emulatorOptions += '-accel off';
   }
-  
+
   await exec.exec(`sh -c \\"${process.env.ANDROID_HOME}/emulator/emulator -avd test ${emulatorOptions} &"`, [], {
     listeners: {
       stderr: (data: Buffer) => {
