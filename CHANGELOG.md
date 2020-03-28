@@ -1,5 +1,9 @@
 # Change Log
 
+## v2.6.0
+
+* Added support for Linux VMs (no hardware acceleration).
+
 ## v2.5.0
 
 * Added support for API 15-19 system images.
