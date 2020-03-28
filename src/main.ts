@@ -10,7 +10,9 @@ async function run() {
     // only support running on macOS or Linux
     if (process.platform !== 'darwin') {
       if (process.platform === 'linux') {
-        console.warn(`You're running a Linux VM where hardware acceleration is not available. Please consider using a macOS VM instead to take advantage of native hardware acceleration support provided by HAXM.`);
+        console.warn(
+          `You're running a Linux VM where hardware acceleration is not available. Please consider using a macOS VM instead to take advantage of native hardware acceleration support provided by HAXM.`
+        );
       } else {
         throw new Error('Unsupported virtual machine: please use either macos or ubuntu VM.');
       }
