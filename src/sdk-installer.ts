@@ -20,7 +20,12 @@ export async function installAndroidSdk(apiLevel: number, target: string, arch: 
 
   // add paths for commandline-tools and platform-tools
   core.addPath(`${process.env.ANDROID_HOME}/cmdline-tools/tools:${process.env.ANDROID_HOME}/cmdline-tools/tools/bin:${process.env.ANDROID_HOME}/platform-tools`);
-  await exec.exec(`sh -c \\"sudo chmod -R 777 ${process.env.ANDROID_HOME}"`);
+
+  // additional permission and license requirements for Linux
+  if (!isOnMac) {
+    await exec.exec(`sh -c \\"sudo chmod -R 777 ${process.env.ANDROID_HOME}"`);
+    await exec.exec(`sh -c \\"echo -e '\n84831b9409646a918e30573bab4c9c91346d8abd' > ${process.env.ANDROID_HOME}/licenses/android-sdk-preview-license"`);
+  }
 
   console.log('Installing latest build tools, platform tools, and platform.');
 
