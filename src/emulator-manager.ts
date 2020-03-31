@@ -1,6 +1,6 @@
 import * as exec from '@actions/exec';
 
-const EMULATOR_BOOT_TIMEOUT_SECONDS = 300;
+const EMULATOR_BOOT_TIMEOUT_SECONDS = 600;
 
 /**
  * Creates and launches a new AVD instance with the specified configurations.
@@ -81,7 +81,7 @@ async function waitForDevice(): Promise<void> {
         break;
       }
     } catch (error) {
-      console.log(error.message);
+      console.warn(error.message);
     }
 
     if (attempts < maxAttemps) {

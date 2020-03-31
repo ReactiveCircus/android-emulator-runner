@@ -1,21 +1,25 @@
 # Change Log
 
+## v2.6.1
+
+* Fixed SDK license issue on Linux when downloading API 28+ system images - [#42](https://github.com/ReactiveCircus/android-emulator-runner/issues/42).
+
 ## v2.6.0
 
-* Added support for Linux VMs (no hardware acceleration).
+* Added support for Linux VMs (no hardware acceleration) - [#15](https://github.com/ReactiveCircus/android-emulator-runner/issues/15).
 
 ## v2.5.0
 
-* Added support for API 15-19 system images.
-* Switched to the new SDK command-line tools which supports running `sdkmanager` and `avdmanager` with Java 9+.
+* Added support for API 15-19 system images - [#26](https://github.com/ReactiveCircus/android-emulator-runner/issues/26).
+* Switched to the new SDK command-line tools which supports running `sdkmanager` and `avdmanager` with Java 9+ - [#25](https://github.com/ReactiveCircus/android-emulator-runner/issues/25).
 
 ## v2.4.0
 
-* Added support for setting custom `working-directory` - e.g. `./android` if your root Gradle project is under the `./android` sub-directory within your repository.
+* Added support for setting custom `working-directory` - e.g. `./android` if your root Gradle project is under the `./android` sub-directory within your repository - [#22](https://github.com/ReactiveCircus/android-emulator-runner/issues/22).
 
 ## v2.3.2
 
-* Fixed an issue where environment variables are escaped in script.
+* Fixed an issue where environment variables are escaped in script - [#19](https://github.com/ReactiveCircus/android-emulator-runner/issues/19).
 
 ## v2.3.1
 
