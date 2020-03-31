@@ -14,14 +14,12 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest, ubuntu-latest]
-        api-level: [16, 23, 28, 29]
+        api-level: [16, 23, 29]
         exclude:
           - os: ubuntu-latest
             api-level: 23
           - os: ubuntu-latest
             api-level: 29
-          - os: macos-latest
-            api-level: 28
     steps:
     - name: checkout
       uses: actions/checkout@v2
