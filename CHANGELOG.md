@@ -1,5 +1,9 @@
 # Change Log
 
+## v2.6.2
+
+* Fixed an issue where the Linux command-line tools binary is used for `macos`.
+
 ## v2.6.1
 
 * Fixed SDK license issue on Linux when downloading API 28+ system images - [#42](https://github.com/ReactiveCircus/android-emulator-runner/issues/42).
