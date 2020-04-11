@@ -1,5 +1,9 @@
 # Change Log
 
+## v2.7.0
+
+* Added support for specifying versions of **NDK** and **CMake** to install.
+
 ## v2.6.2
 
 * Fixed an issue where the Linux command-line tools binary is used for `macos`.
