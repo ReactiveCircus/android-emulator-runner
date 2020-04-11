@@ -9,7 +9,7 @@ const CMDLINE_TOOLS_URL_LINUX = 'https://dl.google.com/android/repository/comman
  * Installs & updates the Android SDK for the macOS platform, including SDK platform for the chosen API level, latest build tools, platform tools, Android Emulator,
  * and the system image for the chosen API level, CPU arch, and target.
  */
-export async function installAndroidSdk(apiLevel: number, target: string, arch: string, emulatorBuild?: string): Promise<void> {
+export async function installAndroidSdk(apiLevel: number, target: string, arch: string, emulatorBuild?: string, ndkVersion?: string, cmakeVersion?: string): Promise<void> {
   const isOnMac = process.platform === 'darwin';
   console.log('Installing new cmdline-tools.');
   const sdkUrl = isOnMac ? CMDLINE_TOOLS_URL_MAC : CMDLINE_TOOLS_URL_LINUX;
@@ -42,4 +42,13 @@ export async function installAndroidSdk(apiLevel: number, target: string, arch: 
   }
   console.log('Installing system images.');
   await exec.exec(`sh -c \\"sdkmanager --install 'system-images;android-${apiLevel};${target};${arch}' > /dev/null"`);
+
+  if (ndkVersion) {
+    console.log(`Installing NDK ${ndkVersion}.`);
+    await exec.exec(`sh -c \\"sdkmanager --install 'ndk;${ndkVersion}' > /dev/null"`);
+  }
+  if (cmakeVersion) {
+    console.log(`Installing CMake ${cmakeVersion}.`);
+    await exec.exec(`sh -c \\"sdkmanager --install 'cmake;${cmakeVersion}' > /dev/null"`);
+  }
 }
