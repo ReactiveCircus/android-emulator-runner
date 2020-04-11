@@ -63,6 +63,20 @@ async function run() {
     }
     const workingDirectory = !workingDirectoryInput ? undefined : workingDirectoryInput;
 
+    // version of NDK to install
+    const ndkInput = core.getInput('ndk');
+    if (ndkInput) {
+      console.log(`version of NDK to install: ${ndkInput}`);
+    }
+    const ndkVersion = !ndkInput ? undefined : ndkInput;
+
+    // version of CMake to install
+    const cmakeInput = core.getInput('cmake');
+    if (cmakeInput) {
+      console.log(`version of CMake to install: ${cmakeInput}`);
+    }
+    const cmakeVersion = !cmakeInput ? undefined : cmakeInput;
+
     // custom script to run
     const scriptInput = core.getInput('script', { required: true });
     const scripts = parseScript(scriptInput);
@@ -72,7 +86,7 @@ async function run() {
     });
 
     // install SDK
-    await installAndroidSdk(apiLevel, target, arch, emulatorBuild);
+    await installAndroidSdk(apiLevel, target, arch, emulatorBuild, ndkVersion, cmakeVersion);
 
     // launch an emulator
     await launchEmulator(apiLevel, target, arch, profile, emulatorOptions, disableAnimations);

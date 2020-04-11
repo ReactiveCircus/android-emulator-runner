@@ -67,6 +67,25 @@ jobs:
         script: ./gradlew connectedCheck
 ```
 
+If you need specific versions of **NDK** and **CMake** installed:
+
+```
+jobs:
+  test:
+    runs-on: macos-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v2
+
+    - name: run tests
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+        api-level: 29
+        ndk: 21.0.6113669
+        cmake: 3.10.2.4988404
+        script: ./gradlew connectedCheck
+```
+
 ## Configurations
 
 |  | **Required** | **Default** | **Description** |
@@ -79,6 +98,8 @@ jobs:
 | `disable-animations` | Optional | `true` | Whether to disable animations - `true` or `false`. |
 | `emulator-build` | Optional | N/A | Build number of a specific version of the emulator binary to use e.g. `6061023` for emulator v29.3.0.0. |
 | `working-directory` | Optional | `./` | A custom working directory - e.g. `./android` if your root Gradle project is under the `./android` sub-directory within your repository. |
+| `ndk` | Optional | N/A | Version of NDK to install - e.g. `21.0.6113669` |
+| `cmake` | Optional | N/A | Version of CMake to install - e.g. `3.10.2.4988404` |
 | `script` | Required | N/A | Custom script to run - e.g. to run Android instrumented tests on the emulator: `./gradlew connectedCheck` |
 
 Default `emulator-options`: `-no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim`.
