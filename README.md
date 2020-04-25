@@ -117,7 +117,7 @@ These are some of the open-source projects using (or used) **Android Emulator Ru
 - [natario1/CameraView](https://github.com/natario1/CameraView/tree/master/.github/workflows)
 - [natario1/Transcoder](https://github.com/natario1/Transcoder/tree/master/.github/workflows)
 - [chrisbanes/insetter](https://github.com/chrisbanes/insetter/tree/master/.github/workflows)
-- [slaphq/keeper](https://github.com/slackhq/keeper/tree/master/.github/workflows)
+- [slackhq/keeper](https://github.com/slackhq/keeper/tree/master/.github/workflows)
 - [android/compose-samples](https://github.com/android/compose-samples/blob/master/.github/workflows/ci.yaml)
 - [ReactiveCircus/streamlined](https://github.com/ReactiveCircus/streamlined/tree/master/.github/workflows)
 - [ReactiveCircus/FlowBinding](https://github.com/ReactiveCircus/FlowBinding)
