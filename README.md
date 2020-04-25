@@ -105,3 +105,23 @@ jobs:
 Default `emulator-options`: `-no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim`.
 
 _Please note that if you are running on a Linux VM, `-no-accel` will be added to the `emulator-options` to make sure hardware acceleration is turned off._
+
+## Who is using Android Emulator Runner?
+
+These are some of the open-source projects using (or used) **Android Emulator Runner**:
+
+- [coil-kt/coil](https://github.com/coil-kt/coil/blob/master/.github/workflows/)
+- [cashapp/sqldelight](https://github.com/cashapp/sqldelight/blob/master/.github/workflows/)
+- [square/workflow](https://github.com/square/workflow/blob/master/.github/workflows/)
+- [square/retrofit](https://github.com/square/retrofit/blob/master/.github/workflows/)
+- [natario1/CameraView](https://github.com/natario1/CameraView/tree/master/.github/workflows)
+- [natario1/Transcoder](https://github.com/natario1/Transcoder/tree/master/.github/workflows)
+- [chrisbanes/insetter](https://github.com/chrisbanes/insetter/tree/master/.github/workflows)
+- [slaphq/keeper](https://github.com/slackhq/keeper/tree/master/.github/workflows)
+- [android/compose-samples](https://github.com/android/compose-samples/blob/master/.github/workflows/ci.yaml)
+- [ReactiveCircus/streamlined](https://github.com/ReactiveCircus/streamlined/tree/master/.github/workflows)
+- [ReactiveCircus/FlowBinding](https://github.com/ReactiveCircus/FlowBinding)
+- [vinaygaba/Learn-Jetpack-Compose-By-Example](https://github.com/vinaygaba/Learn-Jetpack-Compose-By-Example/)
+- [ashishb/adb-enhanced](https://github.com/ashishb/adb-enhanced/tree/master/.github/workflows)
+
+If you are using **Android Emulator Runner** and want your project included in the list, please feel free to create an issue or open a pull request.
