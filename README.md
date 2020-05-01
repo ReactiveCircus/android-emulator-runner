@@ -90,10 +90,13 @@ jobs:
 
 |  | **Required** | **Default** | **Description** |
 |----------------------|--------------|-------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|  | **Required** | **Default** | **Description** |
+|----------------------|--------------|-------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `api-level` | Required | N/A | API level of the platform system image - e.g. 23 for Android Marshmallow, 29 for Android 10. **Minimum API level supported is 15**. |
 | `target` | Optional | `default` | Target of the system image - `default` or `google_apis`. |
 | `arch` | Optional | `x86` | CPU architecture of the system image - `x86` or `x86_64`. Note that `x86_64` image is only available for API 21+. |
 | `profile` | Optional | N/A | Hardware profile used for creating the AVD - e.g. `Nexus 6`. For a list of all profiles available, run `$ANDROID_HOME/tools/bin/avdmanager list` and refer to the results under "Available Android Virtual Devices". |
+| `avd-name` | Optional | `test` | Custom AVD name used for creating the Android Virtual Device. |
 | `emulator-options` | Optional | See below | Command-line options used when launching the emulator (replacing all default options) - e.g. `-no-window -no-snapshot -camera-back emulated`. |
 | `disable-animations` | Optional | `true` | Whether to disable animations - `true` or `false`. |
 | `emulator-build` | Optional | N/A | Build number of a specific version of the emulator binary to use e.g. `6061023` for emulator v29.3.0.0. |
@@ -105,3 +108,23 @@ jobs:
 Default `emulator-options`: `-no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim`.
 
 _Please note that if you are running on a Linux VM, `-no-accel` will be added to the `emulator-options` to make sure hardware acceleration is turned off._
+
+## Who is using Android Emulator Runner?
+
+These are some of the open-source projects using (or used) **Android Emulator Runner**:
+
+- [coil-kt/coil](https://github.com/coil-kt/coil/blob/master/.github/workflows/)
+- [cashapp/sqldelight](https://github.com/cashapp/sqldelight/blob/master/.github/workflows/)
+- [square/workflow](https://github.com/square/workflow/blob/master/.github/workflows/)
+- [square/retrofit](https://github.com/square/retrofit/blob/master/.github/workflows/)
+- [natario1/CameraView](https://github.com/natario1/CameraView/tree/master/.github/workflows)
+- [natario1/Transcoder](https://github.com/natario1/Transcoder/tree/master/.github/workflows)
+- [chrisbanes/insetter](https://github.com/chrisbanes/insetter/tree/master/.github/workflows)
+- [slackhq/keeper](https://github.com/slackhq/keeper/tree/master/.github/workflows)
+- [android/compose-samples](https://github.com/android/compose-samples/blob/master/.github/workflows/ci.yaml)
+- [ReactiveCircus/streamlined](https://github.com/ReactiveCircus/streamlined/tree/master/.github/workflows)
+- [ReactiveCircus/FlowBinding](https://github.com/ReactiveCircus/FlowBinding)
+- [vinaygaba/Learn-Jetpack-Compose-By-Example](https://github.com/vinaygaba/Learn-Jetpack-Compose-By-Example/)
+- [ashishb/adb-enhanced](https://github.com/ashishb/adb-enhanced/tree/master/.github/workflows)
+
+If you are using **Android Emulator Runner** and want your project included in the list, please feel free to create an issue or open a pull request.

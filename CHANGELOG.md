@@ -1,5 +1,9 @@
 # Change Log
 
+## v2.8.0
+
+* Added support for specifying a custom name used for creating the **AVD** - [#59](https://github.com/ReactiveCircus/android-emulator-runner/issues/59).
+
 ## v2.7.0
 
 * Added support for specifying versions of **NDK** and **CMake** to install.

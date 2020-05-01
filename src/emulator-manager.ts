@@ -5,14 +5,14 @@ const EMULATOR_BOOT_TIMEOUT_SECONDS = 600;
 /**
  * Creates and launches a new AVD instance with the specified configurations.
  */
-export async function launchEmulator(apiLevel: number, target: string, arch: string, profile: string, emulatorOptions: string, disableAnimations: boolean): Promise<void> {
+export async function launchEmulator(apiLevel: number, target: string, arch: string, profile: string, avdName: string, emulatorOptions: string, disableAnimations: boolean): Promise<void> {
   // create a new AVD
   if (profile.trim() !== '') {
     console.log(`Creating AVD with custom profile ${profile}`);
-    await exec.exec(`avdmanager create avd --force -n test --abi "${target}/${arch}" --package "system-images;android-${apiLevel};${target};${arch}" --device "${profile}"`);
+    await exec.exec(`avdmanager create avd --force -n "${avdName}" --abi "${target}/${arch}" --package "system-images;android-${apiLevel};${target};${arch}" --device "${profile}"`);
   } else {
     console.log(`Creating AVD without custom profile.`);
-    await exec.exec(`sh -c \\"echo no | avdmanager create avd --force -n test --abi '${target}/${arch}' --package 'system-images;android-${apiLevel};${target};${arch}'"`);
+    await exec.exec(`sh -c \\"echo no | avdmanager create avd --force -n "${avdName}" --abi '${target}/${arch}' --package 'system-images;android-${apiLevel};${target};${arch}'"`);
   }
 
   // start emulator
@@ -23,7 +23,7 @@ export async function launchEmulator(apiLevel: number, target: string, arch: str
     emulatorOptions += ' -accel off';
   }
 
-  await exec.exec(`sh -c \\"${process.env.ANDROID_HOME}/emulator/emulator -avd test ${emulatorOptions} &"`, [], {
+  await exec.exec(`sh -c \\"${process.env.ANDROID_HOME}/emulator/emulator -avd "${avdName}" ${emulatorOptions} &"`, [], {
     listeners: {
       stderr: (data: Buffer) => {
         if (data.toString().includes('invalid command-line parameter')) {
