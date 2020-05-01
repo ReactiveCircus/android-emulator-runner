@@ -38,6 +38,10 @@ async function run() {
     const profile = core.getInput('profile');
     console.log(`Hardware profile: ${profile}`);
 
+    // custom name used for creating the AVD
+    const avdName = core.getInput('avd-name');
+    console.log(`AVD name: ${avdName}`);
+
     // emulator options
     const emulatorOptions = core.getInput('emulator-options').trim();
     console.log(`emulator options: ${emulatorOptions}`);
@@ -89,7 +93,7 @@ async function run() {
     await installAndroidSdk(apiLevel, target, arch, emulatorBuild, ndkVersion, cmakeVersion);
 
     // launch an emulator
-    await launchEmulator(apiLevel, target, arch, profile, emulatorOptions, disableAnimations);
+    await launchEmulator(apiLevel, target, arch, profile, avdName, emulatorOptions, disableAnimations);
 
     // execute the custom script
     try {

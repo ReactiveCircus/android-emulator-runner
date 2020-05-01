@@ -15,17 +15,20 @@ inputs:
     description: 'CPU architecture of the system image - x86 or x86_64'
     default: 'x86'
   profile:
-    description: 'hardware profile used for creating the AVD - e.g. `Nexus 6`.'
+    description: 'hardware profile used for creating the AVD - e.g. `Nexus 6`'
+  avd-name:
+    description: 'custom AVD name used for creating the Android Virtual Device'
+    default: 'test'
   emulator-options:
-    description: 'command-line options used when launching the emulator - e.g. `-no-window -no-snapshot -camera-back emulated`.'
+    description: 'command-line options used when launching the emulator - e.g. `-no-window -no-snapshot -camera-back emulated`'
     default: '-no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim'
   disable-animations:
     description: 'whether to disable animations - true or false'
     default: 'true'
   emulator-build:
-    description: 'build number of a specific version of the emulator binary to use - e.g. `6061023` for emulator v29.3.0.0.'
+    description: 'build number of a specific version of the emulator binary to use - e.g. `6061023` for emulator v29.3.0.0'
   working-directory:
-    description: 'A custom working directory - e.g. `./android` if your root Gradle project is under the `./android` sub-directory within your repository.'
+    description: 'A custom working directory - e.g. `./android` if your root Gradle project is under the `./android` sub-directory within your repository'
   ndk:
     description: 'version of NDK to install - e.g. 21.0.6113669'
   cmake:
