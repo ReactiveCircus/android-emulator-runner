@@ -90,8 +90,6 @@ jobs:
 
 |  | **Required** | **Default** | **Description** |
 |----------------------|--------------|-------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|  | **Required** | **Default** | **Description** |
-|----------------------|--------------|-------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `api-level` | Required | N/A | API level of the platform system image - e.g. 23 for Android Marshmallow, 29 for Android 10. **Minimum API level supported is 15**. |
 | `target` | Optional | `default` | Target of the system image - `default` or `google_apis`. |
 | `arch` | Optional | `x86` | CPU architecture of the system image - `x86` or `x86_64`. Note that `x86_64` image is only available for API 21+. |
