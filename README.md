@@ -4,7 +4,7 @@
   <a href="https://github.com/ReactiveCircus/android-emulator-runner"><img alt="GitHub Actions status" src="https://github.com/ReactiveCircus/android-emulator-runner/workflows/Main%20workflow/badge.svg"></a>
 </p>
 
-A GitHub Action for installing, configuring and running hardware-accelerated Android Emulators on macOS virtual machines (or Linux virtual machines but without hardware accleration).
+A GitHub Action for installing, configuring and running hardware-accelerated Android Emulators on macOS virtual machines.
 
 The old ARM-based emulators were slow and are no longer supported by Google. The modern Intel Atom (x86 and x86_64) emulators require hardware acceleration (HAXM on Mac & Windows, QEMU on Linux) from the host to run fast. This presents a challenge on CI as to be able to run hardware accelerated emulators within a docker container, **KVM** must be supported by the host VM which isn't the case for cloud-based CI providers due to infrastructural limits. If you want to learn more about this, here's an article I wrote: [Running Android Instrumented Tests on CI](https://dev.to/ychescale9/running-android-emulators-on-ci-from-bitrise-io-to-github-actions-3j76).
 
@@ -23,8 +23,6 @@ This action automates the process by doing the following:
 ## Usage
 
 It is recommended to run this action on a **macOS** VM, e.g. `macos-latest` or `macos-10.15` to take advantage of hardware accleration support provided by **HAXM**.
-
-Please note that while Linux VMs (e.g. `ubuntu-latest` or `ubuntu-18.04`) are also supported, hardware acceleration will **not** be available.
 
 A workflow that uses **android-emulator-runner** to run your instrumented tests on **API 29**:
 
@@ -105,7 +103,12 @@ jobs:
 
 Default `emulator-options`: `-no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim`.
 
-_Please note that if you are running on a Linux VM, `-no-accel` will be added to the `emulator-options` to make sure hardware acceleration is turned off._
+## Can I use this action on Linux VMs?
+
+The short answer is yes but it's expected to be a much worse experience (on some newer API levels it might not work at all) than running it on macOS.
+
+For a longer answer please refer to [this issue](https://github.com/ReactiveCircus/android-emulator-runner/issues/46).
+
 
 ## Who is using Android Emulator Runner?
 
