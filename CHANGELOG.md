@@ -1,5 +1,9 @@
 # Change Log
 
+## v2.9.0
+
+* Updated to SDK command-line tools `2.0`.
+
 ## v2.8.0
 
 * Added support for specifying a custom name used for creating the **AVD** - [#59](https://github.com/ReactiveCircus/android-emulator-runner/issues/59).
