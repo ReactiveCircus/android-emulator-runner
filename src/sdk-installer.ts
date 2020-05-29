@@ -2,8 +2,8 @@ import * as core from '@actions/core';
 import * as exec from '@actions/exec';
 
 const BUILD_TOOLS_VERSION = '29.0.3';
-const CMDLINE_TOOLS_URL_MAC = 'https://dl.google.com/android/repository/commandlinetools-mac-6200805_latest.zip';
-const CMDLINE_TOOLS_URL_LINUX = 'https://dl.google.com/android/repository/commandlinetools-linux-6200805_latest.zip';
+const CMDLINE_TOOLS_URL_MAC = 'https://dl.google.com/android/repository/commandlinetools-mac-6514223_latest.zip';
+const CMDLINE_TOOLS_URL_LINUX = 'https://dl.google.com/android/repository/commandlinetools-linux-6514223_latest.zip';
 
 /**
  * Installs & updates the Android SDK for the macOS platform, including SDK platform for the chosen API level, latest build tools, platform tools, Android Emulator,
