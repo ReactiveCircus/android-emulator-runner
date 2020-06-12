@@ -1,7 +1,7 @@
 import * as core from '@actions/core';
 import * as exec from '@actions/exec';
 
-const BUILD_TOOLS_VERSION = '29.0.3';
+const BUILD_TOOLS_VERSION = '30.0.0';
 const CMDLINE_TOOLS_URL_MAC = 'https://dl.google.com/android/repository/commandlinetools-mac-6514223_latest.zip';
 const CMDLINE_TOOLS_URL_LINUX = 'https://dl.google.com/android/repository/commandlinetools-linux-6514223_latest.zip';
 
@@ -23,8 +23,12 @@ export async function installAndroidSdk(apiLevel: number, target: string, arch: 
 
   // additional permission and license requirements for Linux
   if (!isOnMac) {
-    await exec.exec(`sh -c \\"sudo chmod -R 777 ${process.env.ANDROID_HOME}"`);
+    await exec.exec(`sh -c \\"sudo chown $USER:$USER ${process.env.ANDROID_HOME} -R`);
     await exec.exec(`sh -c \\"echo -e '\n84831b9409646a918e30573bab4c9c91346d8abd' > ${process.env.ANDROID_HOME}/licenses/android-sdk-preview-license"`);
+  }
+  // license required for API 30 system images
+  if (apiLevel == 30) {
+    await exec.exec(`sh -c \\"echo -e '\n859f317696f67ef3d7f30a50a5560e7834b43903' > ${process.env.ANDROID_HOME}/licenses/android-sdk-arm-dbt-license"`);
   }
 
   console.log('Installing latest build tools, platform tools, and platform.');
