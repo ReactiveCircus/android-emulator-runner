@@ -15,11 +15,22 @@ jobs:
       matrix:
         os: [macos-latest, ubuntu-latest]
         api-level: [16, 23, 29]
+        target: [default, google_apis]
         exclude:
           - os: ubuntu-latest
             api-level: 23
           - os: ubuntu-latest
             api-level: 29
+          - target: google_apis
+            api-level: 16
+          - target: google_apis
+            api-level: 23
+          - target: google_apis
+            api-level: 29
+        include:
+          - os: macos-latest
+            api-level: 30
+            target: google_apis
     steps:
     - name: checkout
       uses: actions/checkout@v2
@@ -49,7 +60,7 @@ jobs:
       uses: ./
       with:
         api-level: ${{ matrix.api-level }}
-        target: default
+        target: ${{ matrix.target }}
         arch: x86
         profile: Nexus 6
         avd-name: test
