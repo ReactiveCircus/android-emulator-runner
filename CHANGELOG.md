@@ -1,5 +1,10 @@
 # Change Log
 
+## v2.10.0
+
+* Support Android 11 (API 30) system images.
+* Bump build tools to `30.0.0`.
+
 ## v2.9.0
 
 * Updated to SDK command-line tools `2.0`.
