@@ -125,6 +125,7 @@ These are some of the open-source projects using (or used) **Android Emulator Ru
 - [android/compose-samples](https://github.com/android/compose-samples/blob/master/.github/workflows/ci.yaml)
 - [ReactiveCircus/streamlined](https://github.com/ReactiveCircus/streamlined/tree/main/.github/workflows)
 - [ReactiveCircus/FlowBinding](https://github.com/ReactiveCircus/FlowBinding)
+- [JakeWharton/RxBinding](https://github.com/JakeWharton/RxBinding/tree/master/.github/workflows)
 - [vinaygaba/Learn-Jetpack-Compose-By-Example](https://github.com/vinaygaba/Learn-Jetpack-Compose-By-Example/)
 - [ashishb/adb-enhanced](https://github.com/ashishb/adb-enhanced/tree/master/.github/workflows)
 - [vgaidarji/ci-matters](https://github.com/vgaidarji/ci-matters/blob/master/.github/workflows/main.yaml)
