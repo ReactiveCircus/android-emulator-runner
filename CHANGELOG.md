@@ -1,5 +1,9 @@
 # Change Log
 
+## v2.11.0
+
+* Support running multiple instances of the action sequentially in a single job - [#73](https://github.com/ReactiveCircus/android-emulator-runner/issues/73).
+
 ## v2.10.0
 
 * Support Android 11 (API 30) system images.
