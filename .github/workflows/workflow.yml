@@ -10,6 +10,8 @@ on:
 jobs:
   test:
     runs-on: ${{ matrix.os }}
+    env:
+      JAVA_TOOL_OPTIONS: -Xmx4g
     timeout-minutes: 15
     strategy:
       matrix:
@@ -49,9 +51,6 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 14
-    - name: Clean cache
-      if: matrix.os == 'macos-latest'
-      run: mv ~/.gradle/caches ~/.gradle/.invalid_caches
     - uses: actions/cache@v1
       with:
         path: ~/.gradle/caches
