@@ -84,6 +84,25 @@ jobs:
         script: ./gradlew connectedCheck
 ```
 
+If you need to run in a self-hosted environment:
+```
+jobs:
+  test:
+    runs-on: macos-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v2
+
+    - name: run tests
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+        api-level: 29
+        script: ./gradlew connectedCheck
+        self-hosted: true
+        android-home: ~/android-sdk
+        accept-android-sdk-license: true
+```
+
 ## Configurations
 
 |  | **Required** | **Default** | **Description** |
@@ -100,6 +119,9 @@ jobs:
 | `ndk` | Optional | N/A | Version of NDK to install - e.g. `21.0.6113669` |
 | `cmake` | Optional | N/A | Version of CMake to install - e.g. `3.10.2.4988404` |
 | `script` | Required | N/A | Custom script to run - e.g. to run Android instrumented tests on the emulator: `./gradlew connectedCheck` |
+| `self-hosted` | Optional | `false` | `Run the actions in a self-hosted environment. This option will ignore your current "ANDROID_HOME" installation and install do a fresh install` |
+| `android-home` | Optional | N/A | `Path to ANDROID_HOME, useful in self-hosted environment. If the path does not exists, this action will install the base SDK.` |
+| `accept-android-sdk-license` | Optional | `false` | `Accept Android SDK License. Make sure you read https://developer.android.com/studio/terms and set to true if you accept.` |
 
 Default `emulator-options`: `-no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim`.
 

@@ -89,6 +89,21 @@ async function run() {
       console.log(`${script}`);
     });
 
+    // android-home
+    const androidHome = core.getInput('android-home');
+    if (androidHome) {
+      core.exportVariable('ANDROID_HOME', `${process.env.HOME}/android-sdk`);
+      core.exportVariable('ANDROID_SDK_ROOT', `${process.env.HOME}/android-sdk`);
+    } else {
+      // If this is a self-hosted environment, and the android-home isn't set,
+      // then use a default path in user's home.
+      const selfHosted = core.getInput('self-hosted');
+      if (selfHosted) {
+        core.exportVariable('ANDROID_HOME', `${process.env.HOME}/android-sdk`);
+        core.exportVariable('ANDROID_SDK_ROOT', `${process.env.HOME}/android-sdk`);
+      }
+    }
+
     // install SDK
     await installAndroidSdk(apiLevel, target, arch, emulatorBuild, ndkVersion, cmakeVersion);
 
