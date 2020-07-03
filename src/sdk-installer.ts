@@ -6,6 +6,8 @@ import * as fs from 'fs';
 const BUILD_TOOLS_VERSION = '30.0.0';
 const CMDLINE_TOOLS_URL_MAC = 'https://dl.google.com/android/repository/commandlinetools-mac-6609375_latest.zip';
 const CMDLINE_TOOLS_URL_LINUX = 'https://dl.google.com/android/repository/commandlinetools-linux-6609375_latest.zip';
+const BASE_ANDROID_SDK_URL_MAC = 'https://dl.google.com/android/repository/sdk-tools-darwin-4333796.zip';
+const BASE_ANDROID_SDK_URL_LINUX = 'https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip';
 
 /**
  * Installs & updates the Android SDK for the macOS platform, including SDK platform for the chosen API level, latest build tools, platform tools, Android Emulator,
@@ -14,7 +16,32 @@ const CMDLINE_TOOLS_URL_LINUX = 'https://dl.google.com/android/repository/comman
 export async function installAndroidSdk(apiLevel: number, target: string, arch: string, emulatorBuild?: string, ndkVersion?: string, cmakeVersion?: string): Promise<void> {
   const isOnMac = process.platform === 'darwin';
 
-  if (!isOnMac) {
+  // Check if ANDROID_HOME is set.
+  if (!process.env.ANDROID_HOME) {
+    core.setFailed('ANDROID_HOME is a required environment variable and is not set.\nPlease double check your host settings.');
+    return;
+  }
+
+  if (fs.existsSync(process.env.ANDROID_HOME)) {
+    console.log('Using previous installation of base Android SDK, found on ${process.env.ANDROID_HOME}');
+  } else {
+    const installed = await installBaseSdk();
+    if (!installed) {
+      core.setFailed('Could not install base Android SDK.');
+      return;
+    }
+    const licenses = await acceptLicenses();
+    if (!installed || !licenses) {
+      core.setFailed('Could not accept Android SDK licenses.');
+      return;
+    }
+  }
+
+  // self-hosted
+  const selfHosted = core.getInput('self-hosted');
+  // It is not required to configure permissions on self-hosted and macos
+  // environment.
+  if (!isOnMac && !selfHosted) {
     await exec.exec(`sh -c \\"sudo chown $USER:$USER ${process.env.ANDROID_HOME} -R`);
   }
 
@@ -67,4 +94,58 @@ export async function installAndroidSdk(apiLevel: number, target: string, arch: 
     console.log(`Installing CMake ${cmakeVersion}.`);
     await exec.exec(`sh -c \\"sdkmanager --install 'cmake;${cmakeVersion}' > /dev/null"`);
   }
+}
+
+async function installBaseSdk() {
+  const isOnMac = process.platform === 'darwin';
+  const baseSdkUrl = isOnMac ? BASE_ANDROID_SDK_URL_MAC : BASE_ANDROID_SDK_URL_LINUX;
+  const androidTmpPath = '/tmp/android-sdk.zip';
+  const androidHome = process.env.ANDROID_HOME;
+  console.log(`Installing Android SDK on ${androidHome}`);
+
+  // Backup existing .android folder.
+  const sdkHome = `${androidHome}/sdk_home`;
+  core.exportVariable('ANDROID_SDK_HOME', sdkHome);
+  if (fs.existsSync(sdkHome)) {
+    await exec.exec(`mv ${sdkHome} ${sdkHome}.backup.${Date.now()}`);
+  }
+
+  await exec.exec(`curl -L ${baseSdkUrl} -o ${androidTmpPath} -s`);
+  await exec.exec(`unzip -q ${androidTmpPath} -d ${androidHome}`);
+  await exec.exec(`rm ${androidTmpPath}`);
+  await exec.exec(`mkdir -p ${sdkHome}`);
+
+  const path = process.env.PATH || '';
+  const extraPaths = `${androidHome}/bin:${androidHome}/tools:${androidHome}/tools/bin:${androidHome}/platform-tools:${androidHome}/platform-tools/bin`;
+
+  // Remove from path any Android previous installation
+  const pathWithoutAndroid = path
+    .split(':')
+    .filter(entry => {
+      return !entry.includes('Android');
+    })
+    .join(':');
+
+  core.exportVariable('PATH', `${extraPaths}:${pathWithoutAndroid}`);
+  return true;
+}
+
+async function acceptLicenses() {
+  const androidHome = process.env.ANDROID_HOME;
+  console.log(`Accepting Android SDK licenses on ${androidHome}`);
+
+  // Check if licenses has being accepted.
+  const acceptLicense = core.getInput('accept-android-sdk-license');
+  if (!acceptLicense) {
+    core.setFailed(
+      "You can't use this in self-hosted environment unless you accept the Android SDK licenses. \nPlease read the license https://developer.android.com/studio/terms and accept the license to proceed."
+    );
+    return false;
+  }
+
+  await exec.exec(`mkdir -p ${process.env.ANDROID_SDK_HOME}`);
+  await exec.exec(`touch ${process.env.ANDROID_SDK_HOME}/repositories.cfg`);
+  await exec.exec(`mkdir -p ${androidHome}/licenses`);
+  await exec.exec(`sh -c \\"yes 'y' | ${androidHome}/tools/bin/sdkmanager --licenses > /dev/null"`);
+  return true;
 }
