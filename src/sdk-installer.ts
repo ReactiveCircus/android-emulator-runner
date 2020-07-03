@@ -34,13 +34,13 @@ export async function installAndroidSdk(apiLevel: number, target: string, arch: 
   // additional permission and license requirements for Linux
   const sdkPreviewLicensePath = `${process.env.ANDROID_HOME}/licenses/android-sdk-preview-license`;
   if (!isOnMac && !fs.existsSync(sdkPreviewLicensePath)) {
-    await exec.exec(`sh -c \\"echo -e '\n84831b9409646a918e30573bab4c9c91346d8abd' > ${sdkPreviewLicensePath}"`);
+    fs.writeFileSync(sdkPreviewLicensePath, '\n84831b9409646a918e30573bab4c9c91346d8abd');
   }
 
   // license required for API 30 system images
   const sdkArmDbtLicensePath = `${process.env.ANDROID_HOME}/licenses/android-sdk-arm-dbt-license`;
   if (apiLevel == 30 && !fs.existsSync(sdkArmDbtLicensePath)) {
-    await exec.exec(`sh -c \\"echo -e '\n859f317696f67ef3d7f30a50a5560e7834b43903' > ${sdkArmDbtLicensePath}"`);
+    fs.writeFileSync(sdkArmDbtLicensePath, '\n859f317696f67ef3d7f30a50a5560e7834b43903');
   }
 
   console.log('Installing latest build tools, platform tools, and platform.');
