@@ -4,35 +4,20 @@ on:
   push:
     branches:
       - main
+      - 'yc/windows-support'
     paths-ignore:
       - '**.md'
 
 jobs:
   test:
-    runs-on: ${{ matrix.os }}
+    runs-on: windows-latest
     env:
       JAVA_TOOL_OPTIONS: -Xmx4g
     timeout-minutes: 15
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest]
         api-level: [16, 23, 29]
         target: [default, google_apis]
-        exclude:
-          - os: ubuntu-latest
-            api-level: 23
-          - os: ubuntu-latest
-            api-level: 29
-          - target: google_apis
-            api-level: 16
-          - target: google_apis
-            api-level: 23
-          - target: google_apis
-            api-level: 29
-        include:
-          - os: macos-latest
-            api-level: 30
-            target: google_apis
     steps:
     - name: checkout
       uses: actions/checkout@v2
