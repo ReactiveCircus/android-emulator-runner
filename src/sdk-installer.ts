@@ -3,7 +3,7 @@ import * as exec from '@actions/exec';
 import * as io from '@actions/io';
 import * as fs from 'fs';
 
-const BUILD_TOOLS_VERSION = '30.0.0';
+const BUILD_TOOLS_VERSION = '30.0.2';
 const CMDLINE_TOOLS_URL_MAC = 'https://dl.google.com/android/repository/commandlinetools-mac-6609375_latest.zip';
 const CMDLINE_TOOLS_URL_LINUX = 'https://dl.google.com/android/repository/commandlinetools-linux-6609375_latest.zip';
 
