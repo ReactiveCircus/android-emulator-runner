@@ -130,5 +130,6 @@ These are some of the open-source projects using (or used) **Android Emulator Ru
 - [ashishb/adb-enhanced](https://github.com/ashishb/adb-enhanced/tree/master/.github/workflows)
 - [vgaidarji/ci-matters](https://github.com/vgaidarji/ci-matters/blob/master/.github/workflows/main.yaml)
 - [simpledotorg/simple-android](https://github.com/simpledotorg/simple-android)
+- [cashapp/copper](https://github.com/cashapp/copper/blob/trunk/.github/workflows/build.yaml)
 
 If you are using **Android Emulator Runner** and want your project included in the list, please feel free to create an issue or open a pull request.
