@@ -1,6 +1,7 @@
 import * as core from '@actions/core';
 import * as exec from '@actions/exec';
 import * as io from '@actions/io';
+import * as tc from '@actions/tool-cache';
 import * as fs from 'fs';
 
 const BUILD_TOOLS_VERSION = '30.0.2';
@@ -24,11 +25,10 @@ export async function installAndroidSdk(apiLevel: number, target: string, arch: 
   const cmdlineToolsPath = `${process.env.ANDROID_HOME}/cmdline-tools`;
   if (!fs.existsSync(cmdlineToolsPath)) {
     console.log('Installing new cmdline-tools.');
-    const sdkUrl = IS_MAC ? CMDLINE_TOOLS_URL_MAC : IS_WINDOWS ? CMDLINE_TOOLS_URL_WIN : CMDLINE_TOOLS_URL_LINUX;
     await io.mkdirP(`${process.env.ANDROID_HOME}/cmdline-tools`);
-    await exec.exec(`curl -fo commandlinetools.zip ${sdkUrl}`);
-    await exec.exec(`unzip -q commandlinetools.zip -d ${cmdlineToolsPath}`);
-    await io.rmRF('commandlinetools.zip');
+    const sdkUrl = IS_MAC ? CMDLINE_TOOLS_URL_MAC : IS_WINDOWS ? CMDLINE_TOOLS_URL_WIN : CMDLINE_TOOLS_URL_LINUX;
+    const downloadPath = await tc.downloadTool(sdkUrl);
+    await tc.extractZip(downloadPath, cmdlineToolsPath);
 
     // add paths for commandline-tools and platform-tools
     core.addPath(`${cmdlineToolsPath}/tools:${cmdlineToolsPath}/tools/bin:${process.env.ANDROID_HOME}/platform-tools`);
