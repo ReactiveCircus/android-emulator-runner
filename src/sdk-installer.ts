@@ -5,6 +5,7 @@ import * as fs from 'fs';
 
 const BUILD_TOOLS_VERSION = '30.0.2';
 const CMDLINE_TOOLS_URL_MAC = 'https://dl.google.com/android/repository/commandlinetools-mac-6609375_latest.zip';
+const CMDLINE_TOOLS_URL_WIN = 'https://dl.google.com/android/repository/commandlinetools-win-6609375_latest.zip';
 const CMDLINE_TOOLS_URL_LINUX = 'https://dl.google.com/android/repository/commandlinetools-linux-6609375_latest.zip';
 
 /**
@@ -12,16 +13,18 @@ const CMDLINE_TOOLS_URL_LINUX = 'https://dl.google.com/android/repository/comman
  * and the system image for the chosen API level, CPU arch, and target.
  */
 export async function installAndroidSdk(apiLevel: number, target: string, arch: string, emulatorBuild?: string, ndkVersion?: string, cmakeVersion?: string): Promise<void> {
-  const isOnMac = process.platform === 'darwin';
+  const IS_MAC = process.platform === 'win32';
+  const IS_WINDOWS = process.platform === 'darwin';
+  const IS_LINUX = process.platform === 'linux';
 
-  if (!isOnMac) {
+  if (IS_LINUX) {
     await exec.exec(`sh -c \\"sudo chown $USER:$USER ${process.env.ANDROID_HOME} -R`);
   }
 
   const cmdlineToolsPath = `${process.env.ANDROID_HOME}/cmdline-tools`;
   if (!fs.existsSync(cmdlineToolsPath)) {
     console.log('Installing new cmdline-tools.');
-    const sdkUrl = isOnMac ? CMDLINE_TOOLS_URL_MAC : CMDLINE_TOOLS_URL_LINUX;
+    const sdkUrl = IS_MAC ? CMDLINE_TOOLS_URL_MAC : IS_WINDOWS ? CMDLINE_TOOLS_URL_WIN : CMDLINE_TOOLS_URL_LINUX;
     await io.mkdirP(`${process.env.ANDROID_HOME}/cmdline-tools`);
     await exec.exec(`curl -fo commandlinetools.zip ${sdkUrl}`);
     await exec.exec(`unzip -q commandlinetools.zip -d ${cmdlineToolsPath}`);
@@ -33,7 +36,7 @@ export async function installAndroidSdk(apiLevel: number, target: string, arch: 
 
   // additional permission and license requirements for Linux
   const sdkPreviewLicensePath = `${process.env.ANDROID_HOME}/licenses/android-sdk-preview-license`;
-  if (!isOnMac && !fs.existsSync(sdkPreviewLicensePath)) {
+  if (IS_LINUX && !fs.existsSync(sdkPreviewLicensePath)) {
     fs.writeFileSync(sdkPreviewLicensePath, '\n84831b9409646a918e30573bab4c9c91346d8abd');
   }
 
@@ -48,7 +51,7 @@ export async function installAndroidSdk(apiLevel: number, target: string, arch: 
   await exec.exec(`sh -c \\"sdkmanager --install 'build-tools;${BUILD_TOOLS_VERSION}' platform-tools 'platforms;android-${apiLevel}' > /dev/null"`);
   if (emulatorBuild) {
     console.log(`Installing emulator build ${emulatorBuild}.`);
-    await exec.exec(`curl -fo emulator.zip https://dl.google.com/android/repository/emulator-${isOnMac ? 'darwin' : 'linux'}-${emulatorBuild}.zip`);
+    await exec.exec(`curl -fo emulator.zip https://dl.google.com/android/repository/emulator-${IS_MAC ? 'darwin' : IS_WINDOWS ? 'windows' : 'linux'}-${emulatorBuild}.zip`);
     await io.rmRF(`${process.env.ANDROID_HOME}/emulator`);
     await exec.exec(`unzip -q emulator.zip -d ${process.env.ANDROID_HOME}`);
     await io.rmRF('emulator.zip');
