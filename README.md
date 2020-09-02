@@ -131,5 +131,6 @@ These are some of the open-source projects using (or used) **Android Emulator Ru
 - [vgaidarji/ci-matters](https://github.com/vgaidarji/ci-matters/blob/master/.github/workflows/main.yaml)
 - [simpledotorg/simple-android](https://github.com/simpledotorg/simple-android)
 - [cashapp/copper](https://github.com/cashapp/copper/blob/trunk/.github/workflows/build.yaml)
+- [square/radiography](https://github.com/square/radiography/blob/main/.github/workflows/android.yml)
 
 If you are using **Android Emulator Runner** and want your project included in the list, please feel free to create an issue or open a pull request.
