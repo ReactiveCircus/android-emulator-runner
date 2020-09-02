@@ -14,8 +14,8 @@ const CMDLINE_TOOLS_URL_LINUX = 'https://dl.google.com/android/repository/comman
  * and the system image for the chosen API level, CPU arch, and target.
  */
 export async function installAndroidSdk(apiLevel: number, target: string, arch: string, emulatorBuild?: string, ndkVersion?: string, cmakeVersion?: string): Promise<void> {
-  const IS_MAC = process.platform === 'win32';
-  const IS_WINDOWS = process.platform === 'darwin';
+  const IS_MAC = process.platform === 'darwin';
+  const IS_WINDOWS = process.platform === 'win32';
   const IS_LINUX = process.platform === 'linux';
 
   if (IS_LINUX) {
@@ -48,7 +48,7 @@ export async function installAndroidSdk(apiLevel: number, target: string, arch: 
 
   console.log('Installing latest build tools, platform tools, and platform.');
 
-  const sdkmanagerExec = IS_WINDOWS ? 'sdkmanager.bat' : 'sdkmanagert';
+  const sdkmanagerExec = IS_WINDOWS ? 'sdkmanager.bat' : 'sdkmanager';
 
   await exec.exec(`sh -c \\"${sdkmanagerExec} --install 'build-tools;${BUILD_TOOLS_VERSION}' platform-tools 'platforms;android-${apiLevel}' > /dev/null"`);
   if (emulatorBuild) {
