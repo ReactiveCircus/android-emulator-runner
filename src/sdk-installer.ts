@@ -48,26 +48,27 @@ export async function installAndroidSdk(apiLevel: number, target: string, arch: 
 
   console.log('Installing latest build tools, platform tools, and platform.');
 
-  await exec.exec(`sh -c \\"sdkmanager --install 'build-tools;${BUILD_TOOLS_VERSION}' platform-tools 'platforms;android-${apiLevel}' > /dev/null"`);
+  const sdkmanagerExec = IS_WINDOWS ? 'sdkmanager.bat' : 'sdkmanagert';
+
+  await exec.exec(`sh -c \\"${sdkmanagerExec} --install 'build-tools;${BUILD_TOOLS_VERSION}' platform-tools 'platforms;android-${apiLevel}' > /dev/null"`);
   if (emulatorBuild) {
     console.log(`Installing emulator build ${emulatorBuild}.`);
-    await exec.exec(`curl -fo emulator.zip https://dl.google.com/android/repository/emulator-${IS_MAC ? 'darwin' : IS_WINDOWS ? 'windows' : 'linux'}-${emulatorBuild}.zip`);
     await io.rmRF(`${process.env.ANDROID_HOME}/emulator`);
-    await exec.exec(`unzip -q emulator.zip -d ${process.env.ANDROID_HOME}`);
-    await io.rmRF('emulator.zip');
+    const downloadPath = await tc.downloadTool(`https://dl.google.com/android/repository/emulator-${IS_MAC ? 'darwin' : IS_WINDOWS ? 'windows' : 'linux'}-${emulatorBuild}.zip`);
+    await tc.extractZip(downloadPath, process.env.ANDROID_HOME);
   } else {
     console.log('Installing latest emulator.');
-    await exec.exec(`sh -c \\"sdkmanager --install emulator > /dev/null"`);
+    await exec.exec(`sh -c \\"${sdkmanagerExec} --install emulator > /dev/null"`);
   }
   console.log('Installing system images.');
-  await exec.exec(`sh -c \\"sdkmanager --install 'system-images;android-${apiLevel};${target};${arch}' > /dev/null"`);
+  await exec.exec(`sh -c \\"${sdkmanagerExec} --install 'system-images;android-${apiLevel};${target};${arch}' > /dev/null"`);
 
   if (ndkVersion) {
     console.log(`Installing NDK ${ndkVersion}.`);
-    await exec.exec(`sh -c \\"sdkmanager --install 'ndk;${ndkVersion}' > /dev/null"`);
+    await exec.exec(`sh -c \\"${sdkmanagerExec} --install 'ndk;${ndkVersion}' > /dev/null"`);
   }
   if (cmakeVersion) {
     console.log(`Installing CMake ${cmakeVersion}.`);
-    await exec.exec(`sh -c \\"sdkmanager --install 'cmake;${cmakeVersion}' > /dev/null"`);
+    await exec.exec(`sh -c \\"${sdkmanagerExec} --install 'cmake;${cmakeVersion}' > /dev/null"`);
   }
 }
