@@ -51,9 +51,11 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 14
-    - uses: actions/cache@v1
+    - uses: actions/cache@v2
       with:
-        path: ~/.gradle/caches
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
         key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
     - name: run action
       uses: ./
