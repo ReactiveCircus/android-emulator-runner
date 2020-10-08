@@ -1,5 +1,10 @@
 # Change Log
 
+## v2.11.1
+
+* Update SDK command-line tools to `2.1`.
+* Update @actions/core to `1.2.6`.
+
 ## v2.11.0
 
 * Support running multiple instances of the action sequentially in a single job - [#73](https://github.com/ReactiveCircus/android-emulator-runner/issues/73).
