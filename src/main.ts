@@ -25,7 +25,8 @@ async function run() {
     console.log(`API level: ${apiLevel}`);
 
     // target of the system image
-    const target = core.getInput('target');
+    const targetInput = core.getInput('target');
+    const target = targetInput == 'playstore' ? 'google_apis_playstore' : targetInput;
     checkTarget(target);
     console.log(`target: ${target}`);
 

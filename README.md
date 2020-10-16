@@ -86,10 +86,10 @@ jobs:
 
 ## Configurations
 
-|  | **Required** | **Default** | **Description** |
-|----------------------|--------------|-------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Input** | **Required** | **Default** | **Description** |
+|-|-|-|-|
 | `api-level` | Required | N/A | API level of the platform system image - e.g. 23 for Android Marshmallow, 29 for Android 10. **Minimum API level supported is 15**. |
-| `target` | Optional | `default` | Target of the system image - `default` or `google_apis`. |
+| `target` | Optional | `default` | Target of the system image - `default`, `google_apis` or `playstore`. |
 | `arch` | Optional | `x86` | CPU architecture of the system image - `x86` or `x86_64`. Note that `x86_64` image is only available for API 21+. |
 | `profile` | Optional | N/A | Hardware profile used for creating the AVD - e.g. `Nexus 6`. For a list of all profiles available, run `avdmanager list` and refer to the results under "Available Android Virtual Devices". |
 | `avd-name` | Optional | `test` | Custom AVD name used for creating the Android Virtual Device. |
