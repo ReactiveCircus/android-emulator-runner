@@ -33,6 +33,10 @@ jobs:
           - os: macos-latest
             api-level: 30
             target: google_apis
+          - os: macos-latest
+            api-level: 24
+            target: playstore
+
     steps:
     - name: checkout
       uses: actions/checkout@v2

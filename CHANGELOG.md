@@ -1,5 +1,19 @@
 # Change Log
 
+## v2.12.0
+
+Added support for using the `playstore` system images:
+
+```
+- name: run tests
+  uses: reactivecircus/android-emulator-runner@v2
+  with:
+    api-level: 30
+    target: playstore
+    arch: x86
+    script: ./gradlew connectedCheck
+```
+
 ## v2.11.1
 
 * Update SDK command-line tools to `2.1`.
