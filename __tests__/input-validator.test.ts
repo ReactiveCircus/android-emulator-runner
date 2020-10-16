@@ -53,6 +53,11 @@ describe('target validator tests', () => {
       validator.checkTarget('google_apis');
     };
     expect(func2).not.toThrow();
+
+    const func3 = () => {
+      validator.checkTarget('google_apis');
+    };
+    expect(func3).not.toThrow();
   });
 });
 
