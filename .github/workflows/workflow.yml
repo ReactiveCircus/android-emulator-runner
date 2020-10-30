@@ -3,39 +3,41 @@ on:
   pull_request:
   push:
     branches:
-      - main
+      # - main
+      - 'yc/*'
     paths-ignore:
       - '**.md'
 
 jobs:
   test:
-    runs-on: ${{ matrix.os }}
+    # runs-on: ${{ matrix.os }}
+    runs-on: macos-latest
     env:
       JAVA_TOOL_OPTIONS: -Xmx4g
     timeout-minutes: 15
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest]
-        api-level: [16, 23, 29]
-        target: [default, google_apis]
-        exclude:
-          - os: ubuntu-latest
-            api-level: 23
-          - os: ubuntu-latest
-            api-level: 29
-          - target: google_apis
-            api-level: 16
-          - target: google_apis
-            api-level: 23
-          - target: google_apis
-            api-level: 29
-        include:
-          - os: macos-latest
-            api-level: 30
-            target: google_apis
-          - os: macos-latest
-            api-level: 24
-            target: playstore
+      #   os: [macos-latest, ubuntu-latest]
+        api-level: [23, 30]
+      #   target: [default, google_apis]
+      #   exclude:
+      #     - os: ubuntu-latest
+      #       api-level: 23
+      #     - os: ubuntu-latest
+      #       api-level: 29
+      #     - target: google_apis
+      #       api-level: 16
+      #     - target: google_apis
+      #       api-level: 23
+      #     - target: google_apis
+      #       api-level: 29
+      #   include:
+      #     - os: macos-latest
+      #       api-level: 30
+      #       target: google_apis
+      #     - os: macos-latest
+      #       api-level: 24
+      #       target: playstore
 
     steps:
     - name: checkout
@@ -46,7 +48,7 @@ jobs:
 
     - name: build, test and lint
       run: |
-        npm install
+        npm ci
         npm run build
         npm run lint
         npm test
@@ -65,15 +67,29 @@ jobs:
       uses: ./
       with:
         api-level: ${{ matrix.api-level }}
-        target: ${{ matrix.target }}
+        target: google_apis
         arch: x86
-        profile: Nexus 6
-        avd-name: test
+        # profile: Nexus 6
+        profile: pixel_3a
+        # avd-name: test
         emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none
         disable-animations: true
         working-directory: ./test-fixture/
         script: |
           echo $GITHUB_REPOSITORY
           adb devices
-          ./gradlew help
-          ./gradlew connectedDebugAndroidTest
+          adb shell ls -la /sdcard
+          adb shell ls -la /storage
+          adb emu geo fix 0 51
+          adb shell screenrecord --verbose /sdcard/capture.mpg &
+          adb shell pkill -INT screenrecord
+          mkdir -p app/build/report
+          cd app/build/report && adb pull /sdcard/capture.mpg
+          # ./gradlew help
+          # ./gradlew connectedDebugAndroidTest
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v1
+      with:
+        name: build-outputs
+        path: ./test-fixture/app/build/report

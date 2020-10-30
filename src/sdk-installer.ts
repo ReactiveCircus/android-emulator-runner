@@ -1,11 +1,12 @@
 import * as core from '@actions/core';
 import * as exec from '@actions/exec';
 import * as io from '@actions/io';
+import * as tc from '@actions/tool-cache';
 import * as fs from 'fs';
 
 const BUILD_TOOLS_VERSION = '30.0.2';
-const CMDLINE_TOOLS_URL_MAC = 'https://dl.google.com/android/repository/commandlinetools-mac-6609375_latest.zip';
-const CMDLINE_TOOLS_URL_LINUX = 'https://dl.google.com/android/repository/commandlinetools-linux-6609375_latest.zip';
+const CMDLINE_TOOLS_URL_MAC = 'https://dl.google.com/android/repository/commandlinetools-mac-6858069_latest.zip';
+const CMDLINE_TOOLS_URL_LINUX = 'https://dl.google.com/android/repository/commandlinetools-linux-6858069_latest.zip';
 
 /**
  * Installs & updates the Android SDK for the macOS platform, including SDK platform for the chosen API level, latest build tools, platform tools, Android Emulator,
@@ -22,13 +23,17 @@ export async function installAndroidSdk(apiLevel: number, target: string, arch: 
   if (!fs.existsSync(cmdlineToolsPath)) {
     console.log('Installing new cmdline-tools.');
     const sdkUrl = isOnMac ? CMDLINE_TOOLS_URL_MAC : CMDLINE_TOOLS_URL_LINUX;
-    await io.mkdirP(`${process.env.ANDROID_HOME}/cmdline-tools`);
-    await exec.exec(`curl -fo commandlinetools.zip ${sdkUrl}`);
-    await exec.exec(`unzip -q commandlinetools.zip -d ${cmdlineToolsPath}`);
-    await io.rmRF('commandlinetools.zip');
+    // await io.mkdirP(cmdlineToolsPath);
+    const downloadPath = await tc.downloadTool(sdkUrl);
+    await tc.extractZip(downloadPath, cmdlineToolsPath);
+    await io.mv(`${cmdlineToolsPath}/cmdline-tools`, `${cmdlineToolsPath}/latest`);
+
+    await exec.exec(`ls -la ${cmdlineToolsPath}`);
 
     // add paths for commandline-tools and platform-tools
-    core.addPath(`${cmdlineToolsPath}/tools:${cmdlineToolsPath}/tools/bin:${process.env.ANDROID_HOME}/platform-tools`);
+    core.addPath(`${cmdlineToolsPath}/latest:${cmdlineToolsPath}/latest/bin:${process.env.ANDROID_HOME}/platform-tools`);
+
+    await exec.exec(`ls -la ${cmdlineToolsPath}/latest`);
   }
 
   // additional permission and license requirements for Linux
