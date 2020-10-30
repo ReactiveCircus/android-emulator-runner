@@ -19,7 +19,7 @@ jobs:
       fail-fast: false
       matrix:
       #   os: [macos-latest, ubuntu-latest]
-        api-level: [23, 24, 25, 26, 27, 28, 29]
+        api-level: [23, 24, 25, 26, 27, 28, 29, 30]
       #   target: [default, google_apis]
       #   exclude:
       #     - os: ubuntu-latest
@@ -68,7 +68,7 @@ jobs:
       uses: ./
       with:
         api-level: ${{ matrix.api-level }}
-        target: google_apis
+        target: default
         arch: x86
         # profile: Nexus 6
         profile: pixel_3a
