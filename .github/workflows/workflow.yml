@@ -18,7 +18,7 @@ jobs:
     strategy:
       matrix:
       #   os: [macos-latest, ubuntu-latest]
-        api-level: [23, 30]
+        api-level: [23, 24, 25, 26, 27, 28, 29]
       #   target: [default, google_apis]
       #   exclude:
       #     - os: ubuntu-latest
