@@ -16,6 +16,7 @@ jobs:
       JAVA_TOOL_OPTIONS: -Xmx4g
     timeout-minutes: 15
     strategy:
+      fail-fast: false
       matrix:
       #   os: [macos-latest, ubuntu-latest]
         api-level: [23, 24, 25, 26, 27, 28, 29]
