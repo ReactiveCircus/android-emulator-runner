@@ -1,5 +1,9 @@
 # Change Log
 
+## v2.13.0
+
+* Updated to SDK command-line tools `3.0`.
+
 ## v2.12.0
 
 Added support for using the `playstore` system images:
