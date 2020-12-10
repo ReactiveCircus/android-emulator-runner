@@ -122,7 +122,7 @@ These are some of the open-source projects using (or used) **Android Emulator Ru
 - [natario1/Transcoder](https://github.com/natario1/Transcoder/tree/master/.github/workflows)
 - [chrisbanes/insetter](https://github.com/chrisbanes/insetter/tree/main/.github/workflows)
 - [slackhq/keeper](https://github.com/slackhq/keeper/tree/main/.github/workflows)
-- [android/compose-samples](https://github.com/android/compose-samples/blob/master/.github/workflows/ci.yaml)
+- [android/compose-samples](https://github.com/android/compose-samples/tree/main/.github/workflows)
 - [ReactiveCircus/streamlined](https://github.com/ReactiveCircus/streamlined/tree/main/.github/workflows)
 - [ReactiveCircus/FlowBinding](https://github.com/ReactiveCircus/FlowBinding)
 - [JakeWharton/RxBinding](https://github.com/JakeWharton/RxBinding/tree/master/.github/workflows)
