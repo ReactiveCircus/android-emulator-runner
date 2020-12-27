@@ -4,7 +4,7 @@ import * as io from '@actions/io';
 import * as tc from '@actions/tool-cache';
 import * as fs from 'fs';
 
-const BUILD_TOOLS_VERSION = '30.0.2';
+const BUILD_TOOLS_VERSION = '30.0.3';
 const CMDLINE_TOOLS_URL_MAC = 'https://dl.google.com/android/repository/commandlinetools-mac-6858069_latest.zip';
 const CMDLINE_TOOLS_URL_LINUX = 'https://dl.google.com/android/repository/commandlinetools-linux-6858069_latest.zip';
 
@@ -16,10 +16,10 @@ export async function installAndroidSdk(apiLevel: number, target: string, arch: 
   const isOnMac = process.platform === 'darwin';
 
   if (!isOnMac) {
-    await exec.exec(`sh -c \\"sudo chown $USER:$USER ${process.env.ANDROID_HOME} -R`);
+    await exec.exec(`sh -c \\"sudo chown $USER:$USER ${process.env.ANDROID_SDK_ROOT} -R`);
   }
 
-  const cmdlineToolsPath = `${process.env.ANDROID_HOME}/cmdline-tools`;
+  const cmdlineToolsPath = `${process.env.ANDROID_SDK_ROOT}/cmdline-tools`;
   if (!fs.existsSync(cmdlineToolsPath)) {
     console.log('Installing new cmdline-tools.');
     const sdkUrl = isOnMac ? CMDLINE_TOOLS_URL_MAC : CMDLINE_TOOLS_URL_LINUX;
@@ -27,17 +27,17 @@ export async function installAndroidSdk(apiLevel: number, target: string, arch: 
     await tc.extractZip(downloadPath, cmdlineToolsPath);
     await io.mv(`${cmdlineToolsPath}/cmdline-tools`, `${cmdlineToolsPath}/latest`);
     // add paths for commandline-tools and platform-tools
-    core.addPath(`${cmdlineToolsPath}/latest:${cmdlineToolsPath}/latest/bin:${process.env.ANDROID_HOME}/platform-tools`);
+    core.addPath(`${cmdlineToolsPath}/latest:${cmdlineToolsPath}/latest/bin:${process.env.ANDROID_SDK_ROOT}/platform-tools`);
   }
 
   // additional permission and license requirements for Linux
-  const sdkPreviewLicensePath = `${process.env.ANDROID_HOME}/licenses/android-sdk-preview-license`;
+  const sdkPreviewLicensePath = `${process.env.ANDROID_SDK_ROOT}/licenses/android-sdk-preview-license`;
   if (!isOnMac && !fs.existsSync(sdkPreviewLicensePath)) {
     fs.writeFileSync(sdkPreviewLicensePath, '\n84831b9409646a918e30573bab4c9c91346d8abd');
   }
 
   // license required for API 30 system images
-  const sdkArmDbtLicensePath = `${process.env.ANDROID_HOME}/licenses/android-sdk-arm-dbt-license`;
+  const sdkArmDbtLicensePath = `${process.env.ANDROID_SDK_ROOT}/licenses/android-sdk-arm-dbt-license`;
   if (apiLevel == 30 && !fs.existsSync(sdkArmDbtLicensePath)) {
     fs.writeFileSync(sdkArmDbtLicensePath, '\n859f317696f67ef3d7f30a50a5560e7834b43903');
   }
@@ -48,8 +48,8 @@ export async function installAndroidSdk(apiLevel: number, target: string, arch: 
   if (emulatorBuild) {
     console.log(`Installing emulator build ${emulatorBuild}.`);
     await exec.exec(`curl -fo emulator.zip https://dl.google.com/android/repository/emulator-${isOnMac ? 'darwin' : 'linux'}-${emulatorBuild}.zip`);
-    await io.rmRF(`${process.env.ANDROID_HOME}/emulator`);
-    await exec.exec(`unzip -q emulator.zip -d ${process.env.ANDROID_HOME}`);
+    await io.rmRF(`${process.env.ANDROID_SDK_ROOT}/emulator`);
+    await exec.exec(`unzip -q emulator.zip -d ${process.env.ANDROID_SDK_ROOT}`);
     await io.rmRF('emulator.zip');
   } else {
     console.log('Installing latest emulator.');

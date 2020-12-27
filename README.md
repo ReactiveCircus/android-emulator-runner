@@ -92,6 +92,7 @@ jobs:
 | `target` | Optional | `default` | Target of the system image - `default`, `google_apis` or `playstore`. |
 | `arch` | Optional | `x86` | CPU architecture of the system image - `x86` or `x86_64`. Note that `x86_64` image is only available for API 21+. |
 | `profile` | Optional | N/A | Hardware profile used for creating the AVD - e.g. `Nexus 6`. For a list of all profiles available, run `avdmanager list` and refer to the results under "Available Android Virtual Devices". |
+| `sdcard-path-or-size` | Optional | N/A | Path to the SD card image for this AVD or the size of a new SD card image to create for this AVD, in KB or MB, denoted with K or M. - e.g. `path/to/sdcard`, or `1000M`. |
 | `avd-name` | Optional | `test` | Custom AVD name used for creating the Android Virtual Device. |
 | `emulator-options` | Optional | See below | Command-line options used when launching the emulator (replacing all default options) - e.g. `-no-window -no-snapshot -camera-back emulated`. |
 | `disable-animations` | Optional | `true` | Whether to disable animations - `true` or `false`. |
@@ -122,7 +123,7 @@ These are some of the open-source projects using (or used) **Android Emulator Ru
 - [natario1/Transcoder](https://github.com/natario1/Transcoder/tree/master/.github/workflows)
 - [chrisbanes/insetter](https://github.com/chrisbanes/insetter/tree/main/.github/workflows)
 - [slackhq/keeper](https://github.com/slackhq/keeper/tree/main/.github/workflows)
-- [android/compose-samples](https://github.com/android/compose-samples/blob/master/.github/workflows/ci.yaml)
+- [android/compose-samples](https://github.com/android/compose-samples/tree/main/.github/workflows)
 - [ReactiveCircus/streamlined](https://github.com/ReactiveCircus/streamlined/tree/main/.github/workflows)
 - [ReactiveCircus/FlowBinding](https://github.com/ReactiveCircus/FlowBinding)
 - [JakeWharton/RxBinding](https://github.com/JakeWharton/RxBinding/tree/master/.github/workflows)
