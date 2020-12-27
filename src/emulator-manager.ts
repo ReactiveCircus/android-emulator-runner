@@ -5,15 +5,21 @@ const EMULATOR_BOOT_TIMEOUT_SECONDS = 600;
 /**
  * Creates and launches a new AVD instance with the specified configurations.
  */
-export async function launchEmulator(apiLevel: number, target: string, arch: string, profile: string, avdName: string, emulatorOptions: string, disableAnimations: boolean): Promise<void> {
+export async function launchEmulator(
+  apiLevel: number,
+  target: string,
+  arch: string,
+  profile: string,
+  sdcardPathOrSize: string,
+  avdName: string,
+  emulatorOptions: string,
+  disableAnimations: boolean
+): Promise<void> {
   // create a new AVD
-  if (profile.trim() !== '') {
-    console.log(`Creating AVD with custom profile ${profile}`);
-    await exec.exec(`avdmanager create avd --force -n "${avdName}" --abi "${target}/${arch}" --package "system-images;android-${apiLevel};${target};${arch}" --device "${profile}"`);
-  } else {
-    console.log(`Creating AVD without custom profile.`);
-    await exec.exec(`sh -c \\"echo no | avdmanager create avd --force -n "${avdName}" --abi '${target}/${arch}' --package 'system-images;android-${apiLevel};${target};${arch}'"`);
-  }
+  const profileOption = profile.trim() !== '' ? `--device "${profile}"` : '';
+  const sdcardPathOrSizeOption = sdcardPathOrSize.trim() !== '' ? `--sdcard "${sdcardPathOrSize}"` : '';
+  console.log(`Creating AVD.`);
+  await exec.exec(`avdmanager create avd --force -n "${avdName}" --abi "${target}/${arch}" --package "system-images;android-${apiLevel};${target};${arch}" ${profileOption} ${sdcardPathOrSizeOption}`);
 
   // start emulator
   console.log('Starting emulator.');
