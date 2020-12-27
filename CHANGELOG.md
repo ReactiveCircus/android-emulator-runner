@@ -1,5 +1,11 @@
 # Change Log
 
+## v2.14.0
+
+* Support specifying SD card path or size via `sdcard-path-or-size`.
+* Update npm packages. 
+* Remove usages of deprecated `$ANDROID_HOME`.
+
 ## v2.13.0
 
 * Updated to SDK command-line tools `3.0`.
