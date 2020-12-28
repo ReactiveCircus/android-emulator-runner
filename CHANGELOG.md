@@ -1,5 +1,9 @@
 # Change Log
 
+## v2.14.1
+
+* Fix hang during AVD creation when `profile` is not specified - [#113](https://github.com/ReactiveCircus/android-emulator-runner/issues/113).
+
 ## v2.14.0
 
 * Support specifying SD card path or size via `sdcard-path-or-size`.
