@@ -16,10 +16,12 @@ export async function launchEmulator(
   disableAnimations: boolean
 ): Promise<void> {
   // create a new AVD
-  const profileOption = profile.trim() !== '' ? `--device "${profile}"` : '';
-  const sdcardPathOrSizeOption = sdcardPathOrSize.trim() !== '' ? `--sdcard "${sdcardPathOrSize}"` : '';
+  const profileOption = profile.trim() !== '' ? `--device '${profile}'` : '';
+  const sdcardPathOrSizeOption = sdcardPathOrSize.trim() !== '' ? `--sdcard '${sdcardPathOrSize}'` : '';
   console.log(`Creating AVD.`);
-  await exec.exec(`avdmanager create avd --force -n "${avdName}" --abi "${target}/${arch}" --package "system-images;android-${apiLevel};${target};${arch}" ${profileOption} ${sdcardPathOrSizeOption}`);
+  await exec.exec(
+    `sh -c \\"echo no | avdmanager create avd --force -n "${avdName}" --abi '${target}/${arch}' --package 'system-images;android-${apiLevel};${target};${arch}' ${profileOption} ${sdcardPathOrSizeOption}"`
+  );
 
   // start emulator
   console.log('Starting emulator.');
