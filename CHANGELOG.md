@@ -1,5 +1,9 @@
 # Change Log
 
+## v2.14.2
+
+* Support API 28 system images with `google_apis` or `google_apis_playstore` target - [#117](https://github.com/ReactiveCircus/android-emulator-runner/pull/117).
+
 ## v2.14.1
 
 * Fix hang during AVD creation when `profile` is not specified - [#113](https://github.com/ReactiveCircus/android-emulator-runner/issues/113).
