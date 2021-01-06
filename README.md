@@ -115,24 +115,25 @@ For a longer answer please refer to [this issue](https://github.com/ReactiveCirc
 
 These are some of the open-source projects using (or used) **Android Emulator Runner**:
 
-- [coil-kt/coil](https://github.com/coil-kt/coil/blob/master/.github/workflows/)
-- [cashapp/sqldelight](https://github.com/cashapp/sqldelight/blob/master/.github/workflows/)
-- [square/workflow](https://github.com/square/workflow/blob/main/.github/workflows/)
-- [square/retrofit](https://github.com/square/retrofit/blob/master/.github/workflows/)
+- [coil-kt/coil](https://github.com/coil-kt/coil/blob/master/.github/workflows)
+- [cashapp/sqldelight](https://github.com/cashapp/sqldelight/blob/master/.github/workflows)
+- [square/workflow-kotlin](https://github.com/square/workflow-kotlin/tree/main/.github/workflows)
+- [square/retrofit](https://github.com/square/retrofit/blob/master/.github/workflows)
 - [natario1/CameraView](https://github.com/natario1/CameraView/tree/master/.github/workflows)
 - [natario1/Transcoder](https://github.com/natario1/Transcoder/tree/master/.github/workflows)
 - [chrisbanes/insetter](https://github.com/chrisbanes/insetter/tree/main/.github/workflows)
 - [slackhq/keeper](https://github.com/slackhq/keeper/tree/main/.github/workflows)
 - [android/compose-samples](https://github.com/android/compose-samples/tree/main/.github/workflows)
 - [ReactiveCircus/streamlined](https://github.com/ReactiveCircus/streamlined/tree/main/.github/workflows)
-- [ReactiveCircus/FlowBinding](https://github.com/ReactiveCircus/FlowBinding)
+- [ReactiveCircus/FlowBinding](https://github.com/ReactiveCircus/FlowBinding/tree/main/.github/workflows)
 - [JakeWharton/RxBinding](https://github.com/JakeWharton/RxBinding/tree/master/.github/workflows)
-- [vinaygaba/Learn-Jetpack-Compose-By-Example](https://github.com/vinaygaba/Learn-Jetpack-Compose-By-Example/)
+- [vinaygaba/Learn-Jetpack-Compose-By-Example](https://github.com/vinaygaba/Learn-Jetpack-Compose-By-Example/tree/master/.github/workflows)
 - [ashishb/adb-enhanced](https://github.com/ashishb/adb-enhanced/tree/master/.github/workflows)
 - [vgaidarji/ci-matters](https://github.com/vgaidarji/ci-matters/blob/master/.github/workflows/main.yaml)
-- [simpledotorg/simple-android](https://github.com/simpledotorg/simple-android)
+- [simpledotorg/simple-android](https://github.com/simpledotorg/simple-android/tree/master/.github/workflows)
 - [cashapp/copper](https://github.com/cashapp/copper/blob/trunk/.github/workflows/build.yaml)
 - [square/radiography](https://github.com/square/radiography/blob/main/.github/workflows/android.yml)
 - [Shopify/android-testify](https://github.com/Shopify/android-testify/blob/master/.github/workflows/sample_build.yml)
+- [square/leakcanary](https://github.com/square/leakcanary/tree/main/.github/workflows)
 
 If you are using **Android Emulator Runner** and want your project included in the list, please feel free to create an issue or open a pull request.
