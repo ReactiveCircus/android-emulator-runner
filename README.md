@@ -135,5 +135,7 @@ These are some of the open-source projects using (or used) **Android Emulator Ru
 - [square/radiography](https://github.com/square/radiography/blob/main/.github/workflows/android.yml)
 - [Shopify/android-testify](https://github.com/Shopify/android-testify/blob/master/.github/workflows/sample_build.yml)
 - [square/leakcanary](https://github.com/square/leakcanary/tree/main/.github/workflows)
+- [hash-checker/hash-checker](https://github.com/hash-checker/hash-checker/tree/master/.github/workflows)
+- [hash-checker/hash-checker-lite](https://github.com/hash-checker/hash-checker-lite/tree/master/.github/workflows)
 
 If you are using **Android Emulator Runner** and want your project included in the list, please feel free to create an issue or open a pull request.
