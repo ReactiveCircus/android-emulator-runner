@@ -26,9 +26,10 @@ export async function installAndroidSdk(apiLevel: number, target: string, arch: 
     const downloadPath = await tc.downloadTool(sdkUrl);
     await tc.extractZip(downloadPath, cmdlineToolsPath);
     await io.mv(`${cmdlineToolsPath}/cmdline-tools`, `${cmdlineToolsPath}/latest`);
-    // add paths for commandline-tools and platform-tools
-    core.addPath(`${cmdlineToolsPath}/latest:${cmdlineToolsPath}/latest/bin:${process.env.ANDROID_SDK_ROOT}/platform-tools`);
   }
+
+  // add paths for commandline-tools and platform-tools
+  core.addPath(`${cmdlineToolsPath}/latest:${cmdlineToolsPath}/latest/bin:${process.env.ANDROID_SDK_ROOT}/platform-tools`);
 
   // additional permission and license requirements for Linux
   const sdkPreviewLicensePath = `${process.env.ANDROID_SDK_ROOT}/licenses/android-sdk-preview-license`;
