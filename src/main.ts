@@ -1,6 +1,16 @@
 import * as core from '@actions/core';
 import { installAndroidSdk } from './sdk-installer';
-import { checkApiLevel, checkTarget, checkArch, checkDisableAnimations, checkEmulatorBuild, checkDisableSpellchecker, checkDisableAutofill, checkLongPressTimeout } from './input-validator';
+import {
+  checkApiLevel,
+  checkTarget,
+  checkArch,
+  checkDisableAnimations,
+  checkEmulatorBuild,
+  checkDisableSpellchecker,
+  checkDisableAutofill,
+  checkLongPressTimeout,
+  checkEnableHwKeyboard
+} from './input-validator';
 import { launchEmulator, killEmulator } from './emulator-manager';
 import * as exec from '@actions/exec';
 import { parseScript } from './script-parser';
@@ -56,6 +66,12 @@ async function run() {
     checkDisableAnimations(disableAnimationsInput);
     const disableAnimations = disableAnimationsInput === 'true';
     console.log(`disable animations: ${disableAnimations}`);
+
+    // disable ime
+    const enableHwKeyboardInput = core.getInput('enable-hw-keyboard');
+    checkEnableHwKeyboard(enableHwKeyboardInput);
+    const enableHwKeyboard = enableHwKeyboardInput === 'true';
+    console.log(`enable hw keyboard: ${enableHwKeyboard}`);
 
     // disable spellchecker
     const disableSpellcheckerInput = core.getInput('disable-spellchecker');
@@ -116,7 +132,7 @@ async function run() {
     await installAndroidSdk(apiLevel, target, arch, emulatorBuild, ndkVersion, cmakeVersion);
 
     // launch an emulator
-    await launchEmulator(apiLevel, target, arch, profile, sdcardPathOrSize, avdName, emulatorOptions, disableAnimations, disableSpellchecker, disableAutofill, longPressTimeout);
+    await launchEmulator(apiLevel, target, arch, profile, sdcardPathOrSize, avdName, emulatorOptions, disableAnimations, disableSpellchecker, disableAutofill, longPressTimeout, enableHwKeyboard);
 
     // execute the custom script
     try {

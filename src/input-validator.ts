@@ -41,6 +41,12 @@ export function checkDisableAutofill(disableAutofill: string): void {
   }
 }
 
+export function checkEnableHwKeyboard(enableHwKeyboard: string): void {
+  if (!isValidBoolean(enableHwKeyboard)) {
+    throw new Error(`Input for input.enable-hw-keyboard should be either 'true' or 'false'.`);
+  }
+}
+
 export function checkLongPressTimeout(timeout: string): void {
   if (isNaN(Number(timeout)) || !Number.isInteger(Number(timeout))) {
     throw new Error(`Unexpected longpress-timeout: '${timeout}'.`);

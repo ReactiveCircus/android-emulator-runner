@@ -16,7 +16,8 @@ export async function launchEmulator(
   disableAnimations: boolean,
   disableSpellChecker: boolean,
   disableAutofill: boolean,
-  longPressTimeout: number
+  longPressTimeout: number,
+  enableHwKeyboard: boolean
 ): Promise<void> {
   // create a new AVD
   const profileOption = profile.trim() !== '' ? `--device '${profile}'` : '';
@@ -25,6 +26,10 @@ export async function launchEmulator(
   await exec.exec(
     `sh -c \\"echo no | avdmanager create avd --force -n "${avdName}" --abi '${target}/${arch}' --package 'system-images;android-${apiLevel};${target};${arch}' ${profileOption} ${sdcardPathOrSizeOption}"`
   );
+
+  if (enableHwKeyboard) {
+    await exec.exec(`sh -c \\"printf 'hw.keyboard=yes\n' >> ~/.android/avd/"${avdName}".avd"/config.ini`);
+  }
 
   // start emulator
   console.log('Starting emulator.');
@@ -63,6 +68,9 @@ export async function launchEmulator(
   }
   if (longPressTimeout) {
     await exec.exec(`adb shell settings put secure long_press_timeout ${longPressTimeout}`);
+  }
+  if (enableHwKeyboard) {
+    await exec.exec(`adb shell settings put secure show_ime_with_hard_keyboard 0`);
   }
 }
 
