@@ -124,6 +124,27 @@ describe('disable-spellchecker validator tests', () => {
   });
 });
 
+describe('disable-autofill validator tests', () => {
+  it('Throws if disable-autofill is not a boolean', () => {
+    const func = () => {
+      validator.checkDisableAutofill('yes');
+    };
+    expect(func).toThrowError(`Input for input.disable-autofill should be either 'true' or 'false'.`);
+  });
+
+  it('Validates successfully if disable-autofill is either true or false', () => {
+    const func1 = () => {
+      validator.checkDisableAutofill('true');
+    };
+    expect(func1).not.toThrow();
+
+    const func2 = () => {
+      validator.checkDisableAutofill('false');
+    };
+    expect(func2).not.toThrow();
+  });
+});
+
 describe('emulator-build validator tests', () => {
   it('Throws if emulator-build is not a number', () => {
     const func = () => {

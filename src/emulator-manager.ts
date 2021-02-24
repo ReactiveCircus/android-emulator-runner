@@ -14,7 +14,8 @@ export async function launchEmulator(
   avdName: string,
   emulatorOptions: string,
   disableAnimations: boolean,
-  disableSpellChecker: boolean
+  disableSpellChecker: boolean,
+  disableAutofill: boolean
 ): Promise<void> {
   // create a new AVD
   const profileOption = profile.trim() !== '' ? `--device '${profile}'` : '';
@@ -55,6 +56,9 @@ export async function launchEmulator(
   }
   if (disableSpellChecker) {
     await exec.exec(`adb shell settings put secure spell_checker_enabled 0`);
+  }
+  if (disableAutofill) {
+    await exec.exec(`adb shell settings put secure autofill_service null`);
   }
 }
 

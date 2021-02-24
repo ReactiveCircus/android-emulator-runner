@@ -1,6 +1,6 @@
 import * as core from '@actions/core';
 import { installAndroidSdk } from './sdk-installer';
-import { checkApiLevel, checkTarget, checkArch, checkDisableAnimations, checkEmulatorBuild, checkDisableSpellchecker } from './input-validator';
+import { checkApiLevel, checkTarget, checkArch, checkDisableAnimations, checkEmulatorBuild, checkDisableSpellchecker, checkDisableAutofill } from './input-validator';
 import { launchEmulator, killEmulator } from './emulator-manager';
 import * as exec from '@actions/exec';
 import { parseScript } from './script-parser';
@@ -63,6 +63,12 @@ async function run() {
     const disableSpellchecker = disableSpellcheckerInput === 'true';
     console.log(`disable spellchecker: ${disableSpellchecker}`);
 
+    // disable autofill
+    const disableAutofillInput = core.getInput('disable-autofill');
+    checkDisableAutofill(disableAutofillInput);
+    const disableAutofill = disableAutofillInput === 'true';
+    console.log(`disable autofill: ${disableAutofill}`);
+
     // emulator build
     const emulatorBuildInput = core.getInput('emulator-build');
     if (emulatorBuildInput) {
@@ -104,7 +110,7 @@ async function run() {
     await installAndroidSdk(apiLevel, target, arch, emulatorBuild, ndkVersion, cmakeVersion);
 
     // launch an emulator
-    await launchEmulator(apiLevel, target, arch, profile, sdcardPathOrSize, avdName, emulatorOptions, disableAnimations, disableSpellchecker);
+    await launchEmulator(apiLevel, target, arch, profile, sdcardPathOrSize, avdName, emulatorOptions, disableAnimations, disableSpellchecker, disableAutofill);
 
     // execute the custom script
     try {

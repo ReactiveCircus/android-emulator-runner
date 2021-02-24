@@ -35,6 +35,12 @@ export function checkDisableSpellchecker(disableSpellchecker: string): void {
   }
 }
 
+export function checkDisableAutofill(disableAutofill: string): void {
+  if (!isValidBoolean(disableAutofill)) {
+    throw new Error(`Input for input.disable-autofill should be either 'true' or 'false'.`);
+  }
+}
+
 export function checkEmulatorBuild(emulatorBuild: string): void {
   if (isNaN(Number(emulatorBuild)) || !Number.isInteger(Number(emulatorBuild))) {
     throw new Error(`Unexpected emulator build: '${emulatorBuild}'.`);
