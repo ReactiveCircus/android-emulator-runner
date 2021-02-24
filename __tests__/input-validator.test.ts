@@ -103,6 +103,27 @@ describe('disable-animations validator tests', () => {
   });
 });
 
+describe('disable-spellchecker validator tests', () => {
+  it('Throws if disable-spellchecker is not a boolean', () => {
+    const func = () => {
+      validator.checkDisableSpellchecker('yes');
+    };
+    expect(func).toThrowError(`Input for input.disable-spellchecker should be either 'true' or 'false'.`);
+  });
+
+  it('Validates successfully if disable-spellchecker is either true or false', () => {
+    const func1 = () => {
+      validator.checkDisableSpellchecker('true');
+    };
+    expect(func1).not.toThrow();
+
+    const func2 = () => {
+      validator.checkDisableSpellchecker('false');
+    };
+    expect(func2).not.toThrow();
+  });
+});
+
 describe('emulator-build validator tests', () => {
   it('Throws if emulator-build is not a number', () => {
     const func = () => {

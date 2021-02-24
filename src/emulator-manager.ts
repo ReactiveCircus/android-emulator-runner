@@ -13,7 +13,8 @@ export async function launchEmulator(
   sdcardPathOrSize: string,
   avdName: string,
   emulatorOptions: string,
-  disableAnimations: boolean
+  disableAnimations: boolean,
+  disableSpellChecker: boolean
 ): Promise<void> {
   // create a new AVD
   const profileOption = profile.trim() !== '' ? `--device '${profile}'` : '';
@@ -51,6 +52,9 @@ export async function launchEmulator(
     await exec.exec(`adb shell settings put global window_animation_scale 0.0`);
     await exec.exec(`adb shell settings put global transition_animation_scale 0.0`);
     await exec.exec(`adb shell settings put global animator_duration_scale 0.0`);
+  }
+  if (disableSpellChecker) {
+    await exec.exec(`adb shell settings put secure spell_checker_enabled 0`);
   }
 }
 
