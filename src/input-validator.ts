@@ -41,6 +41,12 @@ export function checkDisableAutofill(disableAutofill: string): void {
   }
 }
 
+export function checkLongPressTimeout(timeout: string): void {
+  if (isNaN(Number(timeout)) || !Number.isInteger(Number(timeout))) {
+    throw new Error(`Unexpected longpress-timeout: '${timeout}'.`);
+  }
+}
+
 export function checkEmulatorBuild(emulatorBuild: string): void {
   if (isNaN(Number(emulatorBuild)) || !Number.isInteger(Number(emulatorBuild))) {
     throw new Error(`Unexpected emulator build: '${emulatorBuild}'.`);

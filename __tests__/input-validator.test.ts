@@ -145,6 +145,29 @@ describe('disable-autofill validator tests', () => {
   });
 });
 
+describe('longpress-timeout validator tests', () => {
+  it('Throws if longpress-timeout is not a number', () => {
+    const func = () => {
+      validator.checkLongPressTimeout('abc123');
+    };
+    expect(func).toThrowError(`Unexpected longpress-timeout: 'abc123'.`);
+  });
+
+  it('Throws if longpress-timeout is not an integer', () => {
+    const func = () => {
+      validator.checkLongPressTimeout('123.123');
+    };
+    expect(func).toThrowError(`Unexpected longpress-timeout: '123.123'.`);
+  });
+
+  it('Validates successfully with valid longpress-timeout', () => {
+    const func = () => {
+      validator.checkLongPressTimeout('6061023');
+    };
+    expect(func).not.toThrow();
+  });
+});
+
 describe('emulator-build validator tests', () => {
   it('Throws if emulator-build is not a number', () => {
     const func = () => {

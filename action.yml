@@ -33,6 +33,9 @@ inputs:
   disable-autofill:
     description: Whether to disable autofill - `true` or `false`.
     default: 'false'
+  longpress-timeout:
+    description: Longpress timeout in milliseconds.
+    default: 500
   emulator-build:
     description: 'build number of a specific version of the emulator binary to use - e.g. `6061023` for emulator v29.3.0.0'
   working-directory:

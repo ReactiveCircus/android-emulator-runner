@@ -15,7 +15,8 @@ export async function launchEmulator(
   emulatorOptions: string,
   disableAnimations: boolean,
   disableSpellChecker: boolean,
-  disableAutofill: boolean
+  disableAutofill: boolean,
+  longPressTimeout: number
 ): Promise<void> {
   // create a new AVD
   const profileOption = profile.trim() !== '' ? `--device '${profile}'` : '';
@@ -59,6 +60,9 @@ export async function launchEmulator(
   }
   if (disableAutofill) {
     await exec.exec(`adb shell settings put secure autofill_service null`);
+  }
+  if (longPressTimeout) {
+    await exec.exec(`adb shell settings put secure long_press_timeout ${longPressTimeout}`);
   }
 }
 
