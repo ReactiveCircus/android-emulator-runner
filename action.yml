@@ -41,6 +41,9 @@ inputs:
   enable-hw-keyboard:
     description: Enable hw keyboard and disable soft keyboard - `true` or `false`.
     default: 'false'
+  enable-logcat:
+    description: Enable reading and saving logcat output to `artifacts/logcat.log`.
+    default: 'false'
   emulator-build:
     description: 'build number of a specific version of the emulator binary to use - e.g. `6061023` for emulator v29.3.0.0'
   working-directory:

@@ -47,6 +47,12 @@ export function checkEnableHwKeyboard(enableHwKeyboard: string): void {
   }
 }
 
+export function checkEnableLogcat(enableLogcat: string): void {
+  if (!isValidBoolean(enableLogcat)) {
+    throw new Error(`Input for input.enable-logcat should be either 'true' or 'false'.`);
+  }
+}
+
 export function checkLongPressTimeout(timeout: string): void {
   if (isNaN(Number(timeout)) || !Number.isInteger(Number(timeout))) {
     throw new Error(`Unexpected longpress-timeout: '${timeout}'.`);

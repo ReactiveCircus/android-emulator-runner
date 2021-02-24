@@ -9,7 +9,8 @@ import {
   checkDisableSpellchecker,
   checkDisableAutofill,
   checkLongPressTimeout,
-  checkEnableHwKeyboard
+  checkEnableHwKeyboard,
+  checkEnableLogcat
 } from './input-validator';
 import { launchEmulator, killEmulator } from './emulator-manager';
 import * as exec from '@actions/exec';
@@ -76,6 +77,12 @@ async function run() {
     checkEnableHwKeyboard(enableHwKeyboardInput);
     const enableHwKeyboard = enableHwKeyboardInput === 'true';
     console.log(`enable hw keyboard: ${enableHwKeyboard}`);
+
+    // enable logcat
+    const enableLogcatInput = core.getInput('enable-logcat');
+    checkEnableLogcat(enableLogcatInput);
+    const enableLogcat = enableLogcatInput === 'true';
+    console.log(`enable logcat: ${enableLogcat}`);
 
     // disable spellchecker
     const disableSpellcheckerInput = core.getInput('disable-spellchecker');
@@ -149,7 +156,8 @@ async function run() {
       disableSpellchecker,
       disableAutofill,
       longPressTimeout,
-      enableHwKeyboard
+      enableHwKeyboard,
+      enableLogcat
     );
 
     // execute the custom script

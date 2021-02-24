@@ -1,6 +1,7 @@
 import * as exec from '@actions/exec';
 
 const EMULATOR_BOOT_TIMEOUT_SECONDS = 600;
+let ENABLE_LOGCAT = false;
 
 /**
  * Creates and launches a new AVD instance with the specified configurations.
@@ -18,7 +19,8 @@ export async function launchEmulator(
   disableSpellChecker: boolean,
   disableAutofill: boolean,
   longPressTimeout: number,
-  enableHwKeyboard: boolean
+  enableHwKeyboard: boolean,
+  enableLogcat: boolean
 ): Promise<void> {
   // create a new AVD
   const profileOption = profile.trim() !== '' ? `--device '${profile}'` : '';
@@ -77,6 +79,11 @@ export async function launchEmulator(
   if (enableHwKeyboard) {
     await exec.exec(`adb shell settings put secure show_ime_with_hard_keyboard 0`);
   }
+
+  if (enableLogcat) {
+    ENABLE_LOGCAT = enableLogcat;
+    await startLogcat();
+  }
 }
 
 /**
@@ -84,6 +91,9 @@ export async function launchEmulator(
  */
 export async function killEmulator(): Promise<void> {
   try {
+    if (ENABLE_LOGCAT) {
+      await stopLogcat();
+    }
     await exec.exec(`adb -s emulator-5554 emu kill`);
   } catch (error) {
     console.log(error.message);
@@ -128,4 +138,19 @@ async function waitForDevice(): Promise<void> {
 
 function delay(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function startLogcat(): Promise<void> {
+  console.log('Starting logcat read process');
+  await exec.exec(`mkdir -p artifacts`);
+  try {
+    await exec.exec(`sh -c \\"adb logcat -v time > artifacts/logcat.log &"`);
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+async function stopLogcat(): Promise<void> {
+  console.log('Stopping logcat read process');
+  await exec.exec(`sh -c "jobs -p | xargs kill"`);
 }

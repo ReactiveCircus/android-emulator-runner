@@ -101,6 +101,7 @@ jobs:
 | `disable-autofill` | Optional | `false` | Whether to disable autofill - `true` or `false`. |
 | `longpress-timeout` | Optional | 500 | Longpress timeout in milliseconds. |
 | `enable-hw-keyboard` | Optional | `false` | Whether to enable the hw keyboard and disable soft keyboard - `true` or `false`. |
+| `enable-logcat` | Optional | `false` | Whether to read and save logcat output to `artifacts/logcat.log` |
 | `emulator-build` | Optional | N/A | Build number of a specific version of the emulator binary to use e.g. `6061023` for emulator v29.3.0.0. |
 | `working-directory` | Optional | `./` | A custom working directory - e.g. `./android` if your root Gradle project is under the `./android` sub-directory within your repository. |
 | `ndk` | Optional | N/A | Version of NDK to install - e.g. `21.0.6113669` |

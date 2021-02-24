@@ -166,6 +166,27 @@ describe('enable-hw-keyboard validator tests', () => {
   });
 });
 
+describe('enable-logcat validator tests', () => {
+  it('Throws if enable-logcat is not a boolean', () => {
+    const func = () => {
+      validator.checkEnableLogcat('yes');
+    };
+    expect(func).toThrowError(`Input for input.enable-logcat should be either 'true' or 'false'.`);
+  });
+
+  it('Validates successfully if enable-logcat is either true or false', () => {
+    const func1 = () => {
+      validator.checkEnableLogcat('true');
+    };
+    expect(func1).not.toThrow();
+
+    const func2 = () => {
+      validator.checkEnableLogcat('false');
+    };
+    expect(func2).not.toThrow();
+  });
+});
+
 describe('longpress-timeout validator tests', () => {
   it('Throws if longpress-timeout is not a number', () => {
     const func = () => {
