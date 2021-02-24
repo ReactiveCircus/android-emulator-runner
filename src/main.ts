@@ -49,6 +49,10 @@ async function run() {
     const profile = core.getInput('profile');
     console.log(`Hardware profile: ${profile}`);
 
+    // Number of cores to use for emulator
+    const cores = core.getInput('cores');
+    console.log(`Cores: ${cores}`);
+
     // SD card path or size used for creating the AVD
     const sdcardPathOrSize = core.getInput('sdcard-path-or-size');
     console.log(`SD card path or size: ${sdcardPathOrSize}`);
@@ -132,7 +136,21 @@ async function run() {
     await installAndroidSdk(apiLevel, target, arch, emulatorBuild, ndkVersion, cmakeVersion);
 
     // launch an emulator
-    await launchEmulator(apiLevel, target, arch, profile, sdcardPathOrSize, avdName, emulatorOptions, disableAnimations, disableSpellchecker, disableAutofill, longPressTimeout, enableHwKeyboard);
+    await launchEmulator(
+      apiLevel,
+      target,
+      arch,
+      profile,
+      cores,
+      sdcardPathOrSize,
+      avdName,
+      emulatorOptions,
+      disableAnimations,
+      disableSpellchecker,
+      disableAutofill,
+      longPressTimeout,
+      enableHwKeyboard
+    );
 
     // execute the custom script
     try {

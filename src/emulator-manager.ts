@@ -10,6 +10,7 @@ export async function launchEmulator(
   target: string,
   arch: string,
   profile: string,
+  cores: string,
   sdcardPathOrSize: string,
   avdName: string,
   emulatorOptions: string,
@@ -26,6 +27,10 @@ export async function launchEmulator(
   await exec.exec(
     `sh -c \\"echo no | avdmanager create avd --force -n "${avdName}" --abi '${target}/${arch}' --package 'system-images;android-${apiLevel};${target};${arch}' ${profileOption} ${sdcardPathOrSizeOption}"`
   );
+
+  if (cores) {
+    await exec.exec(`sh -c \\"printf 'hw.cpu.ncore=${cores}\n' >> ~/.android/avd/"${avdName}".avd"/config.ini`);
+  }
 
   if (enableHwKeyboard) {
     await exec.exec(`sh -c \\"printf 'hw.keyboard=yes\n' >> ~/.android/avd/"${avdName}".avd"/config.ini`);
