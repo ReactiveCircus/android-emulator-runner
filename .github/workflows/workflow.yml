@@ -29,10 +29,10 @@ jobs:
             api-level: 23
           - target: google_apis
             api-level: 29
-        include:
-          - os: macos-11.0
-            api-level: 30
-            target: google_apis
+#         include:
+#           - os: macos-11.0
+#             api-level: 30
+#             target: google_apis
           - os: macos-latest
             api-level: 24
             target: playstore
