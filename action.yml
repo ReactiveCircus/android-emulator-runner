@@ -18,6 +18,8 @@ inputs:
     description: 'hardware profile used for creating the AVD - e.g. `Nexus 6`'
   cores:
     description: 'the number of cores to use for the emulator'
+  ram-size:
+    description: 'the size of RAM for this AVD'
   sdcard-path-or-size:
     description: 'path to the SD card image for this AVD or the size of a new SD card image to create for this AVD, in KB or MB, denoted with K or M. - e.g. `path/to/sdcard`, or `1000M`'
   avd-name:

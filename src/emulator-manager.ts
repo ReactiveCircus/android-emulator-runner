@@ -12,6 +12,7 @@ export async function launchEmulator(
   arch: string,
   profile: string,
   cores: string,
+  ramSize: string,
   sdcardPathOrSize: string,
   avdName: string,
   emulatorOptions: string,
@@ -32,6 +33,10 @@ export async function launchEmulator(
 
   if (cores) {
     await exec.exec(`sh -c \\"printf 'hw.cpu.ncore=${cores}\n' >> ~/.android/avd/"${avdName}".avd"/config.ini`);
+  }
+
+  if (ramSize) {
+    await exec.exec(`sh -c \\"printf 'hw.ramSize=${ramSize}\n' >> ~/.android/avd/"${avdName}".avd"/config.ini`);
   }
 
   if (enableHwKeyboard) {
