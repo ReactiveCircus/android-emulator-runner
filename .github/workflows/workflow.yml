@@ -71,6 +71,7 @@ jobs:
         target: ${{ matrix.target }}
         arch: x86
         profile: Nexus 6
+        cores: 2
         sdcard-path-or-size: 100M
         avd-name: test
         emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none
