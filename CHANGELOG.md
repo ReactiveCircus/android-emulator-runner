@@ -1,5 +1,9 @@
 # Change Log
 
+## v2.15.0
+
+* Added support for specifying the number of cores to use for the emulator - [#130](https://github.com/ReactiveCircus/android-emulator-runner/pull/130).
+
 ## v2.14.3
 
 * Support `macos-11.0` (Big Sur) runner - [#124](https://github.com/ReactiveCircus/android-emulator-runner/pull/124).
