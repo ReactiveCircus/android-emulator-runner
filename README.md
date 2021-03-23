@@ -138,6 +138,9 @@ These are some of the open-source projects using (or used) **Android Emulator Ru
 - [square/leakcanary](https://github.com/square/leakcanary/tree/main/.github/workflows)
 - [hash-checker/hash-checker](https://github.com/hash-checker/hash-checker/tree/master/.github/workflows)
 - [hash-checker/hash-checker-lite](https://github.com/hash-checker/hash-checker-lite/tree/master/.github/workflows)
+- [hash-checker/hash-checker-lite](https://github.com/hash-checker/hash-checker-lite/tree/master/.github/workflows)]
+- [Kiwix/kiwix-android](https://github.com/kiwix/kiwix-android/blob/develop/.github/workflows)
+- [wikimedia/apps-android-wikipedia](https://github.com/wikimedia/apps-android-wikipedia/blob/master/.github/workflows)
 - [google/android-fhir](https://github.com/google/android-fhir/tree/master/.github/workflows)
 
 If you are using **Android Emulator Runner** and want your project included in the list, please feel free to create an issue or open a pull request.

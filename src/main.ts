@@ -111,7 +111,9 @@ async function run() {
         process.chdir(workingDirectory);
       }
       for (const script of scripts) {
-        await exec.exec(`sh -c \\"${script}"`);
+        // use array form to avoid various quote escaping problems
+        // caused by exec(`sh -c "${script}"`)
+        await exec.exec('sh', ['-c', script]);
       }
     } catch (error) {
       core.setFailed(error.message);
