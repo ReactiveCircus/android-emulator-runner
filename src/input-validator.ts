@@ -1,6 +1,6 @@
 export const MIN_API_LEVEL = 15;
 export const VALID_TARGETS: Array<string> = ['default', 'google_apis', 'google_apis_playstore'];
-export const VALID_ARCHS: Array<string> = ['x86', 'x86_64'];
+export const VALID_ARCHS: Array<string> = ['x86', 'x86_64', 'arm64-v8a'];
 
 export function checkApiLevel(apiLevel: string): void {
   if (isNaN(Number(apiLevel)) || !Number.isInteger(Number(apiLevel))) {
