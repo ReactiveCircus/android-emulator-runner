@@ -1,5 +1,11 @@
 # Change Log
 
+## v2.16.0
+
+* Avoid wrapping script code in quotes - [#134](https://github.com/ReactiveCircus/android-emulator-runner/pull/134) @hostilefork
+* Add option to disable spellcheck - [#143](https://github.com/ReactiveCircus/android-emulator-runner/pull/143) @AfzalivE
+* Add support for arm64-v8a for Apple Silicon Macs - [#146](https://github.com/ReactiveCircus/android-emulator-runner/pull/146) @Jeehut
+
 ## v2.15.0
 
 * Added support for specifying the number of cores to use for the emulator - [#130](https://github.com/ReactiveCircus/android-emulator-runner/pull/130).
