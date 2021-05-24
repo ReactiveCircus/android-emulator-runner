@@ -35,6 +35,12 @@ export function checkDisableSpellchecker(disableSpellchecker: string): void {
   }
 }
 
+export function checkDisableLinuxHardwareAcceleration(disableLinuxHardwareAcceleration: string): void {
+  if (!isValidBoolean(disableLinuxHardwareAcceleration)) {
+    throw new Error(`Input for input.disable-linux-hw-accel should be either 'true' or 'false'.`);
+  }
+}
+
 export function checkEmulatorBuild(emulatorBuild: string): void {
   if (isNaN(Number(emulatorBuild)) || !Number.isInteger(Number(emulatorBuild))) {
     throw new Error(`Unexpected emulator build: '${emulatorBuild}'.`);

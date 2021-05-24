@@ -1,6 +1,6 @@
 import * as core from '@actions/core';
 import { installAndroidSdk } from './sdk-installer';
-import { checkApiLevel, checkTarget, checkArch, checkDisableAnimations, checkEmulatorBuild, checkDisableSpellchecker } from './input-validator';
+import { checkApiLevel, checkTarget, checkArch, checkDisableAnimations, checkEmulatorBuild, checkDisableSpellchecker, checkDisableLinuxHardwareAcceleration } from './input-validator';
 import { launchEmulator, killEmulator } from './emulator-manager';
 import * as exec from '@actions/exec';
 import { parseScript } from './script-parser';
@@ -67,6 +67,12 @@ async function run() {
     const disableSpellchecker = disableSpellcheckerInput === 'true';
     console.log(`disable spellchecker: ${disableSpellchecker}`);
 
+    // disable linux hardware acceleration
+    const disableLinuxHardwareAccelerationInput = core.getInput('disable-linux-hw-accel');
+    checkDisableLinuxHardwareAcceleration(disableLinuxHardwareAccelerationInput);
+    const disableLinuxHardwareAcceleration = disableLinuxHardwareAccelerationInput === 'true';
+    console.log(`disable Linux hardware acceleration: ${disableLinuxHardwareAcceleration}`);
+
     // emulator build
     const emulatorBuildInput = core.getInput('emulator-build');
     if (emulatorBuildInput) {
@@ -108,7 +114,7 @@ async function run() {
     await installAndroidSdk(apiLevel, target, arch, emulatorBuild, ndkVersion, cmakeVersion);
 
     // launch an emulator
-    await launchEmulator(apiLevel, target, arch, profile, cores, sdcardPathOrSize, avdName, emulatorOptions, disableAnimations, disableSpellchecker);
+    await launchEmulator(apiLevel, target, arch, profile, cores, sdcardPathOrSize, avdName, emulatorOptions, disableAnimations, disableSpellchecker, disableLinuxHardwareAcceleration);
 
     // execute the custom script
     try {
