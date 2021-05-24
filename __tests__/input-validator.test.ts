@@ -124,6 +124,27 @@ describe('disable-spellchecker validator tests', () => {
   });
 });
 
+describe('disable-linux-hw-accel validator tests', () => {
+  it('Throws if disable-linux-hw-accel is not a boolean', () => {
+    const func = () => {
+      validator.checkDisableLinuxHardwareAcceleration('yes');
+    };
+    expect(func).toThrowError(`Input for input.disable-linux-hw-accel should be either 'true' or 'false'.`);
+  });
+
+  it('Validates successfully if disable-linux-hw-accel is either true or false', () => {
+    const func1 = () => {
+      validator.checkDisableLinuxHardwareAcceleration('true');
+    };
+    expect(func1).not.toThrow();
+
+    const func2 = () => {
+      validator.checkDisableLinuxHardwareAcceleration('false');
+    };
+    expect(func2).not.toThrow();
+  });
+});
+
 describe('emulator-build validator tests', () => {
   it('Throws if emulator-build is not a number', () => {
     const func = () => {

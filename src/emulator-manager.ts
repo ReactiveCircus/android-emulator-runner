@@ -15,7 +15,8 @@ export async function launchEmulator(
   avdName: string,
   emulatorOptions: string,
   disableAnimations: boolean,
-  disableSpellChecker: boolean
+  disableSpellChecker: boolean,
+  disableLinuxHardwareAcceleration: boolean
 ): Promise<void> {
   // create a new AVD
   const profileOption = profile.trim() !== '' ? `--device '${profile}'` : '';
@@ -32,8 +33,9 @@ export async function launchEmulator(
   // start emulator
   console.log('Starting emulator.');
 
-  // turn off hardware acceleration on Linux
-  if (process.platform === 'linux') {
+  //turn off hardware acceleration on Linux
+  if (process.platform === 'linux' && disableLinuxHardwareAcceleration) {
+    console.log('Disabling Linux hardware acceleration.');
     emulatorOptions += ' -accel off';
   }
 
