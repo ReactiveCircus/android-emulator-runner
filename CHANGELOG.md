@@ -1,5 +1,9 @@
 # Change Log
 
+## v2.17.0
+
+* Add option to toggle Linux hardware acceleration - [#154](https://github.com/ReactiveCircus/android-emulator-runner/pull/154) @stevestotter
+
 ## v2.16.0
 
 * Avoid wrapping script code in quotes - [#134](https://github.com/ReactiveCircus/android-emulator-runner/pull/134) @hostilefork
