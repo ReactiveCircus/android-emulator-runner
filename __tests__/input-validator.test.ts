@@ -82,6 +82,27 @@ describe('arch validator tests', () => {
   });
 });
 
+describe('force-avd-creation validator tests', () => {
+  it('Throws if force-avd-creation is not a boolean', () => {
+    const func = () => {
+      validator.checkForceAvdCreation('yes');
+    };
+    expect(func).toThrowError(`Input for input.force-avd-creation should be either 'true' or 'false'.`);
+  });
+
+  it('Validates successfully if force-avd-creation is either true or false', () => {
+    const func1 = () => {
+      validator.checkForceAvdCreation('true');
+    };
+    expect(func1).not.toThrow();
+
+    const func2 = () => {
+      validator.checkForceAvdCreation('false');
+    };
+    expect(func2).not.toThrow();
+  });
+});
+
 describe('disable-animations validator tests', () => {
   it('Throws if disable-animations is not a boolean', () => {
     const func = () => {
