@@ -31,14 +31,14 @@ jobs:
   test:
     runs-on: macos-latest
     steps:
-    - name: checkout
-      uses: actions/checkout@v2
+      - name: checkout
+        uses: actions/checkout@v2
 
-    - name: run tests
-      uses: reactivecircus/android-emulator-runner@v2
-      with:
-        api-level: 29
-        script: ./gradlew connectedCheck
+      - name: run tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          script: ./gradlew connectedCheck
 ```
 
 We can also leverage GitHub Actions's build matrix to test across multiple configurations:
@@ -52,17 +52,17 @@ jobs:
         api-level: [21, 23, 29]
         target: [default, google_apis]
     steps:
-    - name: checkout
-      uses: actions/checkout@v2
+      - name: checkout
+        uses: actions/checkout@v2
 
-    - name: run tests
-      uses: reactivecircus/android-emulator-runner@v2
-      with:
-        api-level: ${{ matrix.api-level }}
-        target: ${{ matrix.target }}
-        arch: x86_64
-        profile: Nexus 6
-        script: ./gradlew connectedCheck
+      - name: run tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.api-level }}
+          target: ${{ matrix.target }}
+          arch: x86_64
+          profile: Nexus 6
+          script: ./gradlew connectedCheck
 ```
 
 If you need specific versions of **NDK** and **CMake** installed:
@@ -72,16 +72,70 @@ jobs:
   test:
     runs-on: macos-latest
     steps:
-    - name: checkout
-      uses: actions/checkout@v2
+      - name: checkout
+        uses: actions/checkout@v2
 
-    - name: run tests
-      uses: reactivecircus/android-emulator-runner@v2
-      with:
-        api-level: 29
-        ndk: 21.0.6113669
-        cmake: 3.10.2.4988404
-        script: ./gradlew connectedCheck
+      - name: run tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          ndk: 21.0.6113669
+          cmake: 3.10.2.4988404
+          script: ./gradlew connectedCheck
+```
+
+We can significantly reduce emulator startup time by setting up AVD snapshot caching:
+
+1. add an `actions/cache@v2` step for caching the `avd`
+2. add a `reactivecircus/android-emulator-runner@v2` step to generate a clean snapshot - specify `emulator-options` without `no-snapshot`
+3. add another `reactivecircus/android-emulator-runner@v2` step to run your tests using existing AVD / snapshot - specify `emulator-options` with `no-snapshot-save`
+
+```
+jobs:
+  test:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        api-level: [21, 23, 29]
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - name: Gradle cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/buildSrc/**/*.kt') }}
+
+      - name: AVD cache
+        uses: actions/cache@v2
+        id: avd-cache
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd-${{ matrix.api-level }}
+
+      - name: create AVD and generate snapshot for caching
+        if: steps.avd-cache.outputs.cache-hit != 'true'
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.api-level }}
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: false
+          script: echo "Generated AVD snapshot for caching."
+
+      - name: run tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.api-level }}
+          force-avd-creation: false
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
+          script: ./gradlew connectedCheck
 ```
 
 ## Configurations
