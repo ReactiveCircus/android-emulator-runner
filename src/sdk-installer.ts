@@ -31,6 +31,9 @@ export async function installAndroidSdk(apiLevel: number, target: string, arch: 
   // add paths for commandline-tools and platform-tools
   core.addPath(`${cmdlineToolsPath}/latest:${cmdlineToolsPath}/latest/bin:${process.env.ANDROID_SDK_ROOT}/platform-tools`);
 
+  // set standard AVD path
+  core.exportVariable('ANDROID_AVD_HOME', `${process.env.HOME}/.android/avd`);
+
   // additional permission and license requirements for Linux
   const sdkPreviewLicensePath = `${process.env.ANDROID_SDK_ROOT}/licenses/android-sdk-preview-license`;
   if (!isOnMac && !fs.existsSync(sdkPreviewLicensePath)) {

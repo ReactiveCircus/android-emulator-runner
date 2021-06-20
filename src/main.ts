@@ -1,6 +1,15 @@
 import * as core from '@actions/core';
 import { installAndroidSdk } from './sdk-installer';
-import { checkApiLevel, checkTarget, checkArch, checkDisableAnimations, checkEmulatorBuild, checkDisableSpellchecker, checkDisableLinuxHardwareAcceleration } from './input-validator';
+import {
+  checkApiLevel,
+  checkTarget,
+  checkArch,
+  checkDisableAnimations,
+  checkEmulatorBuild,
+  checkDisableSpellchecker,
+  checkDisableLinuxHardwareAcceleration,
+  checkForceAvdCreation
+} from './input-validator';
 import { launchEmulator, killEmulator } from './emulator-manager';
 import * as exec from '@actions/exec';
 import { parseScript } from './script-parser';
@@ -50,6 +59,12 @@ async function run() {
     // custom name used for creating the AVD
     const avdName = core.getInput('avd-name');
     console.log(`AVD name: ${avdName}`);
+
+    // force AVD creation
+    const forceAvdCreationInput = core.getInput('force-avd-creation');
+    checkForceAvdCreation(forceAvdCreationInput);
+    const forceAvdCreation = forceAvdCreationInput === 'true';
+    console.log(`force avd creation: ${forceAvdCreation}`);
 
     // emulator options
     const emulatorOptions = core.getInput('emulator-options').trim();
@@ -114,7 +129,20 @@ async function run() {
     await installAndroidSdk(apiLevel, target, arch, emulatorBuild, ndkVersion, cmakeVersion);
 
     // launch an emulator
-    await launchEmulator(apiLevel, target, arch, profile, cores, sdcardPathOrSize, avdName, emulatorOptions, disableAnimations, disableSpellchecker, disableLinuxHardwareAcceleration);
+    await launchEmulator(
+      apiLevel,
+      target,
+      arch,
+      profile,
+      cores,
+      sdcardPathOrSize,
+      avdName,
+      forceAvdCreation,
+      emulatorOptions,
+      disableAnimations,
+      disableSpellchecker,
+      disableLinuxHardwareAcceleration
+    );
 
     // execute the custom script
     try {

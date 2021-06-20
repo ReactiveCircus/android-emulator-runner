@@ -24,6 +24,9 @@ inputs:
   avd-name:
     description: 'custom AVD name used for creating the Android Virtual Device'
     default: 'test'
+  force-avd-creation:
+    description: 'whether to force create the AVD by overwriting an existing AVD with the same name as `avd-name` - `true` or `false`'
+    default: 'true'
   emulator-options:
     description: 'command-line options used when launching the emulator - e.g. `-no-window -no-snapshot -camera-back emulated`'
     default: '-no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim'
@@ -31,10 +34,10 @@ inputs:
     description: 'whether to disable animations - true or false'
     default: 'true'
   disable-spellchecker:
-    description: Whether to disable spellchecker - `true` or `false`.
+    description: 'whether to disable spellchecker - `true` or `false`'
     default: 'false'
   disable-linux-hw-accel:
-    description: Whether to disable hardware acceleration on Linux machines - `true` or `false`.
+    description: 'whether to disable hardware acceleration on Linux machines - `true` or `false`'
     default: 'true'
   emulator-build:
     description: 'build number of a specific version of the emulator binary to use - e.g. `6061023` for emulator v29.3.0.0'

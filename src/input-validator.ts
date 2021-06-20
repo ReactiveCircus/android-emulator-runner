@@ -23,6 +23,12 @@ export function checkArch(arch: string): void {
   }
 }
 
+export function checkForceAvdCreation(forceAvdCreation: string): void {
+  if (!isValidBoolean(forceAvdCreation)) {
+    throw new Error(`Input for input.force-avd-creation should be either 'true' or 'false'.`);
+  }
+}
+
 export function checkDisableAnimations(disableAnimations: string): void {
   if (!isValidBoolean(disableAnimations)) {
     throw new Error(`Input for input.disable-animations should be either 'true' or 'false'.`);

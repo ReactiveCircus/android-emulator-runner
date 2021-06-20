@@ -1,4 +1,5 @@
 import * as exec from '@actions/exec';
+import * as fs from 'fs';
 
 const EMULATOR_BOOT_TIMEOUT_SECONDS = 600;
 
@@ -13,31 +14,35 @@ export async function launchEmulator(
   cores: string,
   sdcardPathOrSize: string,
   avdName: string,
+  forceAvdCreation: boolean,
   emulatorOptions: string,
   disableAnimations: boolean,
   disableSpellChecker: boolean,
   disableLinuxHardwareAcceleration: boolean
 ): Promise<void> {
-  // create a new AVD
-  const profileOption = profile.trim() !== '' ? `--device '${profile}'` : '';
-  const sdcardPathOrSizeOption = sdcardPathOrSize.trim() !== '' ? `--sdcard '${sdcardPathOrSize}'` : '';
-  console.log(`Creating AVD.`);
-  await exec.exec(
-    `sh -c \\"echo no | avdmanager create avd --force -n "${avdName}" --abi '${target}/${arch}' --package 'system-images;android-${apiLevel};${target};${arch}' ${profileOption} ${sdcardPathOrSizeOption}"`
-  );
-
-  if (cores) {
-    await exec.exec(`sh -c \\"printf 'hw.cpu.ncore=${cores}\n' >> ~/.android/avd/"${avdName}".avd"/config.ini`);
+  // create a new AVD if AVD directory does not already exist or forceAvdCreation is true
+  const avdPath = `${process.env.ANDROID_AVD_HOME}/${avdName}.avd`;
+  if (!fs.existsSync(avdPath) || forceAvdCreation) {
+    const profileOption = profile.trim() !== '' ? `--device '${profile}'` : '';
+    const sdcardPathOrSizeOption = sdcardPathOrSize.trim() !== '' ? `--sdcard '${sdcardPathOrSize}'` : '';
+    console.log(`Creating AVD.`);
+    await exec.exec(
+      `sh -c \\"echo no | avdmanager create avd --force -n "${avdName}" --abi '${target}/${arch}' --package 'system-images;android-${apiLevel};${target};${arch}' ${profileOption} ${sdcardPathOrSizeOption}"`
+    );
   }
 
-  // start emulator
-  console.log('Starting emulator.');
+  if (cores) {
+    await exec.exec(`sh -c \\"printf 'hw.cpu.ncore=${cores}\n' >> ${process.env.ANDROID_AVD_HOME}/"${avdName}".avd"/config.ini`);
+  }
 
   //turn off hardware acceleration on Linux
   if (process.platform === 'linux' && disableLinuxHardwareAcceleration) {
     console.log('Disabling Linux hardware acceleration.');
     emulatorOptions += ' -accel off';
   }
+
+  // start emulator
+  console.log('Starting emulator.');
 
   await exec.exec(`sh -c \\"${process.env.ANDROID_SDK_ROOT}/emulator/emulator -avd "${avdName}" ${emulatorOptions} &"`, [], {
     listeners: {

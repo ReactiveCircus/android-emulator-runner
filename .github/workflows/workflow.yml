@@ -64,21 +64,52 @@ jobs:
           ~/.gradle/caches
           ~/.gradle/wrapper
         key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
+    - uses: actions/cache@v2
+      id: avd-cache
+      with:
+        path: |
+          ~/.android/avd/*
+          ~/.android/adb*
+          ~/.android/debug.keystore
+        key: avd-${{ matrix.api-level }}-${{ matrix.os }}-${{ matrix.target }}
+
+    - name: assemble tests
+      run: |
+        cd ./test-fixture/
+        ./gradlew assembleAndroidTest
+
+    - name: run emulator to generate snapshot for caching
+      if: steps.avd-cache.outputs.cache-hit != 'true'
+      uses: ./
+      with:
+        api-level: ${{ matrix.api-level }}
+        target: ${{ matrix.target }}
+        arch: x86
+        profile: Galaxy Nexus
+        cores: 2
+        sdcard-path-or-size: 100M
+        avd-name: test
+        force-avd-creation: false
+        emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+        disable-animations: false
+        working-directory: ./test-fixture/
+        script: echo "Generated AVD snapshot for caching."
+
     - name: run action
       uses: ./
       with:
         api-level: ${{ matrix.api-level }}
         target: ${{ matrix.target }}
         arch: x86
-        profile: Nexus 6
+        profile: Galaxy Nexus
         cores: 2
         sdcard-path-or-size: 100M
         avd-name: test
-        emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none
+        force-avd-creation: false
+        emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
         disable-animations: true
         working-directory: ./test-fixture/
         script: |
           echo $GITHUB_REPOSITORY
           adb devices
-          ./gradlew help
           ./gradlew connectedDebugAndroidTest

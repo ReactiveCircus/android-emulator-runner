@@ -1,5 +1,9 @@
 # Change Log
 
+## v2.18.0
+
+* Add `force-avd-creation` which when set to `false` will skip avd creation if avd with same name exists. This enables AVD snapshot caching which can significantly reduce emulator startup time. See [README.md](https://github.com/ReactiveCircus/android-emulator-runner/blob/main/README.md#usage) for a sample workflow. - [#159](https://github.com/ReactiveCircus/android-emulator-runner/pull/159)
+
 ## v2.17.0
 
 * Add option to toggle Linux hardware acceleration - [#154](https://github.com/ReactiveCircus/android-emulator-runner/pull/154) @stevestotter
