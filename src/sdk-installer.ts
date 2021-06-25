@@ -49,15 +49,17 @@ export async function installAndroidSdk(apiLevel: number, target: string, arch: 
   console.log('Installing latest build tools, platform tools, and platform.');
 
   await exec.exec(`sh -c \\"sdkmanager --install 'build-tools;${BUILD_TOOLS_VERSION}' platform-tools 'platforms;android-${apiLevel}' > /dev/null"`);
+
+  console.log('Installing latest emulator.');
+  await exec.exec(`sh -c \\"sdkmanager --install emulator > /dev/null"`);
+
   if (emulatorBuild) {
     console.log(`Installing emulator build ${emulatorBuild}.`);
-    await exec.exec(`curl -fo emulator.zip https://dl.google.com/android/repository/emulator-${isOnMac ? 'darwin' : 'linux'}-${emulatorBuild}.zip`);
-    await io.rmRF(`${process.env.ANDROID_SDK_ROOT}/emulator`);
-    await exec.exec(`unzip -q emulator.zip -d ${process.env.ANDROID_SDK_ROOT}`);
+    // TODO find out the correct download URLs for all build ids
+    const downloadUrlSuffix = Number(emulatorBuild.charAt(0)) > 6 ? `_x64-${emulatorBuild}` : `-${emulatorBuild}`;
+    await exec.exec(`curl -fo emulator.zip https://dl.google.com/android/repository/emulator-${isOnMac ? 'darwin' : 'linux'}${downloadUrlSuffix}.zip`);
+    await exec.exec(`unzip -o -q emulator.zip -d ${process.env.ANDROID_SDK_ROOT}`);
     await io.rmRF('emulator.zip');
-  } else {
-    console.log('Installing latest emulator.');
-    await exec.exec(`sh -c \\"sdkmanager --install emulator > /dev/null"`);
   }
   console.log('Installing system images.');
   await exec.exec(`sh -c \\"sdkmanager --install 'system-images;android-${apiLevel};${target};${arch}' > /dev/null"`);

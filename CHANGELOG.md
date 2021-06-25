@@ -1,5 +1,9 @@
 # Change Log
 
+## v2.18.1
+
+* Added support for setting modern emulator build ids for `emulator-build`. Not all build ids are supported until we are able to figure out at which build id the download URL pattern changed. `7425822` (version 30.7.3) is currently the last known working build id.
+
 ## v2.18.0
 
 * Add `force-avd-creation` which when set to `false` will skip avd creation if avd with same name exists. This enables AVD snapshot caching which can significantly reduce emulator startup time. See [README.md](https://github.com/ReactiveCircus/android-emulator-runner/blob/main/README.md#usage) for a sample workflow. - [#159](https://github.com/ReactiveCircus/android-emulator-runner/pull/159)
