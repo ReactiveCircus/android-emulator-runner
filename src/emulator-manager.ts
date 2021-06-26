@@ -12,6 +12,7 @@ export async function launchEmulator(
   arch: string,
   profile: string,
   cores: string,
+  ramSize: string,
   sdcardPathOrSize: string,
   avdName: string,
   forceAvdCreation: boolean,
@@ -33,6 +34,10 @@ export async function launchEmulator(
 
   if (cores) {
     await exec.exec(`sh -c \\"printf 'hw.cpu.ncore=${cores}\n' >> ${process.env.ANDROID_AVD_HOME}/"${avdName}".avd"/config.ini`);
+  }
+
+  if (ramSize) {
+    await exec.exec(`sh -c \\"printf 'hw.ramSize=${ramSize}\n' >> ${process.env.ANDROID_AVD_HOME}/"${avdName}".avd"/config.ini`);
   }
 
   //turn off hardware acceleration on Linux

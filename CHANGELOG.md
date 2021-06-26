@@ -1,5 +1,10 @@
 # Change Log
 
+## v2.19.0
+
+* Add option to specify `ram-size` for the AVD. - [#165](https://github.com/ReactiveCircus/android-emulator-runner/pull/165).
+
+
 ## v2.18.1
 
 * Added support for setting modern emulator build ids for `emulator-build`. Not all build ids are supported until we are able to figure out at which build id the download URL pattern changed. `7425822` (version 30.7.3) is currently the last known working build id.
