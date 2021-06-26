@@ -103,6 +103,7 @@ jobs:
         arch: x86
         profile: Galaxy Nexus
         cores: 2
+        ram-size: 2048M
         sdcard-path-or-size: 100M
         avd-name: test
         force-avd-creation: false
