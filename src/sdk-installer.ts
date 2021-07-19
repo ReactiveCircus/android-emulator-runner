@@ -34,17 +34,8 @@ export async function installAndroidSdk(apiLevel: number, target: string, arch: 
   // set standard AVD path
   core.exportVariable('ANDROID_AVD_HOME', `${process.env.HOME}/.android/avd`);
 
-  // additional permission and license requirements for Linux
-  const sdkPreviewLicensePath = `${process.env.ANDROID_SDK_ROOT}/licenses/android-sdk-preview-license`;
-  if (!isOnMac && !fs.existsSync(sdkPreviewLicensePath)) {
-    fs.writeFileSync(sdkPreviewLicensePath, '\n84831b9409646a918e30573bab4c9c91346d8abd');
-  }
-
-  // license required for API 30 and non-default API 28 system images
-  const sdkArmDbtLicensePath = `${process.env.ANDROID_SDK_ROOT}/licenses/android-sdk-arm-dbt-license`;
-  if (requiresArmDbtLicense(apiLevel, target) && !fs.existsSync(sdkArmDbtLicensePath)) {
-    fs.writeFileSync(sdkArmDbtLicensePath, '\n859f317696f67ef3d7f30a50a5560e7834b43903');
-  }
+  // accept all Android SDK licenses
+  await exec.exec(`sh -c \\"yes | sdkmanager --licenses > /dev/null"`);
 
   console.log('Installing latest build tools, platform tools, and platform.');
 
@@ -72,8 +63,4 @@ export async function installAndroidSdk(apiLevel: number, target: string, arch: 
     console.log(`Installing CMake ${cmakeVersion}.`);
     await exec.exec(`sh -c \\"sdkmanager --install 'cmake;${cmakeVersion}' > /dev/null"`);
   }
-}
-
-function requiresArmDbtLicense(apiLevel: number, target: string): boolean {
-  return apiLevel === 30 || (apiLevel === 28 && target !== 'default');
 }
