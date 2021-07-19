@@ -62,7 +62,7 @@ export async function installAndroidSdk(apiLevel: number, target: string, arch: 
     await io.rmRF('emulator.zip');
   }
   console.log('Installing system images.');
-  await exec.exec(`sh -c \\"sdkmanager --install 'system-images;android-${apiLevel};${target};${arch}' > /dev/null"`);
+  await exec.exec(`sh -c \\"yes | sdkmanager --install 'system-images;android-${apiLevel};${target};${arch}' > /dev/null"`);
 
   if (ndkVersion) {
     console.log(`Installing NDK ${ndkVersion}.`);
