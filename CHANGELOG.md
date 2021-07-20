@@ -1,5 +1,9 @@
 # Change Log
 
+## v2.19.1
+
+* Accept all Android SDL Licenses to fix `sdkmanager` installation. - [#172](https://github.com/ReactiveCircus/android-emulator-runner/pull/172) @marcuspridham.
+
 ## v2.19.0
 
 * Add option to specify `ram-size` for the AVD. - [#165](https://github.com/ReactiveCircus/android-emulator-runner/pull/165).
