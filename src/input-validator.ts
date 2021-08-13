@@ -1,5 +1,5 @@
 export const MIN_API_LEVEL = 15;
-export const VALID_TARGETS: Array<string> = ['default', 'google_apis', 'google_apis_playstore'];
+export const VALID_TARGETS: Array<string> = ['default', 'google_apis', 'google_apis_playstore', 'android-wear', 'android-wear-cn', 'android-tv', 'google-tv'];
 export const VALID_ARCHS: Array<string> = ['x86', 'x86_64', 'arm64-v8a'];
 
 export function checkApiLevel(apiLevel: string): void {
