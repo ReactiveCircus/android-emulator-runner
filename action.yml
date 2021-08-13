@@ -9,7 +9,7 @@ inputs:
     description: 'API level of the platform and system image - e.g. 23 for Android Marshmallow, 29 for Android 10'
     required: true
   target:
-    description: 'target of the system image - default, google_apis or playstore'
+    description: 'target of the system image - default, google_apis, google_apis_playstore, android-wear, android-wear-cn, android-tv or google-tv'
     default: 'default'
   arch:
     description: 'CPU architecture of the system image - x86, x86_64 or arm64-v8a'
