@@ -202,5 +202,6 @@ These are some of the open-source projects using (or used) **Android Emulator Ru
 - [google/accompanist](https://github.com/google/accompanist/blob/main/.github/workflows)
 - [dotanuki-labs/norris](https://github.com/dotanuki-labs/norris/blob/master/.github/workflows/main.yml)
 - [TiagoMSSantos/MobileRT](https://github.com/TiagoMSSantos/MobileRT/blob/master/.github/workflows/android.yml)
+- [realm/realm-js](https://github.com/realm/realm-js/blob/master/.github/workflows/integration-tests.yml)
 
 If you are using **Android Emulator Runner** and want your project included in the list, please feel free to create an issue or open a pull request.
