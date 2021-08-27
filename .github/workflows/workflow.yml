@@ -30,7 +30,7 @@ jobs:
           - target: google_apis
             api-level: 29
         include:
-          - os: macos-11.0
+          - os: macos-11
             api-level: 30
             target: google_apis
           - os: macos-latest
