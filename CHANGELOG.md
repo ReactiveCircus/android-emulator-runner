@@ -1,5 +1,12 @@
 # Change Log
 
+## v2.20.0
+
+* Support non-mobile targets: `android-wear`, `android-wear-cn`, `android-tv` and `google-tv`. - [#180](https://github.com/ReactiveCircus/android-emulator-runner/pull/180) @alexvanyo.
+* Update SDK command-line tools to `5.0`. - [#174](https://github.com/ReactiveCircus/android-emulator-runner/pull/174)
+* Update build tools to `31.0.0`. - [#174](https://github.com/ReactiveCircus/android-emulator-runner/pull/174)
+* Add option to specify the `channel` to download SDK components from: `stable` (default), `beta`, `dev` and `canary`. - [#185](https://github.com/ReactiveCircus/android-emulator-runner/pull/185)
+
 ## v2.19.1
 
 * Accept all Android SDL Licenses to fix `sdkmanager` installation. - [#172](https://github.com/ReactiveCircus/android-emulator-runner/pull/172) @marcuspridham.
