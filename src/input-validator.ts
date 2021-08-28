@@ -1,6 +1,7 @@
 export const MIN_API_LEVEL = 15;
-export const VALID_TARGETS: Array<string> = ['default', 'google_apis', 'google_apis_playstore'];
+export const VALID_TARGETS: Array<string> = ['default', 'google_apis', 'google_apis_playstore', 'android-wear', 'android-wear-cn', 'android-tv', 'google-tv'];
 export const VALID_ARCHS: Array<string> = ['x86', 'x86_64', 'arm64-v8a'];
+export const VALID_CHANNELS: Array<string> = ['stable', 'beta', 'dev', 'canary'];
 
 export function checkApiLevel(apiLevel: string): void {
   if (isNaN(Number(apiLevel)) || !Number.isInteger(Number(apiLevel))) {
@@ -20,6 +21,12 @@ export function checkTarget(target: string): void {
 export function checkArch(arch: string): void {
   if (!VALID_ARCHS.includes(arch)) {
     throw new Error(`Value for input.arch '${arch}' is unknown. Supported options: ${VALID_ARCHS}.`);
+  }
+}
+
+export function checkChannel(channel: string): void {
+  if (!VALID_CHANNELS.includes(channel)) {
+    throw new Error(`Value for input.channel '${channel}' is unknown. Supported options: ${VALID_CHANNELS}.`);
   }
 }
 

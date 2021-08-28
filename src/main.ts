@@ -8,11 +8,13 @@ import {
   checkEmulatorBuild,
   checkDisableSpellchecker,
   checkDisableLinuxHardwareAcceleration,
-  checkForceAvdCreation
+  checkForceAvdCreation,
+  checkChannel
 } from './input-validator';
 import { launchEmulator, killEmulator } from './emulator-manager';
 import * as exec from '@actions/exec';
 import { parseScript } from './script-parser';
+import { getChannelId } from './channel-id-mapper';
 
 async function run() {
   try {
@@ -121,6 +123,12 @@ async function run() {
     }
     const cmakeVersion = !cmakeInput ? undefined : cmakeInput;
 
+    // channelId (up to and including) to download the SDK packages from
+    const channelName = core.getInput('channel');
+    checkChannel(channelName);
+    const channelId = getChannelId(channelName);
+    console.log(`Channel: ${channelId} (${channelName})`);
+
     // custom script to run
     const scriptInput = core.getInput('script', { required: true });
     const scripts = parseScript(scriptInput);
@@ -130,7 +138,7 @@ async function run() {
     });
 
     // install SDK
-    await installAndroidSdk(apiLevel, target, arch, emulatorBuild, ndkVersion, cmakeVersion);
+    await installAndroidSdk(apiLevel, target, arch, channelId, emulatorBuild, ndkVersion, cmakeVersion);
 
     // launch an emulator
     await launchEmulator(

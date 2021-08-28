@@ -55,9 +55,29 @@ describe('target validator tests', () => {
     expect(func2).not.toThrow();
 
     const func3 = () => {
-      validator.checkTarget('google_apis');
+      validator.checkTarget('google_apis_playstore');
     };
     expect(func3).not.toThrow();
+
+    const func4 = () => {
+      validator.checkTarget('android-wear');
+    };
+    expect(func4).not.toThrow();
+
+    const func5 = () => {
+      validator.checkTarget('android-wear-cn');
+    };
+    expect(func5).not.toThrow();
+
+    const func6 = () => {
+      validator.checkTarget('android-tv');
+    };
+    expect(func6).not.toThrow();
+
+    const func7 = () => {
+      validator.checkTarget('google-tv');
+    };
+    expect(func7).not.toThrow();
   });
 });
 
@@ -79,6 +99,37 @@ describe('arch validator tests', () => {
       validator.checkArch('x86_64');
     };
     expect(func2).not.toThrow();
+  });
+});
+
+describe('channel validator tests', () => {
+  it('Throws if channel is unknown', () => {
+    const func = () => {
+      validator.checkChannel('some-channel');
+    };
+    expect(func).toThrowError(`Value for input.channel 'some-channel' is unknown. Supported options: ${validator.VALID_CHANNELS}`);
+  });
+
+  it('Validates successfully with valid channel', () => {
+    const func1 = () => {
+      validator.checkChannel('stable');
+    };
+    expect(func1).not.toThrow();
+
+    const func2 = () => {
+      validator.checkChannel('beta');
+    };
+    expect(func2).not.toThrow();
+
+    const func3 = () => {
+      validator.checkChannel('dev');
+    };
+    expect(func3).not.toThrow();
+
+    const func4 = () => {
+      validator.checkChannel('canary');
+    };
+    expect(func4).not.toThrow();
   });
 });
 
