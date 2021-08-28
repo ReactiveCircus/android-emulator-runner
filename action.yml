@@ -49,6 +49,9 @@ inputs:
     description: 'version of NDK to install - e.g. 21.0.6113669'
   cmake:
     description: 'version of CMake to install - e.g. 3.10.2.4988404'
+  channel:
+    description: 'Channel to download the SDK components from - `stable`, `beta`, `dev`, `canary`'
+    default: 'stable'
   script:
     description: 'custom script to run - e.g. `./gradlew connectedCheck`'
     required: true

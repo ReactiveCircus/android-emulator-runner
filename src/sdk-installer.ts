@@ -12,7 +12,7 @@ const CMDLINE_TOOLS_URL_LINUX = 'https://dl.google.com/android/repository/comman
  * Installs & updates the Android SDK for the macOS platform, including SDK platform for the chosen API level, latest build tools, platform tools, Android Emulator,
  * and the system image for the chosen API level, CPU arch, and target.
  */
-export async function installAndroidSdk(apiLevel: number, target: string, arch: string, emulatorBuild?: string, ndkVersion?: string, cmakeVersion?: string): Promise<void> {
+export async function installAndroidSdk(apiLevel: number, target: string, arch: string, channelId: number, emulatorBuild?: string, ndkVersion?: string, cmakeVersion?: string): Promise<void> {
   const isOnMac = process.platform === 'darwin';
 
   if (!isOnMac) {
@@ -42,7 +42,7 @@ export async function installAndroidSdk(apiLevel: number, target: string, arch: 
   await exec.exec(`sh -c \\"sdkmanager --install 'build-tools;${BUILD_TOOLS_VERSION}' platform-tools 'platforms;android-${apiLevel}' > /dev/null"`);
 
   console.log('Installing latest emulator.');
-  await exec.exec(`sh -c \\"sdkmanager --install emulator > /dev/null"`);
+  await exec.exec(`sh -c \\"sdkmanager --install emulator --channel=${channelId} > /dev/null"`);
 
   if (emulatorBuild) {
     console.log(`Installing emulator build ${emulatorBuild}.`);
@@ -53,14 +53,14 @@ export async function installAndroidSdk(apiLevel: number, target: string, arch: 
     await io.rmRF('emulator.zip');
   }
   console.log('Installing system images.');
-  await exec.exec(`sh -c \\"sdkmanager --install 'system-images;android-${apiLevel};${target};${arch}' > /dev/null"`);
+  await exec.exec(`sh -c \\"sdkmanager --install 'system-images;android-${apiLevel};${target};${arch}' --channel=${channelId} > /dev/null"`);
 
   if (ndkVersion) {
     console.log(`Installing NDK ${ndkVersion}.`);
-    await exec.exec(`sh -c \\"sdkmanager --install 'ndk;${ndkVersion}' > /dev/null"`);
+    await exec.exec(`sh -c \\"sdkmanager --install 'ndk;${ndkVersion}' --channel=${channelId} > /dev/null"`);
   }
   if (cmakeVersion) {
     console.log(`Installing CMake ${cmakeVersion}.`);
-    await exec.exec(`sh -c \\"sdkmanager --install 'cmake;${cmakeVersion}' > /dev/null"`);
+    await exec.exec(`sh -c \\"sdkmanager --install 'cmake;${cmakeVersion}' --channel=${channelId} > /dev/null"`);
   }
 }
