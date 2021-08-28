@@ -9,7 +9,7 @@
 
 ## v2.19.1
 
-* Accept all Android SDL Licenses to fix `sdkmanager` installation. - [#172](https://github.com/ReactiveCircus/android-emulator-runner/pull/172) @marcuspridham.
+* Accept all Android SDK Licenses to fix `sdkmanager` installation. - [#172](https://github.com/ReactiveCircus/android-emulator-runner/pull/172) @marcuspridham.
 
 ## v2.19.0
 
