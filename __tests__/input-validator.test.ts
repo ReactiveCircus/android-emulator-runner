@@ -102,6 +102,37 @@ describe('arch validator tests', () => {
   });
 });
 
+describe('channel validator tests', () => {
+  it('Throws if channel is unknown', () => {
+    const func = () => {
+      validator.checkChannel('some-channel');
+    };
+    expect(func).toThrowError(`Value for input.channel 'some-channel' is unknown. Supported options: ${validator.VALID_CHANNELS}`);
+  });
+
+  it('Validates successfully with valid channel', () => {
+    const func1 = () => {
+      validator.checkChannel('stable');
+    };
+    expect(func1).not.toThrow();
+
+    const func2 = () => {
+      validator.checkChannel('beta');
+    };
+    expect(func2).not.toThrow();
+
+    const func3 = () => {
+      validator.checkChannel('dev');
+    };
+    expect(func3).not.toThrow();
+
+    const func4 = () => {
+      validator.checkChannel('canary');
+    };
+    expect(func4).not.toThrow();
+  });
+});
+
 describe('force-avd-creation validator tests', () => {
   it('Throws if force-avd-creation is not a boolean', () => {
     const func = () => {

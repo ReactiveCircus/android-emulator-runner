@@ -143,7 +143,7 @@ jobs:
 | **Input** | **Required** | **Default** | **Description** |
 |-|-|-|-|
 | `api-level` | Required | N/A | API level of the platform system image - e.g. 23 for Android Marshmallow, 29 for Android 10. **Minimum API level supported is 15**. |
-| `target` | Optional | `default` | Target of the system image - `default`, `google_apis`, `google_apis_playstore`, `android-wear`, `android-wear-cn`, `android-tv` or `google-tv`. |
+| `target` | Optional | `default` | Target of the system image - `default`, `google_apis` or `playstore`. |
 | `arch` | Optional | `x86` | CPU architecture of the system image - `x86`, `x86_64` or `arm64-v8a`. Note that `x86_64` image is only available for API 21+. `arm64-v8a` images require Android 4.2+ and are limited to fewer API levels (e.g. 30). |
 | `profile` | Optional | N/A | Hardware profile used for creating the AVD - e.g. `Nexus 6`. For a list of all profiles available, run `avdmanager list` and refer to the results under "Available Android Virtual Devices". |
 | `cores` | Optional | 2 | Number of cores to use for the emulator (`hw.cpu.ncore` in config.ini). |
@@ -159,6 +159,7 @@ jobs:
 | `working-directory` | Optional | `./` | A custom working directory - e.g. `./android` if your root Gradle project is under the `./android` sub-directory within your repository. |
 | `ndk` | Optional | N/A | Version of NDK to install - e.g. `21.0.6113669` |
 | `cmake` | Optional | N/A | Version of CMake to install - e.g. `3.10.2.4988404` |
+| `channel` | Optional | stable | Channel to download the SDK components from - `stable`, `beta`, `dev`, `canary` |
 | `script` | Required | N/A | Custom script to run - e.g. to run Android instrumented tests on the emulator: `./gradlew connectedCheck` |
 
 Default `emulator-options`: `-no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim`.
@@ -201,7 +202,5 @@ These are some of the open-source projects using (or used) **Android Emulator Ru
 - [google/android-fhir](https://github.com/google/android-fhir/tree/master/.github/workflows)
 - [google/accompanist](https://github.com/google/accompanist/blob/main/.github/workflows)
 - [dotanuki-labs/norris](https://github.com/dotanuki-labs/norris/blob/master/.github/workflows/main.yml)
-- [TiagoMSSantos/MobileRT](https://github.com/TiagoMSSantos/MobileRT/blob/master/.github/workflows/android.yml)
-- [realm/realm-js](https://github.com/realm/realm-js/blob/master/.github/workflows/integration-tests.yml)
 
 If you are using **Android Emulator Runner** and want your project included in the list, please feel free to create an issue or open a pull request.
