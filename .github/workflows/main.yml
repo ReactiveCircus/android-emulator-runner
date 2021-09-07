@@ -1,6 +1,8 @@
 name: Main workflow
 on:
   pull_request:
+    paths-ignore:
+      - '**.md'
   push:
     branches:
       - main
