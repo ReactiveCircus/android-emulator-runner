@@ -38,8 +38,8 @@ jobs:
             target: playstore
             arch: x86
           - os: macos-latest
-            api-level: 28
-            target: google_apis
+            api-level: 30
+            target: aosp_atd
             arch: x86
           - os: macos-11
             api-level: 31
@@ -99,6 +99,7 @@ jobs:
         emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
         disable-animations: false
         working-directory: ./test-fixture/
+        channel: canary
         script: echo "Generated AVD snapshot for caching."
 
     - name: run action
@@ -116,6 +117,7 @@ jobs:
         emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
         disable-animations: true
         working-directory: ./test-fixture/
+        channel: canary
         script: |
           echo $GITHUB_REPOSITORY
           adb devices
