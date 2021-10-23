@@ -55,29 +55,39 @@ describe('target validator tests', () => {
     expect(func2).not.toThrow();
 
     const func3 = () => {
-      validator.checkTarget('google_apis_playstore');
+      validator.checkTarget('aosp_atd');
     };
     expect(func3).not.toThrow();
 
     const func4 = () => {
-      validator.checkTarget('android-wear');
+      validator.checkTarget('google_atd');
     };
     expect(func4).not.toThrow();
 
     const func5 = () => {
-      validator.checkTarget('android-wear-cn');
+      validator.checkTarget('google_apis_playstore');
     };
     expect(func5).not.toThrow();
 
     const func6 = () => {
-      validator.checkTarget('android-tv');
+      validator.checkTarget('android-wear');
     };
     expect(func6).not.toThrow();
 
     const func7 = () => {
-      validator.checkTarget('google-tv');
+      validator.checkTarget('android-wear-cn');
     };
     expect(func7).not.toThrow();
+
+    const func8 = () => {
+      validator.checkTarget('android-tv');
+    };
+    expect(func8).not.toThrow();
+
+    const func9 = () => {
+      validator.checkTarget('google-tv');
+    };
+    expect(func9).not.toThrow();
   });
 });
 
