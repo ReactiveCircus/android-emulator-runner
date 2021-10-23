@@ -11,7 +11,7 @@ on:
         required: true
         default: '30'
       target:
-        description: 'target of the system image - default, google_apis, google_apis_playstore, android-wear, android-wear-cn, android-tv or google-tv'
+        description: 'target of the system image - default, google_apis, google_apis_playstore, aosp_atd, google_atd, android-wear, android-wear-cn, android-tv or google-tv'
         required: true
         default: 'default'
       arch:
