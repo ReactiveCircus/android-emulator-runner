@@ -1,5 +1,12 @@
 # Change Log
 
+## v2.21.0
+
+* Support new [ATD](https://developer.android.com/studio/preview/features#gmd-atd) targets optimized to reduce CPU and memory resources when running instrumented tests: `aosp_atd`, `google_atd`. - [#198](https://github.com/ReactiveCircus/android-emulator-runner/pull/198). Note that currently these targets require the following:
+  * `api-level: 30`
+  * `arch: x86` or `arch: arm64-v8a`
+  * `channel: canary`
+
 ## v2.20.0
 
 * Support non-mobile targets: `android-wear`, `android-wear-cn`, `android-tv` and `google-tv`. - [#180](https://github.com/ReactiveCircus/android-emulator-runner/pull/180) @alexvanyo.
