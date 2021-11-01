@@ -22,7 +22,7 @@ This action automates the process by doing the following:
 
 ## Usage
 
-It is recommended to run this action on a **macOS** VM, e.g. `macos-latest`, `macos-10.15` or `	macos-11` to take advantage of hardware acceleration support provided by **HAXM**.
+It is recommended to run this action on a **macOS** VM, e.g. `macos-latest`, `macos-10.15` or `macos-11` to take advantage of hardware acceleration support provided by **HAXM**.
 
 A workflow that uses **android-emulator-runner** to run your instrumented tests on **API 29**:
 
