@@ -76,7 +76,7 @@ export async function launchEmulator(
 }
 
 /**
- * Kills the running emulator on the defaut port.
+ * Kills the running emulator on the default port.
  */
 export async function killEmulator(): Promise<void> {
   try {
