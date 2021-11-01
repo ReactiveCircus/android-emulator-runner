@@ -93,7 +93,7 @@ async function waitForDevice(): Promise<void> {
   let booted = false;
   let attempts = 0;
   const retryInterval = 2; // retry every 2 seconds
-  const maxAttemps = EMULATOR_BOOT_TIMEOUT_SECONDS / 2;
+  const maxAttempts = EMULATOR_BOOT_TIMEOUT_SECONDS / 2;
   while (!booted) {
     try {
       let result = '';
@@ -113,7 +113,7 @@ async function waitForDevice(): Promise<void> {
       console.warn(error.message);
     }
 
-    if (attempts < maxAttemps) {
+    if (attempts < maxAttempts) {
       await delay(retryInterval * 1000);
     } else {
       throw new Error(`Timeout waiting for emulator to boot.`);
