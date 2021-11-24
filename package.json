@@ -28,16 +28,16 @@
     "set-value": "^4.1.0"
   },
   "devDependencies": {
-    "@types/jest": "^24.9.1",
+    "@types/jest": "^27.0.3",
     "@types/node": "^12.20.34",
-    "@typescript-eslint/eslint-plugin": "^2.34.0",
-    "@typescript-eslint/parser": "^2.34.0",
-    "eslint": "^6.8.0",
+    "@typescript-eslint/eslint-plugin": "^5.4.0",
+    "@typescript-eslint/parser": "^5.4.0",
+    "eslint": "^8.3.0",
     "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-prettier": "^3.4.1",
     "jest": "^26.6.3",
-    "jest-circus": "^25.5.4",
+    "jest-circus": "^27.3.1",
     "prettier": "^1.19.1",
     "ts-jest": "^26.5.6",
     "typescript": "^3.9.10"
