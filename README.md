@@ -145,7 +145,7 @@ jobs:
 | `api-level` | Required | N/A | API level of the platform system image - e.g. 23 for Android Marshmallow, 29 for Android 10. **Minimum API level supported is 15**. |
 | `target` | Optional | `default` | Target of the system image - `default`, `google_apis` or `playstore`. |
 | `arch` | Optional | `x86` | CPU architecture of the system image - `x86`, `x86_64` or `arm64-v8a`. Note that `x86_64` image is only available for API 21+. `arm64-v8a` images require Android 4.2+ and are limited to fewer API levels (e.g. 30). |
-| `profile` | Optional | N/A | Hardware profile used for creating the AVD - e.g. `Nexus 6`. For a list of all profiles available, run `avdmanager list` and refer to the results under "Available Android Virtual Devices". |
+| `profile` | Optional | N/A | Hardware profile used for creating the AVD - e.g. `Nexus 6`. For a list of all profiles available, run `avdmanager list device`. |
 | `cores` | Optional | 2 | Number of cores to use for the emulator (`hw.cpu.ncore` in config.ini). |
 | `ram-size` | Optional | N/A | Size of RAM to use for this AVD, in KB or MB, denoted with K or M. - e.g. `2048M` |
 | `sdcard-path-or-size` | Optional | N/A | Path to the SD card image for this AVD or the size of a new SD card image to create for this AVD, in KB or MB, denoted with K or M. - e.g. `path/to/sdcard`, or `1000M`. |
