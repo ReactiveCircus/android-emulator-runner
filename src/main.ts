@@ -9,7 +9,8 @@ import {
   checkDisableSpellchecker,
   checkDisableLinuxHardwareAcceleration,
   checkForceAvdCreation,
-  checkChannel
+  checkChannel,
+  checkEnableHardwareKeyboard
 } from './input-validator';
 import { launchEmulator, killEmulator } from './emulator-manager';
 import * as exec from '@actions/exec';
@@ -94,6 +95,12 @@ async function run() {
     const disableLinuxHardwareAcceleration = disableLinuxHardwareAccelerationInput === 'true';
     console.log(`disable Linux hardware acceleration: ${disableLinuxHardwareAcceleration}`);
 
+    // enable hardware keyboard
+    const enableHardwareKeyboardInput = core.getInput('enable-hw-keyboard');
+    checkEnableHardwareKeyboard(enableHardwareKeyboardInput);
+    const enableHardwareKeyboard = enableHardwareKeyboardInput === 'true';
+    console.log(`enable hardware keyboard: ${enableHardwareKeyboard}`);
+
     // emulator build
     const emulatorBuildInput = core.getInput('emulator-build');
     if (emulatorBuildInput) {
@@ -154,7 +161,8 @@ async function run() {
       emulatorOptions,
       disableAnimations,
       disableSpellchecker,
-      disableLinuxHardwareAcceleration
+      disableLinuxHardwareAcceleration,
+      enableHardwareKeyboard
     );
 
     // execute the custom script

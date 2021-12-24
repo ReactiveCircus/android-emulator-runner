@@ -155,6 +155,7 @@ jobs:
 | `disable-animations` | Optional | `true` | Whether to disable animations - `true` or `false`. |
 | `disable-spellchecker` | Optional | `false` | Whether to disable spellchecker - `true` or `false`. |
 | `disable-linux-hw-accel` | Optional | `true` | Whether to disable hardware acceleration on Linux machines - `true` or `false`. Note that this is true by default as Github-hosted Linux runners do not support hardware acceleration. |
+| `enable-hw-keyboard` | Optional | `false` | Whether to enable hardware keyboard - `true` or `false`. |
 | `emulator-build` | Optional | N/A | Build number of a specific version of the emulator binary to use e.g. `6061023` for emulator v29.3.0.0. |
 | `working-directory` | Optional | `./` | A custom working directory - e.g. `./android` if your root Gradle project is under the `./android` sub-directory within your repository. |
 | `ndk` | Optional | N/A | Version of NDK to install - e.g. `21.0.6113669` |
