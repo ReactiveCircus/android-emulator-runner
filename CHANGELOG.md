@@ -1,5 +1,10 @@
 # Change Log
 
+## v2.22.0
+
+* Add option to enable hardware keyboard. - [#209](https://github.com/ReactiveCircus/android-emulator-runner/pull/209) (upstreamed from the [Doist fork](https://github.com/Doist/android-emulator-runner/commit/4b6ca99f0d657662beca3eb0c22d8e254fbd5b31)).
+* Update README and fix typos. - [#203](https://github.com/ReactiveCircus/android-emulator-runner/pull/203) @JPrendy.
+
 ## v2.21.0
 
 * Support new [ATD](https://developer.android.com/studio/preview/features#gmd-atd) targets optimized to reduce CPU and memory resources when running instrumented tests: `aosp_atd`, `google_atd`. - [#198](https://github.com/ReactiveCircus/android-emulator-runner/pull/198). Note that currently these targets require the following:
