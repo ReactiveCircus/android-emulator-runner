@@ -1,5 +1,9 @@
 ## Releases
 
+## 1.0.10
+
+Contains a bug fix where proxy is defined without a user and password. see [PR here](https://github.com/actions/http-client/pull/42)   
+
 ## 1.0.9
 Throw HttpClientError instead of a generic Error from the \<verb>Json() helper methods when the server responds with a non-successful status code. 
 

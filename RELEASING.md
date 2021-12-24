@@ -1,6 +1,6 @@
 # GitHub Action - Android Emulator Runner
 
-Refer to the [recommendeations for versioning and releasing actions](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md#recommendations).
+Refer to the [recommendations for versioning and releasing actions](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md#recommendations).
 
 ## New major release
 
