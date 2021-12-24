@@ -19,7 +19,8 @@ export async function launchEmulator(
   emulatorOptions: string,
   disableAnimations: boolean,
   disableSpellChecker: boolean,
-  disableLinuxHardwareAcceleration: boolean
+  disableLinuxHardwareAcceleration: boolean,
+  enableHardwareKeyboard: boolean
 ): Promise<void> {
   // create a new AVD if AVD directory does not already exist or forceAvdCreation is true
   const avdPath = `${process.env.ANDROID_AVD_HOME}/${avdName}.avd`;
@@ -38,6 +39,10 @@ export async function launchEmulator(
 
   if (ramSize) {
     await exec.exec(`sh -c \\"printf 'hw.ramSize=${ramSize}\n' >> ${process.env.ANDROID_AVD_HOME}/"${avdName}".avd"/config.ini`);
+  }
+
+  if (enableHardwareKeyboard) {
+    await exec.exec(`sh -c \\"printf 'hw.keyboard=yes\n' >> ${process.env.ANDROID_AVD_HOME}/"${avdName}".avd"/config.ini`);
   }
 
   //turn off hardware acceleration on Linux
@@ -63,7 +68,6 @@ export async function launchEmulator(
   await waitForDevice();
   await exec.exec(`adb shell input keyevent 82`);
 
-  // disable animations
   if (disableAnimations) {
     console.log('Disabling animations.');
     await exec.exec(`adb shell settings put global window_animation_scale 0.0`);
@@ -72,6 +76,9 @@ export async function launchEmulator(
   }
   if (disableSpellChecker) {
     await exec.exec(`adb shell settings put secure spell_checker_enabled 0`);
+  }
+  if (enableHardwareKeyboard) {
+    await exec.exec(`adb shell settings put secure show_ime_with_hard_keyboard 0`);
   }
 }
 

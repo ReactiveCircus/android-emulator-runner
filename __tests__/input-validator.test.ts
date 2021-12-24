@@ -227,6 +227,27 @@ describe('disable-linux-hw-accel validator tests', () => {
   });
 });
 
+describe('enable-hw-keyboard validator tests', () => {
+  it('Throws if enable-hw-keyboard is not a boolean', () => {
+    const func = () => {
+      validator.checkEnableHardwareKeyboard('yes');
+    };
+    expect(func).toThrowError(`Input for input.enable-hw-keyboard should be either 'true' or 'false'.`);
+  });
+
+  it('Validates successfully if enable-hardware-keyboard is either true or false', () => {
+    const func1 = () => {
+      validator.checkEnableHardwareKeyboard('true');
+    };
+    expect(func1).not.toThrow();
+
+    const func2 = () => {
+      validator.checkEnableHardwareKeyboard('false');
+    };
+    expect(func2).not.toThrow();
+  });
+});
+
 describe('emulator-build validator tests', () => {
   it('Throws if emulator-build is not a number', () => {
     const func = () => {
