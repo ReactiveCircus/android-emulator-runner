@@ -54,6 +54,12 @@ export function checkDisableLinuxHardwareAcceleration(disableLinuxHardwareAccele
   }
 }
 
+export function checkEnableHardwareKeyboard(enableHardwareKeyboard: string): void {
+  if (!isValidBoolean(enableHardwareKeyboard)) {
+    throw new Error(`Input for input.enable-hw-keyboard should be either 'true' or 'false'.`);
+  }
+}
+
 export function checkEmulatorBuild(emulatorBuild: string): void {
   if (isNaN(Number(emulatorBuild)) || !Number.isInteger(Number(emulatorBuild))) {
     throw new Error(`Unexpected emulator build: '${emulatorBuild}'.`);
