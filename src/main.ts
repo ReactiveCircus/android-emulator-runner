@@ -58,6 +58,10 @@ async function run() {
     // RAM to use for AVD
     const ramSize = core.getInput('ram-size');
     console.log(`RAM size: ${ramSize}`);
+	
+    // Heap size for AVD
+    const heapSize = core.getInput('heap-size');
+    console.log(`Heap size: ${heapSize}`);
 
     // SD card path or size used for creating the AVD
     const sdcardPathOrSize = core.getInput('sdcard-path-or-size');
@@ -155,6 +159,7 @@ async function run() {
       profile,
       cores,
       ramSize,
+      heapSize,
       sdcardPathOrSize,
       avdName,
       forceAvdCreation,

@@ -13,6 +13,7 @@ export async function launchEmulator(
   profile: string,
   cores: string,
   ramSize: string,
+  heapSize: string,
   sdcardPathOrSize: string,
   avdName: string,
   forceAvdCreation: boolean,
@@ -34,16 +35,26 @@ export async function launchEmulator(
   }
 
   if (cores) {
+    await exec.exec(`sh -c \\"sed -i '' '/hw\.cpu\.ncore.*/d' ${process.env.ANDROID_AVD_HOME}/"${avdName}".avd"/config.ini`);
     await exec.exec(`sh -c \\"printf 'hw.cpu.ncore=${cores}\n' >> ${process.env.ANDROID_AVD_HOME}/"${avdName}".avd"/config.ini`);
   }
 
   if (ramSize) {
+    await exec.exec(`sh -c \\"sed -i '' '/hw\.ramSize.*/d' ${process.env.ANDROID_AVD_HOME}/"${avdName}".avd"/config.ini`);
     await exec.exec(`sh -c \\"printf 'hw.ramSize=${ramSize}\n' >> ${process.env.ANDROID_AVD_HOME}/"${avdName}".avd"/config.ini`);
   }
+  
+  if (heapSize) {
+    await exec.exec(`sh -c \\"sed -i '' '/vm\.heapSize.*/d' ${process.env.ANDROID_AVD_HOME}/"${avdName}".avd"/config.ini`);
+    await exec.exec(`sh -c \\"printf 'vm.heapSize=${heapSize}\n' >> ${process.env.ANDROID_AVD_HOME}/"${avdName}".avd"/config.ini`);
+  }
+
 
   if (enableHardwareKeyboard) {
     await exec.exec(`sh -c \\"printf 'hw.keyboard=yes\n' >> ${process.env.ANDROID_AVD_HOME}/"${avdName}".avd"/config.ini`);
   }
+  
+  await exec.exec(`sh -c \\"cat ${process.env.ANDROID_AVD_HOME}/"${avdName}".avd"/config.ini`);
 
   //turn off hardware acceleration on Linux
   if (process.platform === 'linux' && disableLinuxHardwareAcceleration) {

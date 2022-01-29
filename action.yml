@@ -20,7 +20,11 @@ inputs:
     description: 'the number of cores to use for the emulator'
     default: 2
   ram-size:
-    description: 'size of RAM to use for this AVD, in KB or MB, denoted with K or M. - e.g. `2048M`'
+    description: 'size of RAM to use for this AVD, in MB, - e.g. `2048`'
+    default: 2048
+  heap-size:
+    description: 'Heap size for this AVD, in MB, - e.g. `512`. Seems to not working correctly with some API level and arch combinations'
+    default: 512
   sdcard-path-or-size:
     description: 'path to the SD card image for this AVD or the size of a new SD card image to create for this AVD, in KB or MB, denoted with K or M. - e.g. `path/to/sdcard`, or `1000M`'
   avd-name:
