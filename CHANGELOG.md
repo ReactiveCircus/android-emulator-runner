@@ -1,5 +1,9 @@
 # Change Log
 
+## v2.23.0
+
+* Add option to change heap size
+
 ## v2.22.0
 
 * Add option to enable hardware keyboard. - [#209](https://github.com/ReactiveCircus/android-emulator-runner/pull/209) (upstreamed from the [Doist fork](https://github.com/Doist/android-emulator-runner/commit/4b6ca99f0d657662beca3eb0c22d8e254fbd5b31)).
