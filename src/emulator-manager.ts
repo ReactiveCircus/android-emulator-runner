@@ -14,6 +14,7 @@ export async function launchEmulator(
   cores: string,
   ramSize: string,
   sdcardPathOrSize: string,
+  diskSize: string,
   avdName: string,
   forceAvdCreation: boolean,
   emulatorOptions: string,
@@ -43,6 +44,10 @@ export async function launchEmulator(
 
   if (enableHardwareKeyboard) {
     await exec.exec(`sh -c \\"printf 'hw.keyboard=yes\n' >> ${process.env.ANDROID_AVD_HOME}/"${avdName}".avd"/config.ini`);
+  }
+
+  if (diskSize) {
+    await exec.exec(`sh -c \\"printf 'disk.dataPartition.size=${diskSize}\n' >> ${process.env.ANDROID_AVD_HOME}/"${avdName}".avd"/config.ini`);
   }
 
   //turn off hardware acceleration on Linux
