@@ -66,7 +66,7 @@ async function run() {
 
     const diskSize = core.getInput('disk-size');
     checkDiskSize(diskSize);
-    console.log(`Disk size: ${diskSize}`)
+    console.log(`Disk size: ${diskSize}`);
 
     // custom name used for creating the AVD
     const avdName = core.getInput('avd-name');
