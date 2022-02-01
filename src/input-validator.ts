@@ -74,13 +74,12 @@ export function checkDiskSize(diskSize: string): void {
   // Disk size can be empty - the default value
   if (diskSize) {
     // Can also be number of bytes
-    const diskSizeNumber: Number = Number(diskSize);
-    if (isNaN(diskSizeNumber) || !Number.isInteger(diskSizeNumber)) {
+    if (isNaN(Number(diskSize)) || !Number.isInteger(Number(diskSize))) {
       // Disk size can have a size multiplier at the end K, M or G
       const diskSizeUpperCase = diskSize.toUpperCase();
       if (diskSizeUpperCase.endsWith("K") || diskSizeUpperCase.endsWith("M") || diskSizeUpperCase.endsWith("G")) {
-        const diskSizeNumberNoModifier: Number = Number(diskSize.slice(0, -1));
-        if (isNaN(diskSizeNumberNoModifier) || !Number.isInteger(diskSizeNumberNoModifier)) {
+        const diskSizeNoModifier: string = diskSize.slice(0, -1);
+        if (isNaN(Number(diskSizeNoModifier)) || !Number.isInteger(Number(diskSizeNoModifier))) {
           throw new Error(`Unexpected disk size: '${diskSize}'.`);
         }
       }
