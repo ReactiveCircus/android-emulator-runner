@@ -79,7 +79,7 @@ export function checkDiskSize(diskSize: string): void {
       const diskSizeUpperCase = diskSize.toUpperCase();
       if (diskSizeUpperCase.endsWith('K') || diskSizeUpperCase.endsWith('M') || diskSizeUpperCase.endsWith('G')) {
         const diskSizeNoModifier: string = diskSize.slice(0, -1);
-        if (isNaN(Number(diskSizeNoModifier)) || !Number.isInteger(Number(diskSizeNoModifier))) {
+        if (0 == diskSizeNoModifier.length || isNaN(Number(diskSizeNoModifier)) || !Number.isInteger(Number(diskSizeNoModifier))) {
           throw new Error(`Unexpected disk size: '${diskSize}'.`);
         }
       }
