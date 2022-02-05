@@ -270,3 +270,54 @@ describe('emulator-build validator tests', () => {
     expect(func).not.toThrow();
   });
 });
+
+describe('checkDiskSize validator tests', () => {
+  it('Empty size is acceptable, means default', () => {
+    const func = () => {
+      validator.checkDiskSize('');
+    };
+    expect(func).not.toThrow();
+  });
+
+  it('Numbers means bytes', () => {
+    expect(() => {
+      validator.checkDiskSize('8000000000');
+    }).not.toThrow();
+  });
+
+  it('Uppercase size modifier', () => {
+    expect(() => {
+      validator.checkDiskSize('8000000K');
+    }).not.toThrow();
+    expect(() => {
+      validator.checkDiskSize('8000M');
+    }).not.toThrow();
+    expect(() => {
+      validator.checkDiskSize('8G');
+    }).not.toThrow();
+  });
+
+  it('Lowercase size modifier', () => {
+    expect(() => {
+      validator.checkDiskSize('8000000k');
+    }).not.toThrow();
+    expect(() => {
+      validator.checkDiskSize('8000m');
+    }).not.toThrow();
+    expect(() => {
+      validator.checkDiskSize('8g');
+    }).not.toThrow();
+  });
+
+  it('Modifier without a number is unacceptable', () => {
+    expect(() => {
+      validator.checkDiskSize('G');
+    }).toThrowError(`Unexpected disk size: 'G'.`);
+  });
+
+  it('Double modifier is unacceptable', () => {
+    expect(() => {
+      validator.checkDiskSize('14gg');
+    }).toThrowError(`Unexpected disk size: '14gg'.`);
+  });
+});
