@@ -10,7 +10,8 @@ import {
   checkDisableLinuxHardwareAcceleration,
   checkForceAvdCreation,
   checkChannel,
-  checkEnableHardwareKeyboard
+  checkEnableHardwareKeyboard,
+  checkDiskSize
 } from './input-validator';
 import { launchEmulator, killEmulator } from './emulator-manager';
 import * as exec from '@actions/exec';
@@ -62,6 +63,10 @@ async function run() {
     // SD card path or size used for creating the AVD
     const sdcardPathOrSize = core.getInput('sdcard-path-or-size');
     console.log(`SD card path or size: ${sdcardPathOrSize}`);
+
+    const diskSize = core.getInput('disk-size');
+    checkDiskSize(diskSize);
+    console.log(`Disk size: ${diskSize}`);
 
     // custom name used for creating the AVD
     const avdName = core.getInput('avd-name');
@@ -156,6 +161,7 @@ async function run() {
       cores,
       ramSize,
       sdcardPathOrSize,
+      diskSize,
       avdName,
       forceAvdCreation,
       emulatorOptions,
