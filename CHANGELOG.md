@@ -1,5 +1,12 @@
 # Change Log
 
+## v2.23.0
+
+* Update build tools to `32.0.0`. - [#212](https://github.com/ReactiveCircus/android-emulator-runner/pull/212)
+* Update SDK command-line tools to `6.0`. - [#213](https://github.com/ReactiveCircus/android-emulator-runner/pull/213)
+* Add option to specify `disk-size` for the AVD. - [#219](https://github.com/ReactiveCircus/android-emulator-runner/pull/219) @ViliusSutkus89.
+* Improve logging by grouping log lines. - [#224](https://github.com/ReactiveCircus/android-emulator-runner/pull/224) @michaelkaye.
+
 ## v2.22.0
 
 * Add option to enable hardware keyboard. - [#209](https://github.com/ReactiveCircus/android-emulator-runner/pull/209) (upstreamed from the [Doist fork](https://github.com/Doist/android-emulator-runner/commit/4b6ca99f0d657662beca3eb0c22d8e254fbd5b31)).
