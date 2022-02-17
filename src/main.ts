@@ -10,7 +10,8 @@ import {
   checkDisableLinuxHardwareAcceleration,
   checkForceAvdCreation,
   checkChannel,
-  checkEnableHardwareKeyboard
+  checkEnableHardwareKeyboard,
+  checkDiskSize
 } from './input-validator';
 import { launchEmulator, killEmulator } from './emulator-manager';
 import * as exec from '@actions/exec';
@@ -19,6 +20,7 @@ import { getChannelId } from './channel-id-mapper';
 
 async function run() {
   try {
+    console.log(`::group::Configure emulator`);
     // only support running on macOS or Linux
     if (process.platform !== 'darwin') {
       if (process.platform === 'linux') {
@@ -62,6 +64,10 @@ async function run() {
     // SD card path or size used for creating the AVD
     const sdcardPathOrSize = core.getInput('sdcard-path-or-size');
     console.log(`SD card path or size: ${sdcardPathOrSize}`);
+
+    const diskSize = core.getInput('disk-size');
+    checkDiskSize(diskSize);
+    console.log(`Disk size: ${diskSize}`);
 
     // custom name used for creating the AVD
     const avdName = core.getInput('avd-name');
@@ -143,6 +149,7 @@ async function run() {
     scripts.forEach(async (script: string) => {
       console.log(`${script}`);
     });
+    console.log(`::endgroup::`);
 
     // install SDK
     await installAndroidSdk(apiLevel, target, arch, channelId, emulatorBuild, ndkVersion, cmakeVersion);
@@ -156,6 +163,7 @@ async function run() {
       cores,
       ramSize,
       sdcardPathOrSize,
+      diskSize,
       avdName,
       forceAvdCreation,
       emulatorOptions,

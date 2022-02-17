@@ -149,6 +149,7 @@ jobs:
 | `cores` | Optional | 2 | Number of cores to use for the emulator (`hw.cpu.ncore` in config.ini). |
 | `ram-size` | Optional | N/A | Size of RAM to use for this AVD, in KB or MB, denoted with K or M. - e.g. `2048M` |
 | `sdcard-path-or-size` | Optional | N/A | Path to the SD card image for this AVD or the size of a new SD card image to create for this AVD, in KB or MB, denoted with K or M. - e.g. `path/to/sdcard`, or `1000M`. |
+| `disk-size` | Optional | N/A | Disk size to use for this AVD. Either in bytes or KB, MB or GB, when denoted with K, M or G. - e.g. `2048M` |
 | `avd-name` | Optional | `test` | Custom AVD name used for creating the Android Virtual Device. |
 | `force-avd-creation` | Optional | `true` | Whether to force create the AVD by overwriting an existing AVD with the same name as `avd-name` - `true` or `false`. |
 | `emulator-options` | Optional | See below | Command-line options used when launching the emulator (replacing all default options) - e.g. `-no-window -no-snapshot -camera-back emulated`. |
@@ -199,7 +200,7 @@ These are some of the open-source projects using (or used) **Android Emulator Ru
 - [hash-checker/hash-checker](https://github.com/hash-checker/hash-checker/tree/master/.github/workflows)
 - [hash-checker/hash-checker-lite](https://github.com/hash-checker/hash-checker-lite/tree/master/.github/workflows)
 - [Kiwix/kiwix-android](https://github.com/kiwix/kiwix-android/blob/develop/.github/workflows)
-- [wikimedia/apps-android-wikipedia](https://github.com/wikimedia/apps-android-wikipedia/blob/master/.github/workflows)
+- [wikimedia/apps-android-wikipedia](https://github.com/wikimedia/apps-android-wikipedia/blob/main/.github/workflows)
 - [google/android-fhir](https://github.com/google/android-fhir/tree/master/.github/workflows)
 - [google/accompanist](https://github.com/google/accompanist/blob/main/.github/workflows)
 - [dotanuki-labs/norris](https://github.com/dotanuki-labs/norris/blob/master/.github/workflows/main.yml)
