@@ -20,6 +20,7 @@ import { getChannelId } from './channel-id-mapper';
 
 async function run() {
   try {
+    console.log(`::group::Configure emulator`);
     // only support running on macOS or Linux
     if (process.platform !== 'darwin') {
       if (process.platform === 'linux') {
@@ -148,6 +149,7 @@ async function run() {
     scripts.forEach(async (script: string) => {
       console.log(`${script}`);
     });
+    console.log(`::endgroup::`);
 
     // install SDK
     await installAndroidSdk(apiLevel, target, arch, channelId, emulatorBuild, ndkVersion, cmakeVersion);
