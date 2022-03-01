@@ -138,6 +138,9 @@ jobs:
           script: ./gradlew connectedCheck
 ```
 
+Note: if you want to use [gradle-build-action](https://github.com/gradle/gradle-build-action) with `reactivecircus/android-emulator-runner`,
+need to declare `uses: gradle/gradle-build-actionv2` without any arguments before `uses: reactivecircus/android-emulator-runner@v2`, more details see [#229](https://github.com/ReactiveCircus/android-emulator-runner/issues/229).
+
 ## Configurations
 
 | **Input** | **Required** | **Default** | **Description** |
