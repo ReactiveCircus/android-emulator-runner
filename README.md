@@ -26,7 +26,7 @@ It is recommended to run this action on a **macOS** VM, e.g. `macos-latest`, `ma
 
 A workflow that uses **android-emulator-runner** to run your instrumented tests on **API 29**:
 
-```
+```yml
 jobs:
   test:
     runs-on: macos-latest
@@ -43,7 +43,7 @@ jobs:
 
 We can also leverage GitHub Actions's build matrix to test across multiple configurations:
 
-```
+```yml
 jobs:
   test:
     runs-on: macos-latest
@@ -67,7 +67,7 @@ jobs:
 
 If you need specific versions of **NDK** and **CMake** installed:
 
-```
+```yml
 jobs:
   test:
     runs-on: macos-latest
@@ -90,7 +90,7 @@ We can significantly reduce emulator startup time by setting up AVD snapshot cac
 2. add a `reactivecircus/android-emulator-runner@v2` step to generate a clean snapshot - specify `emulator-options` without `no-snapshot`
 3. add another `reactivecircus/android-emulator-runner@v2` step to run your tests using existing AVD / snapshot - specify `emulator-options` with `no-snapshot-save`
 
-```
+```yml
 jobs:
   test:
     runs-on: macos-latest
