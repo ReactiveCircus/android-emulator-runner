@@ -100,3 +100,4 @@ typings/
 
 # IntelliJ IDEA
 .idea
+*.iml
