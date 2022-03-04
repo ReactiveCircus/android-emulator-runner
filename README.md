@@ -86,9 +86,10 @@ jobs:
 
 We can significantly reduce emulator startup time by setting up AVD snapshot caching:
 
-1. add an `actions/cache@v2` step for caching the `avd`
-2. add a `reactivecircus/android-emulator-runner@v2` step to generate a clean snapshot - specify `emulator-options` without `no-snapshot`
-3. add another `reactivecircus/android-emulator-runner@v2` step to run your tests using existing AVD / snapshot - specify `emulator-options` with `no-snapshot-save`
+1. add a `gradle/gradle-build-action@v2` step for caching the Gradle, more details see [#229](https://github.com/ReactiveCircus/android-emulator-runner/issues/229)
+2. add an `actions/cache@v2` step for caching the `avd`
+3. add a `reactivecircus/android-emulator-runner@v2` step to generate a clean snapshot - specify `emulator-options` without `no-snapshot`
+4. add another `reactivecircus/android-emulator-runner@v2` step to run your tests using existing AVD / snapshot - specify `emulator-options` with `no-snapshot-save`
 
 ```yml
 jobs:
@@ -102,13 +103,8 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Gradle cache
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/buildSrc/**/*.kt') }}
-
+        uses: gradle/gradle-build-action@v2
+        
       - name: AVD cache
         uses: actions/cache@v2
         id: avd-cache
@@ -137,9 +133,6 @@ jobs:
           disable-animations: true
           script: ./gradlew connectedCheck
 ```
-
-Note: if you want to use [gradle-build-action](https://github.com/gradle/gradle-build-action) with `reactivecircus/android-emulator-runner`,
-need to declare `uses: gradle/gradle-build-actionv2` without any arguments before `uses: reactivecircus/android-emulator-runner@v2`, more details see [#229](https://github.com/ReactiveCircus/android-emulator-runner/issues/229).
 
 ## Configurations
 
