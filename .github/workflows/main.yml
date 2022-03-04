@@ -3,11 +3,13 @@ on:
   pull_request:
     paths-ignore:
       - '**.md'
+      - '.github/renovate.json'
   push:
     branches:
       - main
     paths-ignore:
       - '**.md'
+      - '.github/renovate.json'
 
 jobs:
   test:
