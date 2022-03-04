@@ -32,7 +32,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: run tests
         uses: reactivecircus/android-emulator-runner@v2
@@ -53,7 +53,7 @@ jobs:
         target: [default, google_apis]
     steps:
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: run tests
         uses: reactivecircus/android-emulator-runner@v2
@@ -73,7 +73,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: run tests
         uses: reactivecircus/android-emulator-runner@v2
@@ -100,7 +100,7 @@ jobs:
         api-level: [21, 23, 29]
     steps:
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Gradle cache
         uses: gradle/gradle-build-action@v2
