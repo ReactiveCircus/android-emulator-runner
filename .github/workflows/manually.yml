@@ -16,14 +16,18 @@ on:
         default: 'default'
       arch:
         description: 'CPU architecture of the system image - x86, x86_64 or arm64-v8a'
+        required: false
         default: 'x86'
       emulator-options:
         description: 'command-line options used when launching the emulator'
+        required: false
         default: '-no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim'
       emulator-build:
+        required: false
         description: 'build number of a specific version of the emulator binary to use'
       channel:
         description: 'Channel to download the SDK components from - `stable`, `beta`, `dev`, `canary`'
+        required: false
         default: 'stable'
       script:
         description: 'custom script to run - e.g. `./gradlew connectedCheck`'
