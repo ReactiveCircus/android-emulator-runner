@@ -26,7 +26,7 @@ It is recommended to run this action on a **macOS** VM, e.g. `macos-latest`, `ma
 
 A workflow that uses **android-emulator-runner** to run your instrumented tests on **API 29**:
 
-```
+```yml
 jobs:
   test:
     runs-on: macos-latest
@@ -43,7 +43,7 @@ jobs:
 
 We can also leverage GitHub Actions's build matrix to test across multiple configurations:
 
-```
+```yml
 jobs:
   test:
     runs-on: macos-latest
@@ -67,7 +67,7 @@ jobs:
 
 If you need specific versions of **NDK** and **CMake** installed:
 
-```
+```yml
 jobs:
   test:
     runs-on: macos-latest
@@ -86,11 +86,12 @@ jobs:
 
 We can significantly reduce emulator startup time by setting up AVD snapshot caching:
 
-1. add an `actions/cache@v2` step for caching the `avd`
-2. add a `reactivecircus/android-emulator-runner@v2` step to generate a clean snapshot - specify `emulator-options` without `no-snapshot`
-3. add another `reactivecircus/android-emulator-runner@v2` step to run your tests using existing AVD / snapshot - specify `emulator-options` with `no-snapshot-save`
+1. add a `gradle/gradle-build-action@v2` step for caching the Gradle, more details see [#229](https://github.com/ReactiveCircus/android-emulator-runner/issues/229)
+2. add an `actions/cache@v2` step for caching the `avd`
+3. add a `reactivecircus/android-emulator-runner@v2` step to generate a clean snapshot - specify `emulator-options` without `no-snapshot`
+4. add another `reactivecircus/android-emulator-runner@v2` step to run your tests using existing AVD / snapshot - specify `emulator-options` with `no-snapshot-save`
 
-```
+```yml
 jobs:
   test:
     runs-on: macos-latest
@@ -102,13 +103,8 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Gradle cache
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/buildSrc/**/*.kt') }}
-
+        uses: gradle/gradle-build-action@v2
+        
       - name: AVD cache
         uses: actions/cache@v2
         id: avd-cache
