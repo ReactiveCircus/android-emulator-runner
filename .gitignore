@@ -91,3 +91,13 @@ typings/
 
 # DynamoDB Local files
 .dynamodb/
+
+# Mac
+.DS_Store
+
+# Vscode
+.vscode
+
+# IntelliJ IDEA
+.idea
+*.iml
