@@ -52,8 +52,9 @@ jobs:
         npm test
 
     - name: Java 15
-      uses: actions/setup-java@v1
+      uses: actions/setup-java@v3
       with:
+        distribution: 'zulu'
         java-version: 15
     - uses: actions/cache@v2
       with:
