@@ -17,10 +17,10 @@ jobs:
     timeout-minutes: 15
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest]
-        api-level: [16, 23, 29]
-        target: [default, google_apis]
-        arch: [x86]
+        os: [ macos-latest, ubuntu-latest ]
+        api-level: [ 16, 23, 29 ]
+        target: [ default, google_apis ]
+        arch: [ x86 ]
         exclude:
           - os: ubuntu-latest
             api-level: 23
@@ -47,77 +47,77 @@ jobs:
             arch: x86_64
 
     steps:
-    - name: checkout
-      uses: actions/checkout@v3
+      - name: checkout
+        uses: actions/checkout@v3
 
-    - name: validate gradle wrapper
-      uses: gradle/wrapper-validation-action@v1
+      - name: validate gradle wrapper
+        uses: gradle/wrapper-validation-action@v1
 
-    - name: build, test and lint
-      run: |
-        npm install
-        npm run build
-        npm run lint
-        npm test
+      - name: build, test and lint
+        run: |
+          npm install
+          npm run build
+          npm run lint
+          npm test
 
-    - name: Java 15
-      uses: actions/setup-java@v3
-      with:
-        distribution: 'zulu'
-        java-version: 15
-    - name: Gradle cache
-      uses: gradle/gradle-build-action@v2
-    - name: AVD cache
-      uses: actions/cache@v2
-      id: avd-cache
-      with:
-        path: |
-          ~/.android/avd/*
-          ~/.android/adb*
-          ~/.android/debug.keystore
-        key: avd-${{ matrix.api-level }}-${{ matrix.os }}-${{ matrix.target }}
+      - name: Java 15
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 15
+      - name: Gradle cache
+        uses: gradle/gradle-build-action@v2
+      - name: AVD cache
+        uses: actions/cache@v2
+        id: avd-cache
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+            ~/.android/debug.keystore
+          key: avd-${{ matrix.api-level }}-${{ matrix.os }}-${{ matrix.target }}
 
-    - name: assemble tests
-      uses: gradle/gradle-build-action@v2
-      with:
-        build-root-directory: test-fixture
-        arguments: assembleAndroidTest
+      - name: assemble tests
+        uses: gradle/gradle-build-action@v2
+        with:
+          build-root-directory: test-fixture
+          arguments: assembleAndroidTest
 
-    - name: run emulator to generate snapshot for caching
-      if: steps.avd-cache.outputs.cache-hit != 'true'
-      uses: ./
-      with:
-        api-level: ${{ matrix.api-level }}
-        target: ${{ matrix.target }}
-        arch: ${{ matrix.arch }}
-        profile: Galaxy Nexus
-        cores: 2
-        sdcard-path-or-size: 100M
-        avd-name: test
-        force-avd-creation: false
-        emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-        disable-animations: false
-        working-directory: ./test-fixture/
-        channel: canary
-        script: echo "Generated AVD snapshot for caching."
+      - name: run emulator to generate snapshot for caching
+        if: steps.avd-cache.outputs.cache-hit != 'true'
+        uses: ./
+        with:
+          api-level: ${{ matrix.api-level }}
+          target: ${{ matrix.target }}
+          arch: ${{ matrix.arch }}
+          profile: Galaxy Nexus
+          cores: 2
+          sdcard-path-or-size: 100M
+          avd-name: test
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: false
+          working-directory: ./test-fixture/
+          channel: canary
+          script: echo "Generated AVD snapshot for caching."
 
-    - name: run action
-      uses: ./
-      with:
-        api-level: ${{ matrix.api-level }}
-        target: ${{ matrix.target }}
-        arch: ${{ matrix.arch }}
-        profile: Galaxy Nexus
-        cores: 2
-        ram-size: 2048M
-        sdcard-path-or-size: 100M
-        avd-name: test
-        force-avd-creation: false
-        emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-        disable-animations: true
-        working-directory: ./test-fixture/
-        channel: canary
-        script: |
-          echo $GITHUB_REPOSITORY
-          adb devices
-          ./gradlew connectedDebugAndroidTest
+      - name: run action
+        uses: ./
+        with:
+          api-level: ${{ matrix.api-level }}
+          target: ${{ matrix.target }}
+          arch: ${{ matrix.arch }}
+          profile: Galaxy Nexus
+          cores: 2
+          ram-size: 2048M
+          sdcard-path-or-size: 100M
+          avd-name: test
+          force-avd-creation: false
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
+          working-directory: ./test-fixture/
+          channel: canary
+          script: |
+            echo $GITHUB_REPOSITORY
+            adb devices
+            ./gradlew connectedDebugAndroidTest
