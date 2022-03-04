@@ -56,12 +56,8 @@ jobs:
       with:
         distribution: 'zulu'
         java-version: 15
-    - uses: actions/cache@v2
-      with:
-        path: |
-          ~/.gradle/caches
-          ~/.gradle/wrapper
-        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
+    - name: Gradle cache
+      uses: gradle/gradle-build-action@v2
 
     - name: run action
       uses: ./
