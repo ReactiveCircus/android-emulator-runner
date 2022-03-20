@@ -31,10 +31,10 @@ jobs:
   test:
     runs-on: macos-latest
     steps:
-      - name: checkout
+      - name: Checkout
         uses: actions/checkout@v3
 
-      - name: run tests
+      - name: Run tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
@@ -52,10 +52,10 @@ jobs:
         api-level: [21, 23, 29]
         target: [default, google_apis]
     steps:
-      - name: checkout
+      - name: Checkout
         uses: actions/checkout@v3
 
-      - name: run tests
+      - name: Run tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: ${{ matrix.api-level }}
@@ -72,10 +72,10 @@ jobs:
   test:
     runs-on: macos-latest
     steps:
-      - name: checkout
+      - name: Checkout
         uses: actions/checkout@v3
 
-      - name: run tests
+      - name: Run tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
@@ -99,7 +99,7 @@ jobs:
       matrix:
         api-level: [21, 23, 29]
     steps:
-      - name: checkout
+      - name: Checkout
         uses: actions/checkout@v3
 
       - name: Gradle cache
@@ -114,7 +114,7 @@ jobs:
             ~/.android/adb*
           key: avd-${{ matrix.api-level }}
 
-      - name: create AVD and generate snapshot for caching
+      - name: Create AVD and generate snapshot for caching
         if: steps.avd-cache.outputs.cache-hit != 'true'
         uses: reactivecircus/android-emulator-runner@v2
         with:
@@ -124,7 +124,7 @@ jobs:
           disable-animations: false
           script: echo "Generated AVD snapshot for caching."
 
-      - name: run tests
+      - name: Run tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: ${{ matrix.api-level }}

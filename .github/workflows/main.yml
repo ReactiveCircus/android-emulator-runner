@@ -47,10 +47,10 @@ jobs:
             arch: x86_64
 
     steps:
-      - name: checkout
+      - name: Checkout
         uses: actions/checkout@v3
 
-      - name: validate gradle wrapper
+      - name: Validate gradle wrapper
         uses: gradle/wrapper-validation-action@v1
 
       - name: Cache Node
@@ -61,7 +61,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - name: build, test and lint
+      - name: Npm build, test and lint
         run: |
           npm install
           npm run build
@@ -87,13 +87,13 @@ jobs:
             ~/.android/debug.keystore
           key: avd-${{ matrix.api-level }}-${{ matrix.os }}-${{ matrix.target }}
 
-      - name: assemble tests
+      - name: Assemble tests
         uses: gradle/gradle-build-action@v2
         with:
           build-root-directory: test-fixture
           arguments: assembleAndroidTest
 
-      - name: run emulator to generate snapshot for caching
+      - name: Create AVD and generate snapshot for caching
         if: steps.avd-cache.outputs.cache-hit != 'true'
         uses: ./
         with:
@@ -111,7 +111,7 @@ jobs:
           channel: canary
           script: echo "Generated AVD snapshot for caching."
 
-      - name: run action
+      - name: Run tests
         uses: ./
         with:
           api-level: ${{ matrix.api-level }}
