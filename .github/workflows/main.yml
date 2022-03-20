@@ -88,10 +88,9 @@ jobs:
           key: avd-${{ matrix.api-level }}-${{ matrix.os }}-${{ matrix.target }}
 
       - name: Assemble tests
-        uses: gradle/gradle-build-action@v2
-        with:
-          build-root-directory: test-fixture
-          arguments: assembleAndroidTest
+        run: |
+          cd ./test-fixture/
+          ./gradlew assembleAndroidTest
 
       - name: Create AVD and generate snapshot for caching
         if: steps.avd-cache.outputs.cache-hit != 'true'
