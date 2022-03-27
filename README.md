@@ -87,7 +87,7 @@ jobs:
 We can significantly reduce emulator startup time by setting up AVD snapshot caching:
 
 1. add a `gradle/gradle-build-action@v2` step for caching Gradle, more details see [#229](https://github.com/ReactiveCircus/android-emulator-runner/issues/229)
-2. add an `actions/cache@v2` step for caching the `avd`
+2. add an `actions/cache@v3` step for caching the `avd`
 3. add a `reactivecircus/android-emulator-runner@v2` step to generate a clean snapshot - specify `emulator-options` without `no-snapshot`
 4. add another `reactivecircus/android-emulator-runner@v2` step to run your tests using existing AVD / snapshot - specify `emulator-options` with `no-snapshot-save`
 
@@ -106,7 +106,7 @@ jobs:
         uses: gradle/gradle-build-action@v2
         
       - name: AVD cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         id: avd-cache
         with:
           path: |
