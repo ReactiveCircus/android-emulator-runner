@@ -24,7 +24,7 @@
     "@actions/core": "^1.6.0",
     "@actions/exec": "^1.1.0",
     "@actions/tool-cache": "^1.7.1",
-    "minimist": "^1.2.5",
+    "minimist": "^1.2.6",
     "set-value": "^4.1.0"
   },
   "devDependencies": {
