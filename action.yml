@@ -22,7 +22,7 @@ inputs:
   ram-size:
     description: 'size of RAM to use for this AVD, in KB or MB, denoted with K or M. - e.g. `2048M`'
   heap-size:
-    description: 'size of RAM to use for this AVD in MB. - e.g. `512M`'
+    description: 'size of heap to use for this AVD in MB. - e.g. `512M`'
   sdcard-path-or-size:
     description: 'path to the SD card image for this AVD or the size of a new SD card image to create for this AVD, in KB or MB, denoted with K or M. - e.g. `path/to/sdcard`, or `1000M`'
   disk-size:
