@@ -144,6 +144,7 @@ jobs:
 | `profile` | Optional | N/A | Hardware profile used for creating the AVD - e.g. `Nexus 6`. For a list of all profiles available, run `avdmanager list device`. |
 | `cores` | Optional | 2 | Number of cores to use for the emulator (`hw.cpu.ncore` in config.ini). |
 | `ram-size` | Optional | N/A | Size of RAM to use for this AVD, in KB or MB, denoted with K or M. - e.g. `2048M` |
+| `heap-size` | Optional | N/A | Heap size to use for this AVD, in KB or MB, denoted with K or M. - e.g. `512M` |
 | `sdcard-path-or-size` | Optional | N/A | Path to the SD card image for this AVD or the size of a new SD card image to create for this AVD, in KB or MB, denoted with K or M. - e.g. `path/to/sdcard`, or `1000M`. |
 | `disk-size` | Optional | N/A | Disk size to use for this AVD. Either in bytes or KB, MB or GB, when denoted with K, M or G. - e.g. `2048M` |
 | `avd-name` | Optional | `test` | Custom AVD name used for creating the Android Virtual Device. |
