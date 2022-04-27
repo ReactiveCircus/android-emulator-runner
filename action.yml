@@ -62,6 +62,8 @@ inputs:
   script:
     description: 'custom script to run - e.g. `./gradlew connectedCheck`'
     required: true
+  pre-emulator-launch-script:
+    description: 'custom script to run which will run before launch the emulator - e.g. `./adjust-emulator-configs.sh`'
 runs:
   using: 'node12'
   main: 'lib/main.js'
