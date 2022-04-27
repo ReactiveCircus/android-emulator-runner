@@ -171,7 +171,7 @@ async function run() {
       try {
         // move to custom working directory if set
         if (workingDirectory) {
-          process.chdir(workingDirectory);
+          exec.exec('sh', ['pushd', workingDirectory]);
         }
         for (const preEmulatorLaunchScript of preEmulatorLaunchScripts) {
           // use array form to avoid various quote escaping problems
@@ -180,6 +180,11 @@ async function run() {
         }
       } catch (error) {
         core.setFailed(error.message);
+      } finally {
+        if (workingDirectory) {
+          // revert changing path to working directory
+          exec.exec('sh', ['popd']);
+        }
       }
     }
 
