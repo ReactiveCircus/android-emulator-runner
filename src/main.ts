@@ -169,22 +169,15 @@ async function run() {
     // execute pre emulator launch script
     if (preEmulatorLaunchScripts !== undefined) {
       try {
-        // move to custom working directory if set
-        if (workingDirectory) {
-          exec.exec('sh', ['pushd', workingDirectory]);
-        }
         for (const preEmulatorLaunchScript of preEmulatorLaunchScripts) {
           // use array form to avoid various quote escaping problems
           // caused by exec(`sh -c "${preEmulatorLaunchScript}"`)
-          await exec.exec('sh', ['-c', preEmulatorLaunchScript]);
+          await exec.exec('sh', ['-c', preEmulatorLaunchScript], {
+            cwd: workingDirectory
+          });
         }
       } catch (error) {
         core.setFailed(error.message);
-      } finally {
-        if (workingDirectory) {
-          // revert changing path to working directory
-          exec.exec('sh', ['popd']);
-        }
       }
     }
 
