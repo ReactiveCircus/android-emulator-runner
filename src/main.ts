@@ -153,10 +153,35 @@ async function run() {
     scripts.forEach(async (script: string) => {
       console.log(`${script}`);
     });
+
+    // custom pre emulator launch script
+    const preEmulatorLaunchScriptInput = core.getInput('pre-emulator-launch-script');
+    const preEmulatorLaunchScripts = !preEmulatorLaunchScriptInput ? undefined : parseScript(preEmulatorLaunchScriptInput);
+    console.log(`Pre emulator launch script:`);
+    preEmulatorLaunchScripts?.forEach(async (script: string) => {
+      console.log(`${script}`);
+    });
     console.log(`::endgroup::`);
 
     // install SDK
     await installAndroidSdk(apiLevel, target, arch, channelId, emulatorBuild, ndkVersion, cmakeVersion);
+
+    // execute pre emulator launch script
+    if (preEmulatorLaunchScripts !== undefined) {
+      try {
+        // move to custom working directory if set
+        if (workingDirectory) {
+          process.chdir(workingDirectory);
+        }
+        for (const preEmulatorLaunchScript of preEmulatorLaunchScripts) {
+          // use array form to avoid various quote escaping problems
+          // caused by exec(`sh -c "${preEmulatorLaunchScript}"`)
+          await exec.exec('sh', ['-c', preEmulatorLaunchScript]);
+        }
+      } catch (error) {
+        core.setFailed(error.message);
+      }
+    }
 
     // launch an emulator
     await launchEmulator(
