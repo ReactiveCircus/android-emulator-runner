@@ -166,8 +166,9 @@ async function run() {
     // install SDK
     await installAndroidSdk(apiLevel, target, arch, channelId, emulatorBuild, ndkVersion, cmakeVersion);
 
-    // execute pre emulator launch script
+    // execute pre emulator launch script if set
     if (preEmulatorLaunchScripts !== undefined) {
+      console.log(`::group::Run pre emulator launch script`);
       try {
         for (const preEmulatorLaunchScript of preEmulatorLaunchScripts) {
           // use array form to avoid various quote escaping problems
@@ -179,6 +180,7 @@ async function run() {
       } catch (error) {
         core.setFailed(error.message);
       }
+      console.log(`::endgroup::`);
     }
 
     // launch an emulator
