@@ -26,13 +26,13 @@ It is recommended to run this action on a **macOS** VM, e.g. `macos-latest`, `ma
 
 A workflow that uses **android-emulator-runner** to run your instrumented tests on **API 29**:
 
-```
+```yml
 jobs:
   test:
     runs-on: macos-latest
     steps:
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: run tests
         uses: reactivecircus/android-emulator-runner@v2
@@ -43,7 +43,7 @@ jobs:
 
 We can also leverage GitHub Actions's build matrix to test across multiple configurations:
 
-```
+```yml
 jobs:
   test:
     runs-on: macos-latest
@@ -53,7 +53,7 @@ jobs:
         target: [default, google_apis]
     steps:
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: run tests
         uses: reactivecircus/android-emulator-runner@v2
@@ -67,13 +67,13 @@ jobs:
 
 If you need specific versions of **NDK** and **CMake** installed:
 
-```
+```yml
 jobs:
   test:
     runs-on: macos-latest
     steps:
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: run tests
         uses: reactivecircus/android-emulator-runner@v2
@@ -86,11 +86,12 @@ jobs:
 
 We can significantly reduce emulator startup time by setting up AVD snapshot caching:
 
-1. add an `actions/cache@v2` step for caching the `avd`
-2. add a `reactivecircus/android-emulator-runner@v2` step to generate a clean snapshot - specify `emulator-options` without `no-snapshot`
-3. add another `reactivecircus/android-emulator-runner@v2` step to run your tests using existing AVD / snapshot - specify `emulator-options` with `no-snapshot-save`
+1. add a `gradle/gradle-build-action@v2` step for caching Gradle, more details see [#229](https://github.com/ReactiveCircus/android-emulator-runner/issues/229)
+2. add an `actions/cache@v3` step for caching the `avd`
+3. add a `reactivecircus/android-emulator-runner@v2` step to generate a clean snapshot - specify `emulator-options` without `no-snapshot`
+4. add another `reactivecircus/android-emulator-runner@v2` step to run your tests using existing AVD / snapshot - specify `emulator-options` with `no-snapshot-save`
 
-```
+```yml
 jobs:
   test:
     runs-on: macos-latest
@@ -99,18 +100,13 @@ jobs:
         api-level: [21, 23, 29]
     steps:
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Gradle cache
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/buildSrc/**/*.kt') }}
-
+        uses: gradle/gradle-build-action@v2
+        
       - name: AVD cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         id: avd-cache
         with:
           path: |
@@ -148,6 +144,7 @@ jobs:
 | `profile` | Optional | N/A | Hardware profile used for creating the AVD - e.g. `Nexus 6`. For a list of all profiles available, run `avdmanager list device`. |
 | `cores` | Optional | 2 | Number of cores to use for the emulator (`hw.cpu.ncore` in config.ini). |
 | `ram-size` | Optional | N/A | Size of RAM to use for this AVD, in KB or MB, denoted with K or M. - e.g. `2048M` |
+| `heap-size` | Optional | N/A | Heap size to use for this AVD, in KB or MB, denoted with K or M. - e.g. `512M` |
 | `sdcard-path-or-size` | Optional | N/A | Path to the SD card image for this AVD or the size of a new SD card image to create for this AVD, in KB or MB, denoted with K or M. - e.g. `path/to/sdcard`, or `1000M`. |
 | `disk-size` | Optional | N/A | Disk size to use for this AVD. Either in bytes or KB, MB or GB, when denoted with K, M or G. - e.g. `2048M` |
 | `avd-name` | Optional | `test` | Custom AVD name used for creating the Android Virtual Device. |

@@ -1,5 +1,9 @@
 # Change Log
 
+## v2.24.0
+
+* Add option to specify `heap-size` for the AVD. - [#245](https://github.com/ReactiveCircus/android-emulator-runner/pull/245) @timusus.
+
 ## v2.23.0
 
 * Update build tools to `32.0.0`. - [#212](https://github.com/ReactiveCircus/android-emulator-runner/pull/212)
