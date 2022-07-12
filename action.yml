@@ -43,8 +43,8 @@ inputs:
     description: 'whether to disable spellchecker - `true` or `false`'
     default: 'false'
   disable-linux-hw-accel:
-    description: 'whether to disable hardware acceleration on Linux machines - `true` or `false`'
-    default: 'true'
+    description: 'whether to disable hardware acceleration on Linux machines - `true` or `false` or `auto`'
+    default: 'auto'
   enable-hw-keyboard:
     description: 'whether to enable hardware keyboard - `true` or `false`.'
     default: 'false'

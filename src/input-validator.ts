@@ -49,8 +49,8 @@ export function checkDisableSpellchecker(disableSpellchecker: string): void {
 }
 
 export function checkDisableLinuxHardwareAcceleration(disableLinuxHardwareAcceleration: string): void {
-  if (!isValidBoolean(disableLinuxHardwareAcceleration)) {
-    throw new Error(`Input for input.disable-linux-hw-accel should be either 'true' or 'false'.`);
+  if (!(isValidBoolean(disableLinuxHardwareAcceleration) || disableLinuxHardwareAcceleration === 'auto')) {
+    throw new Error(`Input for input.disable-linux-hw-accel should be either 'true' or 'false' or 'auto'.`);
   }
 }
 
