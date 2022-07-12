@@ -17,16 +17,23 @@ import { launchEmulator, killEmulator } from './emulator-manager';
 import * as exec from '@actions/exec';
 import { parseScript } from './script-parser';
 import { getChannelId } from './channel-id-mapper';
+import { accessSync, constants } from 'fs';
 
 async function run() {
   try {
     console.log(`::group::Configure emulator`);
+    let linuxSupportKVM = false;
     // only support running on macOS or Linux
     if (process.platform !== 'darwin') {
       if (process.platform === 'linux') {
-        console.warn(
-          `You're running a Linux VM where hardware acceleration is not available. Please consider using a macOS VM instead to take advantage of native hardware acceleration support provided by HAXM.`
-        );
+        try {
+          accessSync('/dev/kvm', constants.R_OK | constants.W_OK);
+          linuxSupportKVM = true;
+        } catch {
+          console.warn(
+            `You're running a Linux VM where hardware acceleration is not available. Please consider using a macOS VM instead to take advantage of native hardware acceleration support provided by HAXM.`
+          );
+        }
       } else {
         throw new Error('Unsupported virtual machine: please use either macos or ubuntu VM.');
       }
@@ -100,8 +107,11 @@ async function run() {
     console.log(`disable spellchecker: ${disableSpellchecker}`);
 
     // disable linux hardware acceleration
-    const disableLinuxHardwareAccelerationInput = core.getInput('disable-linux-hw-accel');
+    let disableLinuxHardwareAccelerationInput = core.getInput('disable-linux-hw-accel');
     checkDisableLinuxHardwareAcceleration(disableLinuxHardwareAccelerationInput);
+    if (disableLinuxHardwareAccelerationInput === 'auto' && process.platform === 'linux') {
+      disableLinuxHardwareAccelerationInput = linuxSupportKVM ? 'false' : 'true';
+    }
     const disableLinuxHardwareAcceleration = disableLinuxHardwareAccelerationInput === 'true';
     console.log(`disable Linux hardware acceleration: ${disableLinuxHardwareAcceleration}`);
 
