@@ -1,5 +1,11 @@
 # Change Log
 
+## v2.25.0
+
+* Auto detect hardware acceleration on Linux. - [#254](https://github.com/ReactiveCircus/android-emulator-runner/pull/254) @notbigdata.
+* Update build tools to `33.0.0`.
+* Update SDK command-line tools to `7.0`.
+
 ## v2.24.0
 
 * Add option to specify `heap-size` for the AVD. - [#245](https://github.com/ReactiveCircus/android-emulator-runner/pull/245) @timusus.
