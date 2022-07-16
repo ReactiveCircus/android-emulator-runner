@@ -1,0 +1,64 @@
+inputs:
+  api-level:
+    type: integer
+  target:
+    type: enum
+    allowed-values:
+      - default
+      - google_apis
+      - google_apis_playstore
+      - aosp_atd
+      - google_atd
+      - android-wear
+      - android-wear-cn
+      - android-tv
+      - google-tv
+  arch:
+    type: enum
+    allowed-values:
+     - x86
+     - x86_64
+     - arm64-v8a
+  profile:
+   type: string
+  cores:
+   type: int
+  ram-size:
+   type: string
+  heap-size:
+   type: string
+  sdcard-path-or-size:
+   type: string
+  disk-size:
+   type: string
+  avd-name:
+   type: string
+  force-avd-creation:
+   type: boolean
+  emulator-options:
+   type: string
+  disable-animations:
+   type: boolean
+  disable-spellchecker:
+   type: boolean
+  disable-linux-hw-accel:
+   type: string
+  enable-hw-keyboard:
+   type: boolean
+  emulator-build:
+   type: string
+  working-directory:
+   type: string
+  ndk:
+   type: string
+  cmake:
+   type: string
+  channel:
+   type: enum
+   allowed-values:
+    - stable
+    - beta
+    - dev
+    - canary
+  script:
+   type: string
