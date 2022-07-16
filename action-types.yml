@@ -22,7 +22,7 @@ inputs:
   profile:
    type: string
   cores:
-   type: int
+   type: integer
   ram-size:
    type: string
   heap-size:
