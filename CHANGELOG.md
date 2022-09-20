@@ -1,5 +1,9 @@
 # Change Log
 
+## v2.26.0
+
+* Support [github-actions-typing](https://github.com/krzema12/github-actions-typing). - [#257](https://github.com/ReactiveCircus/android-emulator-runner/pull/257) @LeoColman.
+
 ## v2.25.0
 
 * Auto detect hardware acceleration on Linux. - [#254](https://github.com/ReactiveCircus/android-emulator-runner/pull/254) @notbigdata.
