@@ -63,5 +63,5 @@ inputs:
     description: 'custom script to run - e.g. `./gradlew connectedCheck`'
     required: true
 runs:
-  using: 'node12'
+  using: 'node16'
   main: 'lib/main.js'
