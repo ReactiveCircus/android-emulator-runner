@@ -9,7 +9,7 @@ A GitHub Action for installing, configuring and running Android Emulators on mac
 The old ARM-based emulators were slow and are no longer supported by Google. The modern Intel Atom (x86 and x86_64) emulators can be fast, but require hardware acceleration (HAXM on Mac & Windows, KVM on Linux) from the host. This presents a challenge on CI especially when running hardware accelerated emulators within a docker container, because **Nested Virtualization** must be supported by the host VM which isn't the case for most cloud-based CI providers due to infrastructural limits. If you want to learn more about this, here's an article [Yang](https://github.com/ychescale9) wrote: [Running Android Instrumented Tests on CI](https://dev.to/ychescale9/running-android-emulators-on-ci-from-bitrise-io-to-github-actions-3j76).
 
 The **macOS** 10.x VM provided by **GitHub Actions** had **HAXM** [pre-installed](https://github.com/actions/runner-images/blob/main/images/macos/macos-10.15-Readme.md) so we were able to create a new AVD instance, launch an emulator with hardware acceleration and run our Android
-tests directly on the VM. However, Github's [macOS-11](https://github.com/actions/runner-images/blob/main/images/macos/macos-11-Readme.md) and [macOS-12](https://github.com/actions/runner-images/blob/main/images/macos/macos-12-Readme.md) VMs **no longer** come pre-installed with HAXM.
+tests directly on the VM. However, Github's [macOS-11](https://github.com/actions/runner-images/blob/main/images/macos/macos-11-Readme.md) and [macOS-12](https://github.com/actions/runner-images/blob/main/images/macos/macos-12-Readme.md) VMs **no longer** come pre-installed with HAXM. See [here](https://github.com/actions/runner-images/issues/183#issuecomment-610723516) and [here](https://github.com/actions/runner-images/issues/6388) for more info.
 
 You can also achieve nested virtualization with hardware acceleration on a self-hosted Linux runner, but the VM will need to be hosted on a compatible machine that allows you to enable KVM - for example the AWS EC2 Bare Metal instances. **The Github-hosted Linux runners are not currently KVM compatible.**
 
@@ -24,9 +24,7 @@ This action helps automate and configure the process of setting up an emulator a
 - Run a custom script provided by user once the Emulator is up and running - e.g. `./gradlew connectedCheck`.
 - Kill the Emulator and finish the action.
 
-## Usage
-
-For a while it was recommended that this action was run on a Github-Hosted **macOS** VM, e.g. `macos-10.15` to take advantage of hardware acceleration support provided by **HAXM**, but now HAXM is not enabled by default on the latest macOS-11 or macOS-12 runners, see [here](https://github.com/actions/runner-images/issues/183#issuecomment-610723516) and [here](https://github.com/actions/runner-images/issues/6388) for more info.
+## Usage & Examples
 
 A workflow that uses **android-emulator-runner** to run your instrumented tests on **API 29**:
 
@@ -167,9 +165,9 @@ jobs:
 
 Default `emulator-options`: `-no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim`.
 
-## Can I use this action on Linux VMs?
+## Can I use this action on Github Hosted Linux VMs?
 
-The short answer is yes but on Github-hosted Linux runners it's expected to be a much worse experience (on some newer API levels it might not work at all) than running it on macOS. You can get it running much faster on self-hosted Linux runners but only if the underlying instances support KVM (which most don't). Things might be better on the newer Larger runners but they are still in Beta. It is possible to use this Action with hardware accelerated Linux VMs hosted by a third-party VM provider.
+The short answer is yes but on Github-hosted Linux runners it's expected to be a much worse experience (on some newer API levels it might not work at all) than running it on macOS, because of the current lack of hardware acceleration support. You can get it running much faster on self-hosted Linux runners but only if the underlying instances support KVM (which most don't). Things might be better on the newer Larger runners but they are still in Beta. It is possible to use this Action with hardware accelerated Linux VMs hosted by a third-party runner provider.
 
 For a longer answer please refer to [this issue](https://github.com/ReactiveCircus/android-emulator-runner/issues/46).
 
