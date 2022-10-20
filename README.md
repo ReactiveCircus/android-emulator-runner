@@ -4,14 +4,14 @@
   <a href="https://github.com/ReactiveCircus/android-emulator-runner"><img alt="GitHub Actions status" src="https://github.com/ReactiveCircus/android-emulator-runner/workflows/Main%20workflow/badge.svg"></a>
 </p>
 
-A GitHub Action for installing, configuring and running Android Emulators on macOS and Ubuntu virtual machines.
+A GitHub Action for installing, configuring and running hardware-accelerated Android Emulators on macOS virtual machines.
 
 The old ARM-based emulators were slow and are no longer supported by Google. The modern Intel Atom (x86 and x86_64) emulators can be fast, but require hardware acceleration (HAXM on Mac & Windows, KVM on Linux) from the host. This presents a challenge on CI especially when running hardware accelerated emulators within a docker container, because **Nested Virtualization** must be supported by the host VM which isn't the case for most cloud-based CI providers due to infrastructural limits. If you want to learn more about this, here's an article [Yang](https://github.com/ychescale9) wrote: [Running Android Instrumented Tests on CI](https://dev.to/ychescale9/running-android-emulators-on-ci-from-bitrise-io-to-github-actions-3j76).
 
 The **macOS** 10.x VM provided by **GitHub Actions** had **HAXM** [pre-installed](https://github.com/actions/runner-images/blob/main/images/macos/macos-10.15-Readme.md) so we were able to create a new AVD instance, launch an emulator with hardware acceleration and run our Android
-tests directly on the VM. However, Github's [macOS-11](https://github.com/actions/runner-images/blob/main/images/macos/macos-11-Readme.md) and [macOS-12](https://github.com/actions/runner-images/blob/main/images/macos/macos-12-Readme.md) VMs **no longer** come pre-installed with HAXM. See [here](https://github.com/actions/runner-images/issues/183#issuecomment-610723516) and [here](https://github.com/actions/runner-images/issues/6388) for more info.
+tests directly on the VM. However, Github's [macOS-11](https://github.com/actions/runner-images/blob/main/images/macos/macos-11-Readme.md) and [macOS-12](https://github.com/actions/runner-images/blob/main/images/macos/macos-12-Readme.md) VMs **no longer** come pre-installed with HAXM. See [here](https://github.com/actions/runner-images/issues/183#issuecomment-610723516) and [here](https://github.com/actions/runner-images/issues/6388) for more info. **To run with HAXM on the macOS-11 and macOS-12 agents, you must install HAXM before starting your emulator**. See: [this snippet](https://gist.github.com/mrk-han/dd453c8c06f801adac0c15ce29936ae0) for more info.
 
-You can also achieve nested virtualization with hardware acceleration on a self-hosted Linux runner, but the VM will need to be hosted on a compatible machine that allows you to enable KVM - for example the AWS EC2 Bare Metal instances. **The Github-hosted Linux runners are not currently KVM compatible.**
+For Linux, Nested virtualization is possible with hardware acceleration on a self-hosted or 3rd party runner, but the VM will need to be hosted on a compatible machine that allows you to enable KVM, or is already configured with  - for example the AWS EC2 Bare Metal instances. **The Github-hosted Linux runners are not currently KVM compatible.**
 
 ## Purpose
 
