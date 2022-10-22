@@ -160,7 +160,7 @@ jobs:
 | `cmake` | Optional | N/A | Version of CMake to install - e.g. `3.10.2.4988404` |
 | `channel` | Optional | stable | Channel to download the SDK components from - `stable`, `beta`, `dev`, `canary` |
 | `script` | Required | N/A | Custom script to run - e.g. to run Android instrumented tests on the emulator: `./gradlew connectedCheck` |
-| `pre-emulator-launch-script` | Optional | N/A | Custom script to run which will run before launch the emulator - e.g. `./adjust-emulator-configs.sh` |
+| `pre-emulator-launch-script` | Optional | N/A | Custom script to run after creating the AVD and before launching the emulator - e.g. `./adjust-emulator-configs.sh` |
 
 Default `emulator-options`: `-no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim`.
 
