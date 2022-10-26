@@ -1,5 +1,19 @@
 # Change Log
 
+## v2.26.0
+
+* Support [github-actions-typing](https://github.com/krzema12/github-actions-typing). - [#257](https://github.com/ReactiveCircus/android-emulator-runner/pull/257) @LeoColman.
+
+## v2.25.0
+
+* Auto detect hardware acceleration on Linux. - [#254](https://github.com/ReactiveCircus/android-emulator-runner/pull/254) @notbigdata.
+* Update build tools to `33.0.0`.
+* Update SDK command-line tools to `7.0`.
+
+## v2.24.0
+
+* Add option to specify `heap-size` for the AVD. - [#245](https://github.com/ReactiveCircus/android-emulator-runner/pull/245) @timusus.
+
 ## v2.23.0
 
 * Update build tools to `32.0.0`. - [#212](https://github.com/ReactiveCircus/android-emulator-runner/pull/212)
