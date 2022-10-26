@@ -40,7 +40,7 @@ inputs:
     description: 'whether to disable animations - true or false'
     default: 'true'
   disable-spellchecker:
-    description: 'whether to disable spellchecker - `true` or `false`'
+    description: 'whether to disable the Android spell checker framework, a common source of flakiness in text fields - `true` or `false`'
     default: 'false'
   disable-linux-hw-accel:
     description: 'whether to disable hardware acceleration on Linux machines - `true` or `false` or `auto`'
