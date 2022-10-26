@@ -114,6 +114,9 @@ jobs:
         disable-animations: true
         working-directory: ./test-fixture/
         channel: canary
+        pre-emulator-launch-script: |
+          echo "Running pre emulator launch script. Printing the working directory now:"
+          pwd
         script: |
           echo $GITHUB_REPOSITORY
           adb devices

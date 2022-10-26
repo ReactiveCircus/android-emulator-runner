@@ -62,3 +62,5 @@ inputs:
     - canary
   script:
    type: string
+  pre-emulator-launch-script:
+   type: string
