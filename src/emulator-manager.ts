@@ -105,7 +105,7 @@ export async function killEmulator(): Promise<void> {
     console.log(`::group::Terminate Emulator`);
     await exec.exec(`adb -s emulator-5554 emu kill`);
   } catch (error) {
-    console.log(error.message);
+    console.log(error instanceof Error ? error.message : error);
   } finally {
     console.log(`::endgroup::`);
   }
@@ -135,7 +135,7 @@ async function waitForDevice(): Promise<void> {
         break;
       }
     } catch (error) {
-      console.warn(error.message);
+      console.warn(error instanceof Error ? error.message : error);
     }
 
     if (attempts < maxAttempts) {

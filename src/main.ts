@@ -188,7 +188,7 @@ async function run() {
           });
         }
       } catch (error) {
-        core.setFailed(error.message);
+        core.setFailed(error instanceof Error ? error.message : error as string);
       }
       console.log(`::endgroup::`);
     }
@@ -225,7 +225,7 @@ async function run() {
         await exec.exec('sh', ['-c', script]);
       }
     } catch (error) {
-      core.setFailed(error.message);
+      core.setFailed(error instanceof Error ? error.message : error as string);
     }
 
     // finally kill the emulator
@@ -233,7 +233,7 @@ async function run() {
   } catch (error) {
     // kill the emulator so the action can exit
     await killEmulator();
-    core.setFailed(error.message);
+    core.setFailed(error instanceof Error ? error.message : error as string);
   }
 }
 
