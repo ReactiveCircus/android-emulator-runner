@@ -72,8 +72,8 @@ export async function launchEmulator(
           if (data.toString().includes('invalid command-line parameter')) {
             throw new Error(data.toString());
           }
-        }
-      }
+        },
+      },
     });
 
     // wait for emulator to complete booting
@@ -126,8 +126,8 @@ async function waitForDevice(): Promise<void> {
         listeners: {
           stdout: (data: Buffer) => {
             result += data.toString();
-          }
-        }
+          },
+        },
       });
       if (result.trim() === '1') {
         console.log('Emulator booted.');
@@ -148,5 +148,5 @@ async function waitForDevice(): Promise<void> {
 }
 
 function delay(ms: number) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
