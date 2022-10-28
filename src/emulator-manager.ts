@@ -72,8 +72,8 @@ export async function launchEmulator(
           if (data.toString().includes('invalid command-line parameter')) {
             throw new Error(data.toString());
           }
-        }
-      }
+        },
+      },
     });
 
     // wait for emulator to complete booting
@@ -105,7 +105,7 @@ export async function killEmulator(): Promise<void> {
     console.log(`::group::Terminate Emulator`);
     await exec.exec(`adb -s emulator-5554 emu kill`);
   } catch (error) {
-    console.log(error.message);
+    console.log(error instanceof Error ? error.message : error);
   } finally {
     console.log(`::endgroup::`);
   }
@@ -126,8 +126,8 @@ async function waitForDevice(): Promise<void> {
         listeners: {
           stdout: (data: Buffer) => {
             result += data.toString();
-          }
-        }
+          },
+        },
       });
       if (result.trim() === '1') {
         console.log('Emulator booted.');
@@ -135,7 +135,7 @@ async function waitForDevice(): Promise<void> {
         break;
       }
     } catch (error) {
-      console.warn(error.message);
+      console.warn(error instanceof Error ? error.message : error);
     }
 
     if (attempts < maxAttempts) {
@@ -148,5 +148,5 @@ async function waitForDevice(): Promise<void> {
 }
 
 function delay(ms: number) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
