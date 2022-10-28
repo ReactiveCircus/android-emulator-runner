@@ -6,12 +6,21 @@
 
 A GitHub Action for installing, configuring and running hardware-accelerated Android Emulators on macOS virtual machines.
 
-The old ARM-based emulators were slow and are no longer supported by Google. The modern Intel Atom (x86 and x86_64) emulators require hardware acceleration (HAXM on Mac & Windows, QEMU on Linux) from the host to run fast. This presents a challenge on CI as to be able to run hardware accelerated emulators within a docker container, **KVM** must be supported by the host VM which isn't the case for cloud-based CI providers due to infrastructural limits. If you want to learn more about this, here's an article I wrote: [Running Android Instrumented Tests on CI](https://dev.to/ychescale9/running-android-emulators-on-ci-from-bitrise-io-to-github-actions-3j76).
+The old ARM-based emulators were slow and are no longer supported by Google. The modern Intel Atom (x86 and x86_64) emulators can be fast, but rely on two forms of hardware acceleration to reach their peak potential: [Graphics Acceleration](https://developer.android.com/studio/run/emulator-acceleration#accel-graphics), e.g. `emulator -gpu host` and [Virtual Machine(VM) Acceleration](https://developer.android.com/studio/run/emulator-acceleration#accel-vm), e.g. `emulator -accel on`. **Note:** GPU and VM Acceleration are two different and non-mutually exclusive forms of Hardware Acceleration.
 
-The **macOS** VM provided by **GitHub Actions** has **HAXM** installed so we are able to create a new AVD instance, launch an emulator with hardware acceleration, and run our Android
-tests directly on the VM. You can also achieve this on a self-hosted Linux runner, but it will need to be on a compatible instance that allows you to enable KVM - for example AWS EC2 Bare Metal instances. 
+This presents a challenge when running emulators on CI especially when running emulators within a docker container, because **Nested Virtualization** must be supported by the host VM which isn't the case for most cloud-based CI providers due to infrastructural limits.  If you want to learn more about Emulators on CI, here's an article [Yang](https://github.com/ychescale9) wrote: [Running Android Instrumented Tests on CI](https://dev.to/ychescale9/running-android-emulators-on-ci-from-bitrise-io-to-github-actions-3j76).
 
-This action automates the process by doing the following:
+## HAXM support on Github's MacOS Runners
+
+The 10.x **macOS** VM provided by **GitHub Actions** had **HAXM** [pre-installed](https://github.com/actions/runner-images/blob/main/images/macos/macos-10.15-Readme.md). However, Github's [macOS-11](https://github.com/actions/runner-images/blob/main/images/macos/macos-11-Readme.md) and [macOS-12](https://github.com/actions/runner-images/blob/main/images/macos/macos-12-Readme.md) VMs **no longer** come pre-installed with HAXM. See [here](https://github.com/actions/runner-images/issues/183#issuecomment-610723516) and [here](https://github.com/actions/runner-images/issues/6388) for more info. 
+
+**To run with HAXM on the macOS-11 and macOS-12 agents, you must install HAXM before starting your emulator**. See: [this snippet](https://gist.github.com/mrk-han/a0a11ed9bed966bb8b775ff55f2a87e9) for more info. This will enable VM acceleration, but as of right now running with GPU acceleration, e.g. `emulator -gpu host` is not possible with Github's standard runners.
+
+For Linux, Nested virtualization is possible on a self-hosted or 3rd party runner, but the VM will need to be hosted on a compatible machine that allows you to [enable KVM](https://developer.android.com/studio/run/emulator-acceleration#vm-linux), or is already configured with - for example the AWS EC2 Bare Metal instances. **The Github-hosted Linux runners are not currently KVM compatible.**
+
+## Purpose
+
+This action helps automate and configure the process of setting up an emulator and running your tests by doing the following:
 
 - Install / update the required **Android SDK** components including `build-tools`, `platform-tools`, `platform` (for the required API level), `emulator` and `system-images` (for the required API level).
 - Create a new instance of **AVD** with the provided [configurations](#configurations).
@@ -20,9 +29,7 @@ This action automates the process by doing the following:
 - Run a custom script provided by user once the Emulator is up and running - e.g. `./gradlew connectedCheck`.
 - Kill the Emulator and finish the action.
 
-## Usage
-
-It is recommended to run this action on a **macOS** VM, e.g. `macos-latest`, `macos-10.15` or `macos-11` to take advantage of hardware acceleration support provided by **HAXM**.
+## Usage & Examples
 
 A workflow that uses **android-emulator-runner** to run your instrumented tests on **API 29**:
 
@@ -146,7 +153,7 @@ jobs:
 | `ram-size` | Optional | N/A | Size of RAM to use for this AVD, in KB or MB, denoted with K or M. - e.g. `2048M` |
 | `heap-size` | Optional | N/A | Heap size to use for this AVD, in KB or MB, denoted with K or M. - e.g. `512M` |
 | `sdcard-path-or-size` | Optional | N/A | Path to the SD card image for this AVD or the size of a new SD card image to create for this AVD, in KB or MB, denoted with K or M. - e.g. `path/to/sdcard`, or `1000M`. |
-| `disk-size` | Optional | N/A | Disk size to use for this AVD. Either in bytes or KB, MB or GB, when denoted with K, M or G. - e.g. `2048M` |
+| `disk-size` | Optional | N/A | Disk size, or partition size to use for this AVD. Either in bytes or KB, MB or GB, when denoted with K, M or G. - e.g. `2048M` |
 | `avd-name` | Optional | `test` | Custom AVD name used for creating the Android Virtual Device. |
 | `force-avd-creation` | Optional | `true` | Whether to force create the AVD by overwriting an existing AVD with the same name as `avd-name` - `true` or `false`. |
 | `emulator-options` | Optional | See below | Command-line options used when launching the emulator (replacing all default options) - e.g. `-no-window -no-snapshot -camera-back emulated`. |
@@ -155,20 +162,20 @@ jobs:
 | `disable-linux-hw-accel` | Optional | `auto` | Whether to disable hardware acceleration on Linux machines - `true`, `false` or `auto`.|
 | `enable-hw-keyboard` | Optional | `false` | Whether to enable hardware keyboard - `true` or `false`. |
 | `emulator-build` | Optional | N/A | Build number of a specific version of the emulator binary to use e.g. `6061023` for emulator v29.3.0.0. |
-| `working-directory` | Optional | `./` | A custom working directory - e.g. `./android` if your root Gradle project is under the `./android` sub-directory within your repository. |
+| `working-directory` | Optional | `./` | A custom working directory - e.g. `./android` if your root Gradle project is under the `./android` sub-directory within your repository. Will be used for `script` & `pre-emulator-launch-script`. |
 | `ndk` | Optional | N/A | Version of NDK to install - e.g. `21.0.6113669` |
 | `cmake` | Optional | N/A | Version of CMake to install - e.g. `3.10.2.4988404` |
 | `channel` | Optional | stable | Channel to download the SDK components from - `stable`, `beta`, `dev`, `canary` |
 | `script` | Required | N/A | Custom script to run - e.g. to run Android instrumented tests on the emulator: `./gradlew connectedCheck` |
+| `pre-emulator-launch-script` | Optional | N/A | Custom script to run after creating the AVD and before launching the emulator - e.g. `./adjust-emulator-configs.sh` |
 
 Default `emulator-options`: `-no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim`.
 
-## Can I use this action on Linux VMs?
+## Can I use this action on Github Hosted Linux VMs?
 
-The short answer is yes but on Github-hosted Linux runners it's expected to be a much worse experience (on some newer API levels it might not work at all) than running it on macOS. You can get it running much faster on self-hosted Linux runners but only if the underlying instances support KVM (which most don't).
+The short answer is yes but on Github-hosted Linux runners it's expected to be a much worse experience (on some newer API levels it might not work at all) than running it on macOS, because of the current lack of hardware acceleration support. You can get it running much faster on self-hosted Linux runners but only if the underlying instances support KVM (which most don't). Things might be better on the newer Larger runners but they are still in Beta. It is possible to use this Action with hardware accelerated Linux VMs hosted by a third-party runner provider.
 
 For a longer answer please refer to [this issue](https://github.com/ReactiveCircus/android-emulator-runner/issues/46).
-
 
 ## Who is using Android Emulator Runner?
 
@@ -204,4 +211,4 @@ These are some of the open-source projects using (or used) **Android Emulator Ru
 - [tinylog-org/tinylog](https://github.com/tinylog-org/tinylog/blob/v3.0/.github/workflows/build.yaml)
 - [hzi-braunschweig/SORMAS-Project](https://github.com/hzi-braunschweig/SORMAS-Project/blob/development/.github/workflows/sormas_app_ci.yml)
 
-If you are using **Android Emulator Runner** and want your project included in the list, please feel free to create an issue or open a pull request.
+If you are using **Android Emulator Runner** and want your project included in the list, please feel free to open a pull request.
