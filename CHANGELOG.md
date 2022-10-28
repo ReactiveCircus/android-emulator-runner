@@ -1,5 +1,13 @@
 # Change Log
 
+## v2.27.0
+
+* Added `pre-emulator-launch-script` to support running script after creating the AVD and before launching the emulator.  - [#247](https://github.com/ReactiveCircus/android-emulator-runner/pull/247) @nilsreichardt.
+* Update to Node 16. - [#276](https://github.com/ReactiveCircus/android-emulator-runner/pull/276) @mattjohnsonpint.
+* Update NPM dependencies. - [#282](https://github.com/ReactiveCircus/android-emulator-runner/pull/282) @mattjohnsonpint.
+* Update README with more context on hardware acceleration on GitHub hosted runners. - [#279](https://github.com/ReactiveCircus/android-emulator-runner/pull/279) @mrk-han.
+
+
 ## v2.26.0
 
 * Support [github-actions-typing](https://github.com/krzema12/github-actions-typing). - [#257](https://github.com/ReactiveCircus/android-emulator-runner/pull/257) @LeoColman.
