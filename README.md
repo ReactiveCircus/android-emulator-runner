@@ -10,13 +10,11 @@ The old ARM-based emulators were slow and are no longer supported by Google. The
 
 This presents a challenge when running emulators on CI especially when running emulators within a docker container, because **Nested Virtualization** must be supported by the host VM which isn't the case for most cloud-based CI providers due to infrastructural limits.  If you want to learn more about Emulators on CI, here's an article [Yang](https://github.com/ychescale9) wrote: [Running Android Instrumented Tests on CI](https://dev.to/ychescale9/running-android-emulators-on-ci-from-bitrise-io-to-github-actions-3j76).
 
-## HAXM support on Github's MacOS Runners
+## A note on VM Acceleration and why we don't need HAXM anymore
 
-The 10.x **macOS** VM provided by **GitHub Actions** had **HAXM** [pre-installed](https://github.com/actions/runner-images/blob/main/images/macos/macos-10.15-Readme.md). However, Github's [macOS-11](https://github.com/actions/runner-images/blob/main/images/macos/macos-11-Readme.md) and [macOS-12](https://github.com/actions/runner-images/blob/main/images/macos/macos-12-Readme.md) VMs **no longer** come pre-installed with HAXM. See [here](https://github.com/actions/runner-images/issues/183#issuecomment-610723516) and [here](https://github.com/actions/runner-images/issues/6388) for more info. 
+According to [this documentation](https://developer.android.com/studio/run/emulator-acceleration#vm-mac), "on Mac OS X v10.10 Yosemite and higher, the Android Emulator uses the built-in [Hypervisor.Framework](https://developer.apple.com/documentation/hypervisor) by default, and falls back to using Intel HAXM if Hypervisor.Framework fails to initialize." This means that **HAXM is only needed to achieve VM Acceleration if this default Hypervisor is not available on macOS machines.**
 
-**To run with HAXM on the macOS-11 and macOS-12 agents, you must install HAXM before starting your emulator**. See: [this snippet](https://gist.github.com/mrk-han/a0a11ed9bed966bb8b775ff55f2a87e9) for more info. This will enable VM acceleration, but as of right now running with GPU acceleration, e.g. `emulator -gpu host` is not possible with Github's standard runners.
-
-For Linux, Nested virtualization is possible on a self-hosted or 3rd party runner, but the VM will need to be hosted on a compatible machine that allows you to [enable KVM](https://developer.android.com/studio/run/emulator-acceleration#vm-linux), or is already configured with - for example the AWS EC2 Bare Metal instances. **The Github-hosted Linux runners are not currently KVM compatible.**
+**Note**: Manually enabling and downloading HAXM is not recommended because it is redundant and not needed (see above), and for users of macOS 10.13 High Sierra and higher: macOS 10.13 [disables installation of kernel extensions by default](https://developer.apple.com/library/archive/technotes/tn2459/_index.html#//apple_ref/doc/uid/DTS40017658). Because Intel HAXM is a kernel extension, we would need to manually enable its installation on the base runner VM. Furthermore, manually trying to install HAXM on a Github Runner [brings up a popup](https://github.com/ReactiveCircus/android-emulator-runner/discussions/286#discussioncomment-4026120) which further hinders tests from running.
 
 ## Purpose
 
