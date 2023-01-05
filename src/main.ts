@@ -121,6 +121,11 @@ async function run() {
     const enableHardwareKeyboard = enableHardwareKeyboardInput === 'true';
     console.log(`enable hardware keyboard: ${enableHardwareKeyboard}`);
 
+    // set afterBootDelay
+    const afterBootDelayInput = core.getInput('after-boot-delay');
+    const afterBootDelay = Number(afterBootDelayInput);
+    console.log(`after boot delay: ${afterBootDelay}`);
+
     // emulator build
     const emulatorBuildInput = core.getInput('emulator-build');
     if (emulatorBuildInput) {
@@ -210,7 +215,8 @@ async function run() {
       disableAnimations,
       disableSpellchecker,
       disableLinuxHardwareAcceleration,
-      enableHardwareKeyboard
+      enableHardwareKeyboard,
+      afterBootDelay
     );
 
     // execute the custom script

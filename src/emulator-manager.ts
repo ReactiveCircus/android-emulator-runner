@@ -22,7 +22,8 @@ export async function launchEmulator(
   disableAnimations: boolean,
   disableSpellChecker: boolean,
   disableLinuxHardwareAcceleration: boolean,
-  enableHardwareKeyboard: boolean
+  enableHardwareKeyboard: boolean,
+  afterBootDelay: number
 ): Promise<void> {
   try {
     console.log(`::group::Launch Emulator`);
@@ -78,6 +79,12 @@ export async function launchEmulator(
 
     // wait for emulator to complete booting
     await waitForDevice();
+
+    if (afterBootDelay) {
+      // wait additional delay to let the device continue booting
+      await delay(afterBootDelay * 1000);
+    }
+
     await exec.exec(`adb shell input keyevent 82`);
 
     if (disableAnimations) {

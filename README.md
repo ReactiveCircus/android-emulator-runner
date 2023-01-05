@@ -159,6 +159,7 @@ jobs:
 | `disable-spellchecker` | Optional | `false` | Whether to disable spellchecker - `true` or `false`. |
 | `disable-linux-hw-accel` | Optional | `auto` | Whether to disable hardware acceleration on Linux machines - `true`, `false` or `auto`.|
 | `enable-hw-keyboard` | Optional | `false` | Whether to enable hardware keyboard - `true` or `false`. |
+| `after-boot-delay` | Optional | `false` | Additional delay (seconds) to let the device continue booting before starting to use it. - e.g. `600`. |
 | `emulator-build` | Optional | N/A | Build number of a specific version of the emulator binary to use e.g. `6061023` for emulator v29.3.0.0. |
 | `working-directory` | Optional | `./` | A custom working directory - e.g. `./android` if your root Gradle project is under the `./android` sub-directory within your repository. Will be used for `script` & `pre-emulator-launch-script`. |
 | `ndk` | Optional | N/A | Version of NDK to install - e.g. `21.0.6113669` |

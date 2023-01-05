@@ -45,6 +45,8 @@ inputs:
    type: string
   enable-hw-keyboard:
    type: boolean
+  after-boot-delay:
+   type: integer
   emulator-build:
    type: string
   working-directory:
