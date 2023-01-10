@@ -18,10 +18,10 @@ export async function installAndroidSdk(apiLevel: number, target: string, arch: 
     const isOnMac = process.platform === 'darwin';
 
     if (!isOnMac) {
-      await exec.exec(`sh -c \\"sudo chown $USER:$USER ${process.env.ANDROID_SDK_ROOT} -R`);
+      await exec.exec(`sh -c \\"sudo chown $USER:$USER ${process.env.ANDROID_HOME} -R`);
     }
 
-    const cmdlineToolsPath = `${process.env.ANDROID_SDK_ROOT}/cmdline-tools`;
+    const cmdlineToolsPath = `${process.env.ANDROID_HOME}/cmdline-tools`;
     if (!fs.existsSync(cmdlineToolsPath)) {
       console.log('Installing new cmdline-tools.');
       const sdkUrl = isOnMac ? CMDLINE_TOOLS_URL_MAC : CMDLINE_TOOLS_URL_LINUX;
@@ -31,7 +31,7 @@ export async function installAndroidSdk(apiLevel: number, target: string, arch: 
     }
 
     // add paths for commandline-tools and platform-tools
-    core.addPath(`${cmdlineToolsPath}/latest:${cmdlineToolsPath}/latest/bin:${process.env.ANDROID_SDK_ROOT}/platform-tools`);
+    core.addPath(`${cmdlineToolsPath}/latest:${cmdlineToolsPath}/latest/bin:${process.env.ANDROID_HOME}/platform-tools`);
 
     // set standard AVD path
     core.exportVariable('ANDROID_AVD_HOME', `${process.env.HOME}/.android/avd`);
@@ -51,7 +51,7 @@ export async function installAndroidSdk(apiLevel: number, target: string, arch: 
       // TODO find out the correct download URLs for all build ids
       const downloadUrlSuffix = Number(emulatorBuild.charAt(0)) > 6 ? `_x64-${emulatorBuild}` : `-${emulatorBuild}`;
       await exec.exec(`curl -fo emulator.zip https://dl.google.com/android/repository/emulator-${isOnMac ? 'darwin' : 'linux'}${downloadUrlSuffix}.zip`);
-      await exec.exec(`unzip -o -q emulator.zip -d ${process.env.ANDROID_SDK_ROOT}`);
+      await exec.exec(`unzip -o -q emulator.zip -d ${process.env.ANDROID_HOME}`);
       await io.rmRF('emulator.zip');
     }
     console.log('Installing system images.');
