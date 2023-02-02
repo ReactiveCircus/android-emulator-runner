@@ -46,6 +46,7 @@ export async function launchEmulator(
     }
 
     if (heapSize) {
+      await exec.exec(`sh -c \\"printf 'vm.heapSize=${heapSize}\n' >> ${process.env.ANDROID_AVD_HOME}/"${avdName}".avd"/config.ini`);
       await exec.exec(`sh -c \\"printf 'hw.heapSize=${heapSize}\n' >> ${process.env.ANDROID_AVD_HOME}/"${avdName}".avd"/config.ini`);
     }
 
