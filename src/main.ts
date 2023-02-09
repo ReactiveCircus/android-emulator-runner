@@ -40,9 +40,8 @@ async function run() {
     }
 
     // API level of the platform and system image
-    const apiLevelInput = core.getInput('api-level', { required: true });
-    checkApiLevel(apiLevelInput);
-    const apiLevel = Number(apiLevelInput);
+    const apiLevel = core.getInput('api-level', { required: true });
+    checkApiLevel(apiLevel);
     console.log(`API level: ${apiLevel}`);
 
     // target of the system image

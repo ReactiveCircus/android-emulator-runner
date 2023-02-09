@@ -7,7 +7,7 @@ const EMULATOR_BOOT_TIMEOUT_SECONDS = 600;
  * Creates and launches a new AVD instance with the specified configurations.
  */
 export async function launchEmulator(
-  apiLevel: number,
+  apiLevel: string,
   target: string,
   arch: string,
   profile: string,

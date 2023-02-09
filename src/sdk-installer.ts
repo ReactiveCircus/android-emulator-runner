@@ -12,7 +12,7 @@ const CMDLINE_TOOLS_URL_LINUX = 'https://dl.google.com/android/repository/comman
  * Installs & updates the Android SDK for the macOS platform, including SDK platform for the chosen API level, latest build tools, platform tools, Android Emulator,
  * and the system image for the chosen API level, CPU arch, and target.
  */
-export async function installAndroidSdk(apiLevel: number, target: string, arch: string, channelId: number, emulatorBuild?: string, ndkVersion?: string, cmakeVersion?: string): Promise<void> {
+export async function installAndroidSdk(apiLevel: string, target: string, arch: string, channelId: number, emulatorBuild?: string, ndkVersion?: string, cmakeVersion?: string): Promise<void> {
   try {
     console.log(`::group::Install Android SDK`);
     const isOnMac = process.platform === 'darwin';
