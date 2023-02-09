@@ -32,6 +32,14 @@ describe('api-level validator tests', () => {
       validator.checkApiLevel('29');
     };
     expect(func2).not.toThrow();
+    const func3 = () => {
+      validator.checkApiLevel('UpsideDownCake-ext5');
+    };
+    expect(func3).not.toThrow();
+    const func4 = () => {
+      validator.checkApiLevel('TiramisuPrivacySandbox');
+    };
+    expect(func4).not.toThrow();
   });
 });
 
