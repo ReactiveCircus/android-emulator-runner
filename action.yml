@@ -64,6 +64,8 @@ inputs:
     required: true
   pre-emulator-launch-script:
     description: 'custom script to run after creating the AVD and before launching the emulator - e.g. `./adjust-emulator-configs.sh`'
+  post-failure-script:
+    description: 'custom script to run after custom script failed and before killing the emulator - e.g. `./upload-tomestones.sh`'
 runs:
   using: 'node16'
   main: 'lib/main.js'

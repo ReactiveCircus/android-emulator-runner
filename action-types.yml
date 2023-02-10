@@ -64,3 +64,5 @@ inputs:
    type: string
   pre-emulator-launch-script:
    type: string
+  post-failure-script:
+   type: string

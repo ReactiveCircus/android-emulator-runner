@@ -170,6 +170,14 @@ async function run() {
     preEmulatorLaunchScripts?.forEach(async (script: string) => {
       console.log(`${script}`);
     });
+
+    // custom post failure script
+    const postFailureScriptInput = core.getInput('post-failure-script');
+    const postFailureScripts = !postFailureScriptInput ? undefined : parseScript(postFailureScriptInput);
+    console.log(`Post failure script:`);
+    postFailureScripts?.forEach(async (script: string) => {
+      console.log(`${script}`);
+    });
     console.log(`::endgroup::`);
 
     // install SDK
@@ -224,6 +232,18 @@ async function run() {
         await exec.exec('sh', ['-c', script]);
       }
     } catch (error) {
+      // execute post failure script if set before killing the emulator
+      if (postFailureScripts !== undefined) {
+        console.log(`::group::Run post failure script`);
+        try {
+          for (const postFailureScript of postFailureScripts) {
+            // use array form to avoid various quote escaping problems
+            // caused by exec(`sh -c "${postFailureScript}"`)
+            await exec.exec('sh', ['-c', postFailureScript]);
+          }
+        } catch (error) {}
+        console.log(`::endgroup::`);
+      }
       core.setFailed(error instanceof Error ? error.message : (error as string));
     }
 
