@@ -50,6 +50,8 @@ inputs:
     default: 'false'
   emulator-build:
     description: 'build number of a specific version of the emulator binary to use - e.g. `6061023` for emulator v29.3.0.0'
+  after-boot-delay:
+    description: 'Additional delay (seconds) to let the device continue booting before starting to use it.'
   working-directory:
     description: 'A custom working directory - e.g. `./android` if your root Gradle project is under the `./android` sub-directory within your repository'
   ndk:
