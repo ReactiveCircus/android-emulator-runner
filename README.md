@@ -173,6 +173,8 @@ Default `emulator-options`: `-no-window -gpu swiftshader_indirect -no-snapshot -
 
 The short answer is yes but on Github-hosted Linux runners it's expected to be a much worse experience (on some newer API levels it might not work at all) than running it on macOS, because of the current lack of hardware acceleration support. You can get it running much faster on self-hosted Linux runners but only if the underlying instances support KVM (which most don't). Things might be better on the newer Larger runners but they are still in Beta. It is possible to use this Action with hardware accelerated Linux VMs hosted by a third-party runner provider.
 
+- For a longer answer please refer to [this issue](https://github.com/ReactiveCircus/android-emulator-runner/issues/46).
+
 When using Githubs Larger runners, Actions users will need to add the runner user to the KVM user group:
 ```
 - name: Enable KVM group perms
@@ -182,6 +184,7 @@ When using Githubs Larger runners, Actions users will need to add the runner use
             sudo udevadm trigger --name-match=kvm
 ```
 You will then be able to make use of hardware acceleration.
+
 
 ## Who is using Android Emulator Runner?
 
