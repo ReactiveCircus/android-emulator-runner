@@ -18,7 +18,7 @@ export async function installAndroidSdk(apiLevel: string, target: string, arch: 
     const isOnMac = process.platform === 'darwin';
 
     if (!isOnMac) {
-      await exec.exec(`sh -c \\"sudo chown $USER:$USER ${process.env.ANDROID_HOME} -R`);
+      await exec.exec(`sh -c \\"sudo chown $(id -u):$(id -g) ${process.env.ANDROID_HOME} -R`);
     }
 
     const cmdlineToolsPath = `${process.env.ANDROID_HOME}/cmdline-tools`;
@@ -56,6 +56,9 @@ export async function installAndroidSdk(apiLevel: string, target: string, arch: 
     }
     console.log('Installing system images.');
     await exec.exec(`sh -c \\"sdkmanager --install 'system-images;android-${apiLevel};${target};${arch}' --channel=${channelId} > /dev/null"`);
+
+    console.log('Installing platforms.');
+    await exec.exec(`sh -c \\"sdkmanager --install 'platforms;android-${apiLevel}' --channel=${channelId} > /dev/null"`);
 
     if (ndkVersion) {
       console.log(`Installing NDK ${ndkVersion}.`);
