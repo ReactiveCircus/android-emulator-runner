@@ -35,6 +35,8 @@ inputs:
    type: string
   force-avd-creation:
    type: boolean
+  emulator-boot-timeout:
+   type: integer
   emulator-options:
    type: string
   disable-animations:
