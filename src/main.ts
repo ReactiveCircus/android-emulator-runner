@@ -89,6 +89,10 @@ async function run() {
     const forceAvdCreation = forceAvdCreationInput === 'true';
     console.log(`force avd creation: ${forceAvdCreation}`);
 
+    // Emulator boot timeout seconds
+    const emulatorBootTimeout = parseInt(core.getInput('emulator-boot-timeout'), 10);
+    console.log(`Emulator boot timeout: ${emulatorBootTimeout}`);
+
     // emulator options
     const emulatorOptions = core.getInput('emulator-options').trim();
     console.log(`emulator options: ${emulatorOptions}`);
@@ -205,6 +209,7 @@ async function run() {
       diskSize,
       avdName,
       forceAvdCreation,
+      emulatorBootTimeout,
       emulatorOptions,
       disableAnimations,
       disableSpellchecker,
