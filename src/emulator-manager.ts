@@ -1,13 +1,11 @@
 import * as exec from '@actions/exec';
 import * as fs from 'fs';
 
-const EMULATOR_BOOT_TIMEOUT_SECONDS = 600;
-
 /**
  * Creates and launches a new AVD instance with the specified configurations.
  */
 export async function launchEmulator(
-  apiLevel: number,
+  apiLevel: string,
   target: string,
   arch: string,
   profile: string,
@@ -18,6 +16,7 @@ export async function launchEmulator(
   diskSize: string,
   avdName: string,
   forceAvdCreation: boolean,
+  emulatorBootTimeout: number,
   emulatorOptions: string,
   disableAnimations: boolean,
   disableSpellChecker: boolean,
@@ -66,7 +65,7 @@ export async function launchEmulator(
     // start emulator
     console.log('Starting emulator.');
 
-    await exec.exec(`sh -c \\"${process.env.ANDROID_SDK_ROOT}/emulator/emulator -avd "${avdName}" ${emulatorOptions} &"`, [], {
+    await exec.exec(`sh -c \\"${process.env.ANDROID_HOME}/emulator/emulator -avd "${avdName}" ${emulatorOptions} &"`, [], {
       listeners: {
         stderr: (data: Buffer) => {
           if (data.toString().includes('invalid command-line parameter')) {
@@ -77,7 +76,7 @@ export async function launchEmulator(
     });
 
     // wait for emulator to complete booting
-    await waitForDevice();
+    await waitForDevice(emulatorBootTimeout);
     await exec.exec(`adb shell input keyevent 82`);
 
     if (disableAnimations) {
@@ -114,11 +113,11 @@ export async function killEmulator(): Promise<void> {
 /**
  * Wait for emulator to boot.
  */
-async function waitForDevice(): Promise<void> {
+async function waitForDevice(emulatorBootTimeout: number): Promise<void> {
   let booted = false;
   let attempts = 0;
   const retryInterval = 2; // retry every 2 seconds
-  const maxAttempts = EMULATOR_BOOT_TIMEOUT_SECONDS / 2;
+  const maxAttempts = emulatorBootTimeout / 2;
   while (!booted) {
     try {
       let result = '';

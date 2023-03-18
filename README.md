@@ -10,13 +10,11 @@ The old ARM-based emulators were slow and are no longer supported by Google. The
 
 This presents a challenge when running emulators on CI especially when running emulators within a docker container, because **Nested Virtualization** must be supported by the host VM which isn't the case for most cloud-based CI providers due to infrastructural limits.  If you want to learn more about Emulators on CI, here's an article [Yang](https://github.com/ychescale9) wrote: [Running Android Instrumented Tests on CI](https://dev.to/ychescale9/running-android-emulators-on-ci-from-bitrise-io-to-github-actions-3j76).
 
-## HAXM support on Github's MacOS Runners
+## A note on VM Acceleration and why we don't need HAXM anymore
 
-The 10.x **macOS** VM provided by **GitHub Actions** had **HAXM** [pre-installed](https://github.com/actions/runner-images/blob/main/images/macos/macos-10.15-Readme.md). However, Github's [macOS-11](https://github.com/actions/runner-images/blob/main/images/macos/macos-11-Readme.md) and [macOS-12](https://github.com/actions/runner-images/blob/main/images/macos/macos-12-Readme.md) VMs **no longer** come pre-installed with HAXM. See [here](https://github.com/actions/runner-images/issues/183#issuecomment-610723516) and [here](https://github.com/actions/runner-images/issues/6388) for more info. 
+According to [this documentation](https://developer.android.com/studio/run/emulator-acceleration#vm-mac), "on Mac OS X v10.10 Yosemite and higher, the Android Emulator uses the built-in [Hypervisor.Framework](https://developer.apple.com/documentation/hypervisor) by default, and falls back to using Intel HAXM if Hypervisor.Framework fails to initialize." This means that **HAXM is only needed to achieve VM Acceleration if this default Hypervisor is not available on macOS machines.**
 
-**To run with HAXM on the macOS-11 and macOS-12 agents, you must install HAXM before starting your emulator**. See: [this snippet](https://gist.github.com/mrk-han/a0a11ed9bed966bb8b775ff55f2a87e9) for more info. This will enable VM acceleration, but as of right now running with GPU acceleration, e.g. `emulator -gpu host` is not possible with Github's standard runners.
-
-For Linux, Nested virtualization is possible on a self-hosted or 3rd party runner, but the VM will need to be hosted on a compatible machine that allows you to [enable KVM](https://developer.android.com/studio/run/emulator-acceleration#vm-linux), or is already configured with - for example the AWS EC2 Bare Metal instances. **The Github-hosted Linux runners are not currently KVM compatible.**
+**Note**: Manually enabling and downloading HAXM is not recommended because it is redundant and not needed (see above), and for users of macOS 10.13 High Sierra and higher: macOS 10.13 [disables installation of kernel extensions by default](https://developer.apple.com/library/archive/technotes/tn2459/_index.html#//apple_ref/doc/uid/DTS40017658). Because Intel HAXM is a kernel extension, we would need to manually enable its installation on the base runner VM. Furthermore, manually trying to install HAXM on a Github Runner [brings up a popup](https://github.com/ReactiveCircus/android-emulator-runner/discussions/286#discussioncomment-4026120) which further hinders tests from running.
 
 ## Purpose
 
@@ -156,6 +154,7 @@ jobs:
 | `disk-size` | Optional | N/A | Disk size, or partition size to use for this AVD. Either in bytes or KB, MB or GB, when denoted with K, M or G. - e.g. `2048M` |
 | `avd-name` | Optional | `test` | Custom AVD name used for creating the Android Virtual Device. |
 | `force-avd-creation` | Optional | `true` | Whether to force create the AVD by overwriting an existing AVD with the same name as `avd-name` - `true` or `false`. |
+| `emulator-boot-timeout` | Optional | `600` | Emulator boot timeout in seconds. If it takes longer to boot, the action would fail - e.g. `300` for 5 minutes. |
 | `emulator-options` | Optional | See below | Command-line options used when launching the emulator (replacing all default options) - e.g. `-no-window -no-snapshot -camera-back emulated`. |
 | `disable-animations` | Optional | `true` | Whether to disable animations - `true` or `false`. |
 | `disable-spellchecker` | Optional | `false` | Whether to disable spellchecker - `true` or `false`. |
@@ -210,5 +209,6 @@ These are some of the open-source projects using (or used) **Android Emulator Ru
 - [dotanuki-labs/norris](https://github.com/dotanuki-labs/norris/blob/master/.github/workflows/main.yml)
 - [tinylog-org/tinylog](https://github.com/tinylog-org/tinylog/blob/v3.0/.github/workflows/build.yaml)
 - [hzi-braunschweig/SORMAS-Project](https://github.com/hzi-braunschweig/SORMAS-Project/blob/development/.github/workflows/sormas_app_ci.yml)
+- [ACRA/acra](https://github.com/ACRA/acra/blob/master/.github/workflows/test.yml)
 
 If you are using **Android Emulator Runner** and want your project included in the list, please feel free to open a pull request.

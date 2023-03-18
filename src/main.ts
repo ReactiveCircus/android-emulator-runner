@@ -40,9 +40,8 @@ async function run() {
     }
 
     // API level of the platform and system image
-    const apiLevelInput = core.getInput('api-level', { required: true });
-    checkApiLevel(apiLevelInput);
-    const apiLevel = Number(apiLevelInput);
+    const apiLevel = core.getInput('api-level', { required: true });
+    checkApiLevel(apiLevel);
     console.log(`API level: ${apiLevel}`);
 
     // target of the system image
@@ -89,6 +88,10 @@ async function run() {
     checkForceAvdCreation(forceAvdCreationInput);
     const forceAvdCreation = forceAvdCreationInput === 'true';
     console.log(`force avd creation: ${forceAvdCreation}`);
+
+    // Emulator boot timeout seconds
+    const emulatorBootTimeout = parseInt(core.getInput('emulator-boot-timeout'), 10);
+    console.log(`Emulator boot timeout: ${emulatorBootTimeout}`);
 
     // emulator options
     const emulatorOptions = core.getInput('emulator-options').trim();
@@ -206,6 +209,7 @@ async function run() {
       diskSize,
       avdName,
       forceAvdCreation,
+      emulatorBootTimeout,
       emulatorOptions,
       disableAnimations,
       disableSpellchecker,

@@ -4,6 +4,7 @@ export const VALID_ARCHS: Array<string> = ['x86', 'x86_64', 'arm64-v8a'];
 export const VALID_CHANNELS: Array<string> = ['stable', 'beta', 'dev', 'canary'];
 
 export function checkApiLevel(apiLevel: string): void {
+  if (apiLevel.startsWith('UpsideDownCake') || apiLevel === 'TiramisuPrivacySandbox') return;
   if (isNaN(Number(apiLevel)) || !Number.isInteger(Number(apiLevel))) {
     throw new Error(`Unexpected API level: '${apiLevel}'.`);
   }
