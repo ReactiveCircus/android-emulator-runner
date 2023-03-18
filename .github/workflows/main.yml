@@ -61,11 +61,11 @@ jobs:
         npm run lint
         npm test
 
-    - name: Java 15
-      uses: actions/setup-java@v3
+    - uses: actions/setup-java@v3
       with:
         distribution: 'zulu'
-        java-version: 15
+        java-version: 19
+
     - uses: actions/cache@v3
       id: avd-cache
       with:
