@@ -38,6 +38,17 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
+        
+      - name: set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+        
 
       - name: run tests
         uses: reactivecircus/android-emulator-runner@v2
