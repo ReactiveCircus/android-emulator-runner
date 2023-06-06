@@ -21,7 +21,7 @@ jobs:
         os: [macos-latest, ubuntu-latest]
         api-level: [16, 23, 29]
         target: [default, google_apis]
-        arch: [x86]
+        arch: [x86, arm64-v8a]
         exclude:
           - os: ubuntu-latest
             api-level: 23
