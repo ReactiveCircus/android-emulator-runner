@@ -19,8 +19,9 @@ export async function installAndroidSdk(apiLevel: string, target: string, arch: 
     const isOnMac = process.platform === 'darwin';
     const isArm = process.arch === 'arm64';
 
+    var sudoCmd: string = '';
     if (!isOnMac) {
-      await exec.exec(`sh -c \\"sudo chown $USER:$USER ${process.env.ANDROID_HOME} -R`);
+      sudoCmd = 'sudo';
     }
 
     const cmdlineToolsPath = `${process.env.ANDROID_HOME}/cmdline-tools`;
@@ -28,6 +29,10 @@ export async function installAndroidSdk(apiLevel: string, target: string, arch: 
       console.log('Installing new cmdline-tools.');
       const sdkUrl = isOnMac ? CMDLINE_TOOLS_URL_MAC : CMDLINE_TOOLS_URL_LINUX;
       const downloadPath = await tc.downloadTool(sdkUrl);
+      if (sudoCmd != '') {
+        await exec.exec(`sh -c \\"${sudoCmd} mkdir ${cmdlineToolsPath}"`);
+        await exec.exec(`sh -c \\"${sudoCmd} chown $USER:$USER ${cmdlineToolsPath}"`);
+      }
       await tc.extractZip(downloadPath, cmdlineToolsPath);
       await io.mv(`${cmdlineToolsPath}/cmdline-tools`, `${cmdlineToolsPath}/latest`);
     }
@@ -35,18 +40,21 @@ export async function installAndroidSdk(apiLevel: string, target: string, arch: 
     // add paths for commandline-tools and platform-tools
     core.addPath(`${cmdlineToolsPath}/latest:${cmdlineToolsPath}/latest/bin:${process.env.ANDROID_HOME}/platform-tools`);
 
+    // find sdkmanager
+    const sdkManager: string = await io.which('sdkmanager', true);
+
     // set standard AVD path
     core.exportVariable('ANDROID_AVD_HOME', `${process.env.HOME}/.android/avd`);
 
     // accept all Android SDK licenses
-    await exec.exec(`sh -c \\"yes | sdkmanager --licenses > /dev/null"`);
+    await exec.exec(`sh -c \\"yes | ${sdkManager} --licenses > /dev/null"`);
 
     console.log('Installing latest build tools, platform tools, and platform.');
 
-    await exec.exec(`sh -c \\"sdkmanager --install 'build-tools;${BUILD_TOOLS_VERSION}' platform-tools > /dev/null"`);
+    await exec.exec(`sh -c \\"${sudoCmd} ${sdkManager} --install 'build-tools;${BUILD_TOOLS_VERSION}' platform-tools > /dev/null"`);
 
     console.log('Installing latest emulator.');
-    await exec.exec(`sh -c \\"sdkmanager --install emulator --channel=${channelId} > /dev/null"`);
+    await exec.exec(`sh -c \\"${sudoCmd} ${sdkManager} --install emulator --channel=${channelId} > /dev/null"`);
 
     if (emulatorBuild) {
       console.log(`Installing emulator build ${emulatorBuild}.`);
@@ -65,19 +73,19 @@ export async function installAndroidSdk(apiLevel: string, target: string, arch: 
         downloadUrlSuffix = `-${emulatorBuild}`;
       }
       await exec.exec(`curl -fo emulator.zip https://dl.google.com/android/repository/emulator-${isOnMac ? 'darwin' : 'linux'}${downloadUrlSuffix}.zip`);
-      await exec.exec(`unzip -o -q emulator.zip -d ${process.env.ANDROID_HOME}`);
+      await exec.exec(`${sudoCmd} unzip -o -q emulator.zip -d ${process.env.ANDROID_HOME}`);
       await io.rmRF('emulator.zip');
     }
     console.log('Installing system images.');
-    await exec.exec(`sh -c \\"sdkmanager --install 'system-images;android-${apiLevel};${target};${arch}' --channel=${channelId} > /dev/null"`);
+    await exec.exec(`sh -c \\"${sudoCmd} ${sdkManager} --install 'system-images;android-${apiLevel};${target};${arch}' --channel=${channelId} > /dev/null"`);
 
     if (ndkVersion) {
       console.log(`Installing NDK ${ndkVersion}.`);
-      await exec.exec(`sh -c \\"sdkmanager --install 'ndk;${ndkVersion}' --channel=${channelId} > /dev/null"`);
+      await exec.exec(`sh -c \\"${sudoCmd} ${sdkManager} --install 'ndk;${ndkVersion}' --channel=${channelId} > /dev/null"`);
     }
     if (cmakeVersion) {
       console.log(`Installing CMake ${cmakeVersion}.`);
-      await exec.exec(`sh -c \\"sdkmanager --install 'cmake;${cmakeVersion}' --channel=${channelId} > /dev/null"`);
+      await exec.exec(`sh -c \\"${sudoCmd} ${sdkManager} --install 'cmake;${cmakeVersion}' --channel=${channelId} > /dev/null"`);
     }
   } finally {
     console.log(`::endgroup::`);
