@@ -211,5 +211,6 @@ These are some of the open-source projects using (or used) **Android Emulator Ru
 - [hzi-braunschweig/SORMAS-Project](https://github.com/hzi-braunschweig/SORMAS-Project/blob/development/.github/workflows/sormas_app_ci.yml)
 - [ACRA/acra](https://github.com/ACRA/acra/blob/master/.github/workflows/test.yml)
 - [bitfireAT/davx5-ose](https://github.com/bitfireAT/davx5-ose/blob/dev-ose/.github/workflows/test-dev.yml)
+- [robolectric/robolectric](https://github.com/robolectric/robolectric/blob/master/.github/workflows/tests.yml)
 
 If you are using **Android Emulator Runner** and want your project included in the list, please feel free to open a pull request.
