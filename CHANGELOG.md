@@ -1,5 +1,12 @@
 # Change Log
 
+## v2.29.0
+
+* Fixed emulator download URL. - [#343](https://github.com/ReactiveCircus/android-emulator-runner/pull/343)
+* Upgrade to latest npm dependencies. - [#347](https://github.com/ReactiveCircus/android-emulator-runner/pull/347) [#355](https://github.com/ReactiveCircus/android-emulator-runner/pull/355)
+* Update SDK command-line tools to `11.0`. - [#356](https://github.com/ReactiveCircus/android-emulator-runner/pull/356)
+* Update SDK build tools to `34.0.0`. - [#356](https://github.com/ReactiveCircus/android-emulator-runner/pull/356)
+
 ## v2.28.0
 
 * Add `emulator-boot-timeout` to support configuring maximum time waiting for emulator boot. - [#326](https://github.com/ReactiveCircus/android-emulator-runner/pull/326)
