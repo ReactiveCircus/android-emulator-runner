@@ -22,6 +22,7 @@ jobs:
         api-level: [23, 29]
         target: [default, google_apis]
         arch: [x86]
+        profile: ["Galaxy Nexus"]
         exclude:
           - os: ubuntu-latest
             api-level: 23
@@ -38,14 +39,22 @@ jobs:
             api-level: 24
             target: playstore
             arch: x86
+            profile: "Galaxy Nexus"
           - os: macos-latest
             api-level: 30
             target: aosp_atd
             arch: x86
+            profile: "Galaxy Nexus"
           - os: macos-11
             api-level: 31
             target: google_apis
             arch: x86_64
+            profile: "Galaxy Nexus"
+          - os: macos-latest
+            api-level: 32
+            target: android-desktop
+            arch: x86_64
+            profile: "desktop_medium"
 
     steps:
     - name: checkout
@@ -73,7 +82,7 @@ jobs:
           ~/.android/avd/*
           ~/.android/adb*
           ~/.android/debug.keystore
-        key: avd-${{ matrix.api-level }}-${{ matrix.os }}-${{ matrix.target }}
+        key: avd-${{ matrix.api-level }}-${{ matrix.os }}-${{ matrix.target }}-${{ matrix.profile }}
 
     - name: assemble tests
       uses: gradle/gradle-build-action@v2
@@ -88,7 +97,7 @@ jobs:
         api-level: ${{ matrix.api-level }}
         target: ${{ matrix.target }}
         arch: ${{ matrix.arch }}
-        profile: Galaxy Nexus
+        profile: ${{ matrix.profile }}
         cores: 2
         sdcard-path-or-size: 100M
         avd-name: test
@@ -105,7 +114,7 @@ jobs:
         api-level: ${{ matrix.api-level }}
         target: ${{ matrix.target }}
         arch: ${{ matrix.arch }}
-        profile: Galaxy Nexus
+        profile: ${{ matrix.profile }}
         cores: 2
         ram-size: 2048M
         sdcard-path-or-size: 100M

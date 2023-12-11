@@ -96,6 +96,11 @@ describe('target validator tests', () => {
       validator.checkTarget('google-tv');
     };
     expect(func9).not.toThrow();
+
+    const func10 = () => {
+      validator.checkTarget('android-desktop');
+    };
+    expect(func10).not.toThrow();
   });
 });
 
