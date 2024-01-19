@@ -56,7 +56,7 @@ export async function launchEmulator(
       await exec.exec(`sh -c \\"printf 'disk.dataPartition.size=${diskSize}\n' >> ${process.env.ANDROID_AVD_HOME}/"${avdName}".avd"/config.ini`);
     }
 
-    //turn off hardware acceleration on Linux
+    // turn off hardware acceleration on Linux
     if (process.platform === 'linux' && disableLinuxHardwareAcceleration) {
       console.log('Disabling Linux hardware acceleration.');
       emulatorOptions += ' -accel off';

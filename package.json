@@ -2,7 +2,7 @@
   "name": "android-emulator-runner",
   "version": "0.0.0",
   "private": true,
-  "description": "A GitHub Action for installing, configuring and running Android Emulators on macOS virtual machines.",
+  "description": "A GitHub Action for installing, configuring and running Android Emulators on hardware-accelerated runners.",
   "main": "lib/main.js",
   "scripts": {
     "build": "tsc",
