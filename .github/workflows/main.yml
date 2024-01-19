@@ -18,15 +18,11 @@ jobs:
     timeout-minutes: 15
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest]
+        os: [ubuntu-latest]
         api-level: [23, 29]
         target: [default, google_apis]
         arch: [x86]
         exclude:
-          - os: ubuntu-latest
-            api-level: 23
-          - os: ubuntu-latest
-            api-level: 29
           - target: google_apis
             api-level: 16
           - target: google_apis
@@ -34,17 +30,25 @@ jobs:
           - target: google_apis
             api-level: 29
         include:
-          - os: macos-latest
+          - os: ubuntu-latest
             api-level: 24
             target: playstore
             arch: x86
-          - os: macos-latest
+          - os: ubuntu-latest
             api-level: 30
             target: aosp_atd
             arch: x86
-          - os: macos-11
+          - os: macos-latest
             api-level: 31
             target: google_apis
+            arch: x86_64
+          - os: macos-11
+            api-level: 32
+            target: google_apis
+            arch: x86_64
+          - os: ubuntu-latest
+            api-level: 34
+            target: aosp_atd
             arch: x86_64
 
     steps:
@@ -64,7 +68,7 @@ jobs:
     - uses: actions/setup-java@v3
       with:
         distribution: 'zulu'
-        java-version: 19
+        java-version: 21
 
     - uses: actions/cache@v3
       id: avd-cache
@@ -80,6 +84,13 @@ jobs:
       with:
         build-root-directory: test-fixture
         arguments: assembleAndroidTest
+
+    - name: enable KVM for linux runners
+      if: runner.os == 'Linux'
+      run: |
+        echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+        sudo udevadm control --reload-rules
+        sudo udevadm trigger --name-match=kvm
 
     - name: run emulator to generate snapshot for caching
       if: steps.avd-cache.outputs.cache-hit != 'true'
