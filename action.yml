@@ -1,5 +1,5 @@
 name: 'Android Emulator Runner'
-description: 'Installs, configures and starts an Android Emulator directly on macOS virtual machines.'
+description: 'Installs, configures and starts an Android Emulator directly on hardware-accelerated runners.'
 author: 'Reactive Circus'
 branding:
   icon: 'smartphone'
