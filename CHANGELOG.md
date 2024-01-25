@@ -1,5 +1,9 @@
 # Change Log
 
+## v2.30.0
+
+* Update to Node 20. - [#369](https://github.com/ReactiveCircus/android-emulator-runner/pull/369)
+
 ## v2.29.0
 
 * Fixed emulator download URL. - [#343](https://github.com/ReactiveCircus/android-emulator-runner/pull/343)

@@ -2,7 +2,7 @@
   "name": "android-emulator-runner",
   "version": "0.0.0",
   "private": true,
-  "description": "A GitHub Action for installing, configuring and running Android Emulators on macOS virtual machines.",
+  "description": "A GitHub Action for installing, configuring and running Android Emulators on hardware-accelerated runners.",
   "main": "lib/main.js",
   "scripts": {
     "build": "tsc",
@@ -18,6 +18,9 @@
     "node",
     "setup"
   ],
+  "engines": {
+    "node": ">=20"
+  },
   "author": "Reactive Circus",
   "license": "MIT",
   "dependencies": {
@@ -29,7 +32,7 @@
   },
   "devDependencies": {
     "@types/jest": "^29.2.0",
-    "@types/node": "^16.18.2",
+    "@types/node": "^20.11.0",
     "@typescript-eslint/eslint-plugin": "^5.41.0",
     "@typescript-eslint/parser": "^5.41.0",
     "eslint": "^8.26.0",

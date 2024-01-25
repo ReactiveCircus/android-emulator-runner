@@ -5,7 +5,7 @@ on:
       os:
         description: 'OS'
         required: true
-        default: 'macos-latest'
+        default: 'ubuntu-latest'
       api-level:
         description: 'API level of the platform and system image'
         required: true
@@ -54,11 +54,18 @@ jobs:
     - uses: actions/setup-java@v3
       with:
         distribution: 'zulu'
-        java-version: 19
+        java-version: 21
 
     - uses: gradle/gradle-build-action@v2
       with:
         gradle-home-cache-cleanup: true
+
+    - name: enable KVM for linux runners
+      if: runner.os == 'Linux'
+      run: |
+        echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+        sudo udevadm control --reload-rules
+        sudo udevadm trigger --name-match=kvm
 
     - name: run action
       uses: ./

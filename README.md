@@ -4,11 +4,23 @@
   <a href="https://github.com/ReactiveCircus/android-emulator-runner"><img alt="GitHub Actions status" src="https://github.com/ReactiveCircus/android-emulator-runner/workflows/Main%20workflow/badge.svg"></a>
 </p>
 
-A GitHub Action for installing, configuring and running hardware-accelerated Android Emulators on macOS virtual machines.
+A GitHub Action for installing, configuring and running hardware-accelerated Android Emulators on Linux and macOS virtual machines.
 
 The old ARM-based emulators were slow and are no longer supported by Google. The modern Intel Atom (x86 and x86_64) emulators can be fast, but rely on two forms of hardware acceleration to reach their peak potential: [Graphics Acceleration](https://developer.android.com/studio/run/emulator-acceleration#accel-graphics), e.g. `emulator -gpu host` and [Virtual Machine(VM) Acceleration](https://developer.android.com/studio/run/emulator-acceleration#accel-vm), e.g. `emulator -accel on`. **Note:** GPU and VM Acceleration are two different and non-mutually exclusive forms of Hardware Acceleration.
 
 This presents a challenge when running emulators on CI especially when running emulators within a docker container, because **Nested Virtualization** must be supported by the host VM which isn't the case for most cloud-based CI providers due to infrastructural limits.  If you want to learn more about Emulators on CI, here's an article [Yang](https://github.com/ychescale9) wrote: [Running Android Instrumented Tests on CI](https://dev.to/ychescale9/running-android-emulators-on-ci-from-bitrise-io-to-github-actions-3j76).
+
+## Running hardware accelerated emulators on Linux runners
+
+GitHub's [larger Linux runners support running hardware accelerated emulators](https://github.blog/changelog/2023-02-23-hardware-accelerated-android-virtualization-on-actions-windows-and-linux-larger-hosted-runners/) which is [free for public GitHub repos](https://github.blog/2024-01-17-github-hosted-runners-double-the-power-for-open-source/). It is now recommended to use the **Ubuntu** (`ubuntu-latest`) runners which are 2-3 times faster than the **macOS** ones which are also a lot more expensive. Remember to enable KVM in your workflow before running this action:
+
+```
+- name: Enable KVM group perms
+  run: |
+    echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+    sudo udevadm control --reload-rules
+    sudo udevadm trigger --name-match=kvm
+```
 
 ## A note on VM Acceleration and why we don't need HAXM anymore
 
@@ -34,10 +46,16 @@ A workflow that uses **android-emulator-runner** to run your instrumented tests 
 ```yml
 jobs:
   test:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - name: checkout
         uses: actions/checkout@v3
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
 
       - name: run tests
         uses: reactivecircus/android-emulator-runner@v2
@@ -51,7 +69,7 @@ We can also leverage GitHub Actions's build matrix to test across multiple confi
 ```yml
 jobs:
   test:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         api-level: [21, 23, 29]
@@ -59,6 +77,12 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
 
       - name: run tests
         uses: reactivecircus/android-emulator-runner@v2
@@ -75,10 +99,16 @@ If you need specific versions of **NDK** and **CMake** installed:
 ```yml
 jobs:
   test:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - name: checkout
         uses: actions/checkout@v3
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
 
       - name: run tests
         uses: reactivecircus/android-emulator-runner@v2
@@ -99,13 +129,19 @@ We can significantly reduce emulator startup time by setting up AVD snapshot cac
 ```yml
 jobs:
   test:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         api-level: [21, 23, 29]
     steps:
       - name: checkout
         uses: actions/checkout@v3
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
 
       - name: Gradle cache
         uses: gradle/gradle-build-action@v2
@@ -170,12 +206,6 @@ jobs:
 
 Default `emulator-options`: `-no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim`.
 
-## Can I use this action on Github Hosted Linux VMs?
-
-The short answer is yes but on Github-hosted Linux runners it's expected to be a much worse experience (on some newer API levels it might not work at all) than running it on macOS, because of the current lack of hardware acceleration support. You can get it running much faster on self-hosted Linux runners but only if the underlying instances support KVM (which most don't). Things might be better on the newer Larger runners but they are still in Beta. It is possible to use this Action with hardware accelerated Linux VMs hosted by a third-party runner provider.
-
-For a longer answer please refer to [this issue](https://github.com/ReactiveCircus/android-emulator-runner/issues/46).
-
 ## Who is using Android Emulator Runner?
 
 These are some of the open-source projects using (or used) **Android Emulator Runner**:
@@ -211,5 +241,6 @@ These are some of the open-source projects using (or used) **Android Emulator Ru
 - [hzi-braunschweig/SORMAS-Project](https://github.com/hzi-braunschweig/SORMAS-Project/blob/development/.github/workflows/sormas_app_ci.yml)
 - [ACRA/acra](https://github.com/ACRA/acra/blob/master/.github/workflows/test.yml)
 - [bitfireAT/davx5-ose](https://github.com/bitfireAT/davx5-ose/blob/dev-ose/.github/workflows/test-dev.yml)
+- [robolectric/robolectric](https://github.com/robolectric/robolectric/blob/master/.github/workflows/tests.yml)
 
 If you are using **Android Emulator Runner** and want your project included in the list, please feel free to open a pull request.
