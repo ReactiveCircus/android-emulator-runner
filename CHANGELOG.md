@@ -1,5 +1,9 @@
 # Change Log
 
+## v2.30.1
+
+* Run action on Node 20. - [#371](https://github.com/ReactiveCircus/android-emulator-runner/pull/371)
+
 ## v2.30.0
 
 * Update to Node 20. - [#369](https://github.com/ReactiveCircus/android-emulator-runner/pull/369)
