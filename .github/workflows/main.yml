@@ -75,11 +75,11 @@ jobs:
           ~/.android/debug.keystore
         key: avd-${{ matrix.api-level }}-${{ matrix.os }}-${{ matrix.target }}
 
+    - uses: gradle/actions/setup-gradle@v3
+
     - name: assemble tests
-      uses: gradle/gradle-build-action@v2
-      with:
-        build-root-directory: test-fixture
-        arguments: assembleAndroidTest
+      working-directory: test-fixture
+      run: ./gradlew assembleAndroidTest
 
     - name: enable KVM for linux runners
       if: runner.os == 'Linux'
