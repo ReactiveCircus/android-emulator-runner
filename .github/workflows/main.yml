@@ -52,7 +52,7 @@ jobs:
       uses: actions/checkout@v4
 
     - name: validate gradle wrapper
-      uses: gradle/wrapper-validation-action@v1
+      uses: gradle/wrapper-validation-action@v2
 
     - name: build, test and lint
       run: |
