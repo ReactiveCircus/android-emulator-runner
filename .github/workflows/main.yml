@@ -38,7 +38,7 @@ jobs:
             api-level: 30
             target: aosp_atd
             arch: x86
-          - os: macos-latest
+          - os: macos-14
             api-level: 31
             target: google_apis
             arch: x86_64
