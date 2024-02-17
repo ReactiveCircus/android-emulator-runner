@@ -2,9 +2,10 @@ export const MIN_API_LEVEL = 15;
 export const VALID_TARGETS: Array<string> = ['default', 'google_apis', 'aosp_atd', 'google_atd', 'google_apis_playstore', 'android-wear', 'android-wear-cn', 'android-tv', 'google-tv'];
 export const VALID_ARCHS: Array<string> = ['x86', 'x86_64', 'arm64-v8a'];
 export const VALID_CHANNELS: Array<string> = ['stable', 'beta', 'dev', 'canary'];
+export const PREVIEW_API_LEVELS: Array<string> = ['Tiramisu', 'UpsideDownCake', 'VanillaIceCream'];
 
 export function checkApiLevel(apiLevel: string): void {
-  if (apiLevel.startsWith('UpsideDownCake') || apiLevel === 'TiramisuPrivacySandbox') return;
+  if (PREVIEW_API_LEVELS.some((previewLevel) => apiLevel.startsWith(previewLevel))) return;
   if (isNaN(Number(apiLevel)) || !Number.isInteger(Number(apiLevel))) {
     throw new Error(`Unexpected API level: '${apiLevel}'.`);
   }
