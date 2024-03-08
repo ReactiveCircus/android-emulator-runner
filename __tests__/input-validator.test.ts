@@ -186,7 +186,7 @@ describe('emulator-port validator tests', () => {
     };
     expect(func).toThrow();
   });
-  it('Throws if emulator-port is higher than MIN_PORT', () => {
+  it('Throws if emulator-port is higher than MAX_PORT', () => {
     const func = () => {
       validator.checkPort(MAX_PORT + 2);
     };
