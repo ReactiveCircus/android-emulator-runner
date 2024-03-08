@@ -12,6 +12,8 @@ import {
   checkChannel,
   checkEnableHardwareKeyboard,
   checkDiskSize,
+  checkPort,
+  MIN_PORT,
 } from './input-validator';
 import { launchEmulator, killEmulator } from './emulator-manager';
 import * as exec from '@actions/exec';
@@ -92,6 +94,11 @@ async function run() {
     // Emulator boot timeout seconds
     const emulatorBootTimeout = parseInt(core.getInput('emulator-boot-timeout'), 10);
     console.log(`Emulator boot timeout: ${emulatorBootTimeout}`);
+
+    // Emulator port to use
+    const port = parseInt(core.getInput('emulator-port'), 10);
+    checkPort(port);
+    console.log(`emulator port: ${port}`);
 
     // emulator options
     const emulatorOptions = core.getInput('emulator-options').trim();
@@ -210,6 +217,7 @@ async function run() {
       avdName,
       forceAvdCreation,
       emulatorBootTimeout,
+      port,
       emulatorOptions,
       disableAnimations,
       disableSpellchecker,
@@ -226,17 +234,19 @@ async function run() {
       for (const script of scripts) {
         // use array form to avoid various quote escaping problems
         // caused by exec(`sh -c "${script}"`)
-        await exec.exec('sh', ['-c', script]);
+        await exec.exec('sh', ['-c', script], {
+          env: { ...process.env, EMULATOR_PORT: `${port}`, ANDROID_SERIAL: `emulator-${port}` },
+        });
       }
     } catch (error) {
       core.setFailed(error instanceof Error ? error.message : (error as string));
     }
 
     // finally kill the emulator
-    await killEmulator();
+    await killEmulator(port);
   } catch (error) {
     // kill the emulator so the action can exit
-    await killEmulator();
+    await killEmulator(MIN_PORT);
     core.setFailed(error instanceof Error ? error.message : (error as string));
   }
 }

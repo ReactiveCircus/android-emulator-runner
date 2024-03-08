@@ -1,4 +1,5 @@
 import * as validator from '../src/input-validator';
+import { MAX_PORT, MIN_PORT } from '../src/input-validator';
 
 describe('api-level validator tests', () => {
   it('Throws if api-level is not a number', () => {
@@ -169,6 +170,33 @@ describe('force-avd-creation validator tests', () => {
       validator.checkForceAvdCreation('false');
     };
     expect(func2).not.toThrow();
+  });
+});
+
+describe('emulator-port validator tests', () => {
+  it('Validates if emulator-port is even and in range', () => {
+    const func = () => {
+      validator.checkPort(5554);
+    };
+    expect(func).not.toThrow();
+  });
+  it('Throws if emulator-port is lower than MIN_PORT', () => {
+    const func = () => {
+      validator.checkPort(MIN_PORT - 2);
+    };
+    expect(func).toThrow();
+  });
+  it('Throws if emulator-port is higher than MIN_PORT', () => {
+    const func = () => {
+      validator.checkPort(MAX_PORT + 2);
+    };
+    expect(func).toThrow();
+  });
+  it('Throws if emulator-port is odd', () => {
+    const func = () => {
+      validator.checkPort(5555);
+    };
+    expect(func).toThrow();
   });
 });
 
