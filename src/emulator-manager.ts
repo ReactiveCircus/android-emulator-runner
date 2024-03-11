@@ -66,7 +66,7 @@ export async function launchEmulator(
     // start emulator
     console.log('Starting emulator.');
 
-    await exec.exec(`sh -c \\"${process.env.ANDROID_HOME}/emulator/emulator -avd "${avdName}" ${emulatorOptions} &"`, [], {
+    await exec.exec(`sh -c \\"${process.env.ANDROID_HOME}/emulator/emulator -port ${port} -avd "${avdName}" ${emulatorOptions} &"`, [], {
       listeners: {
         stderr: (data: Buffer) => {
           if (data.toString().includes('invalid command-line parameter')) {
