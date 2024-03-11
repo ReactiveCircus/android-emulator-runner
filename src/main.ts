@@ -22,6 +22,7 @@ import { getChannelId } from './channel-id-mapper';
 import { accessSync, constants } from 'fs';
 
 async function run() {
+  let port: number = MIN_PORT;
   try {
     console.log(`::group::Configure emulator`);
     let linuxSupportKVM = false;
@@ -96,7 +97,7 @@ async function run() {
     console.log(`Emulator boot timeout: ${emulatorBootTimeout}`);
 
     // Emulator port to use
-    const port = parseInt(core.getInput('emulator-port'), 10);
+    port = parseInt(core.getInput('emulator-port'), 10);
     checkPort(port);
     console.log(`emulator port: ${port}`);
 
@@ -246,7 +247,7 @@ async function run() {
     await killEmulator(port);
   } catch (error) {
     // kill the emulator so the action can exit
-    await killEmulator(MIN_PORT);
+    await killEmulator(port);
     core.setFailed(error instanceof Error ? error.message : (error as string));
   }
 }
