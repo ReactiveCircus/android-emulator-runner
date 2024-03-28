@@ -191,6 +191,7 @@ jobs:
 | `avd-name` | Optional | `test` | Custom AVD name used for creating the Android Virtual Device. |
 | `force-avd-creation` | Optional | `true` | Whether to force create the AVD by overwriting an existing AVD with the same name as `avd-name` - `true` or `false`. |
 | `emulator-boot-timeout` | Optional | `600` | Emulator boot timeout in seconds. If it takes longer to boot, the action would fail - e.g. `300` for 5 minutes. |
+| `emulator-port` | Optional | `5554` | Emulator port to use. Allows to run this action on multiple workers on a single machine at the same time. This input is available for the script as `EMULATOR_PORT` enviromental variable. This port is automatically used by android device related tasks in gradle |
 | `emulator-options` | Optional | See below | Command-line options used when launching the emulator (replacing all default options) - e.g. `-no-window -no-snapshot -camera-back emulated`. |
 | `disable-animations` | Optional | `true` | Whether to disable animations - `true` or `false`. |
 | `disable-spellchecker` | Optional | `false` | Whether to disable spellchecker - `true` or `false`. |
