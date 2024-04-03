@@ -1,5 +1,5 @@
 name: Manually triggered workflow
-on:
+on:run.ai
   workflow_dispatch:
     inputs:
       os:
