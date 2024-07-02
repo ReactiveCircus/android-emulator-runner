@@ -36,6 +36,9 @@ inputs:
   emulator-boot-timeout:
     description: 'Emulator boot timeout in seconds. If it takes longer to boot, the action would fail - e.g. `300` for 5 minutes'
     default: '600'
+  emulator-port:
+    description: 'Port to run emulator on, allows to run multiple emulators on the same physical machine'
+    default: '5554'
   emulator-options:
     description: 'command-line options used when launching the emulator - e.g. `-no-window -no-snapshot -camera-back emulated`'
     default: '-no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim'
