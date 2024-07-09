@@ -1,5 +1,10 @@
 # Change Log
 
+## v2.32.0
+
+* Add `port` parameter for customizing the emulator port to use. - [#383](https://github.com/ReactiveCircus/android-emulator-runner/pull/383)
+
+
 ## v2.31.0
 
 * Support setting `VanillaIceCream` as `api-level`. - [#378](https://github.com/ReactiveCircus/android-emulator-runner/pull/378)
