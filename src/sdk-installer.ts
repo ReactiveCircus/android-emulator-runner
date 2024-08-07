@@ -18,6 +18,7 @@ export async function installAndroidSdk(apiLevel: string, target: string, arch: 
     console.log(`::group::Install Android SDK`);
     const isOnMac = process.platform === 'darwin';
     const isArm = process.arch === 'arm64';
+    const isLinux = process.platform === 'linux';
 
     if (!isOnMac) {
       await exec.exec(`sh -c \\"sudo chown $USER:$USER ${process.env.ANDROID_HOME} -R`);
@@ -78,6 +79,11 @@ export async function installAndroidSdk(apiLevel: string, target: string, arch: 
     if (cmakeVersion) {
       console.log(`Installing CMake ${cmakeVersion}.`);
       await exec.exec(`sh -c \\"sdkmanager --install 'cmake;${cmakeVersion}' --channel=${channelId} > /dev/null"`);
+    }
+    if (isLinux) {
+      console.log('Installing emulator dependencies.');
+      await exec.exec(`sh -c \\"sudo apt update"`)
+      await exec.exec(`sh -c \\"sudo apt install libpulse0 xvfb"`)
     }
   } finally {
     console.log(`::endgroup::`);
