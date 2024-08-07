@@ -37,6 +37,8 @@ inputs:
    type: boolean
   emulator-boot-timeout:
    type: integer
+  emulator-port:
+    type: integer
   emulator-options:
    type: string
   disable-animations:
