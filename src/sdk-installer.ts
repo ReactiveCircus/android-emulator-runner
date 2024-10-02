@@ -23,7 +23,6 @@ export async function installAndroidSdk(apiLevel: string, target: string, arch: 
       await exec.exec(`sh -c \\"sudo chown $USER:$USER ${process.env.ANDROID_HOME}/platform-tools -R`);
       await exec.exec(`sh -c \\"sudo chown $USER:$USER ${process.env.ANDROID_HOME}/cmdline-tools/latest -R`);
       await exec.exec(`sh -c \\"sudo chown $USER:$USER ${process.env.ANDROID_HOME}/build-tools/${BUILD_TOOLS_VERSION} -R`);
-      await exec.exec(`sh -c \\"sudo chown $USER:$USER ${process.env.ANDROID_HOME}/emulator -R`);
     }
 
     const cmdlineToolsPath = `${process.env.ANDROID_HOME}/cmdline-tools`;
