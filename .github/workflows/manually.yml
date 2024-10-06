@@ -41,9 +41,6 @@ jobs:
     - name: checkout
       uses: actions/checkout@v4
 
-    - name: validate gradle wrapper
-      uses: gradle/wrapper-validation-action@v2
-
     - name: build, test and lint
       run: |
         npm install
@@ -56,9 +53,7 @@ jobs:
         distribution: 'zulu'
         java-version: 23
 
-    - uses: gradle/actions/setup-gradle@v3
-      with:
-        gradle-home-cache-cleanup: true
+    - uses: gradle/actions/setup-gradle@v4
 
     - name: enable KVM for linux runners
       if: runner.os == 'Linux'

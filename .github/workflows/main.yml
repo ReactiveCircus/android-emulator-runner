@@ -44,9 +44,6 @@ jobs:
     - name: checkout
       uses: actions/checkout@v4
 
-    - name: validate gradle wrapper
-      uses: gradle/wrapper-validation-action@v2
-
     - name: build, test and lint
       run: |
         npm install
@@ -68,7 +65,7 @@ jobs:
           ~/.android/debug.keystore
         key: avd-${{ matrix.api-level }}-${{ matrix.os }}-${{ matrix.target }}
 
-    - uses: gradle/actions/setup-gradle@v3
+    - uses: gradle/actions/setup-gradle@v4
 
     - name: assemble tests
       working-directory: test-fixture
