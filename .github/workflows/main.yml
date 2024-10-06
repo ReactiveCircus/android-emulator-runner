@@ -28,7 +28,7 @@ jobs:
             target: playstore
             arch: x86
           - os: ubuntu-latest
-            api-level: 30
+            api-level: 31
             target: aosp_atd
             arch: x86_64
           - os: ubuntu-latest
