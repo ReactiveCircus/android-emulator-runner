@@ -18,41 +18,31 @@ jobs:
     timeout-minutes: 15
     strategy:
       matrix:
-        os: [ubuntu-latest]
-        api-level: [23, 29]
-        target: [default, google_apis]
-        arch: [x86]
-        exclude:
-          - target: google_apis
-            api-level: 16
-          - target: google_apis
-            api-level: 23
-          - target: google_apis
-            api-level: 29
         include:
+          - os: ubuntu-latest
+            api-level: 23
+            target: default
+            arch: x86
           - os: ubuntu-latest
             api-level: 24
             target: playstore
             arch: x86
-          - os: ubuntu-latest
-            api-level: 30
-            target: aosp_atd
-            arch: x86
-          - os: macos-latest
+          - os: macos-13
             api-level: 31
-            target: google_apis
+            target: default
             arch: x86_64
           - os: ubuntu-latest
             api-level: 34
             target: aosp_atd
             arch: x86_64
+          - os: ubuntu-latest
+            api-level: 35
+            target: google_apis
+            arch: x86_64
 
     steps:
     - name: checkout
       uses: actions/checkout@v4
-
-    - name: validate gradle wrapper
-      uses: gradle/wrapper-validation-action@v2
 
     - name: build, test and lint
       run: |
@@ -64,7 +54,7 @@ jobs:
     - uses: actions/setup-java@v4
       with:
         distribution: 'zulu'
-        java-version: 21
+        java-version: 23
 
     - uses: actions/cache@v4
       id: avd-cache
@@ -75,7 +65,7 @@ jobs:
           ~/.android/debug.keystore
         key: avd-${{ matrix.api-level }}-${{ matrix.os }}-${{ matrix.target }}
 
-    - uses: gradle/actions/setup-gradle@v3
+    - uses: gradle/actions/setup-gradle@v4
 
     - name: assemble tests
       working-directory: test-fixture
