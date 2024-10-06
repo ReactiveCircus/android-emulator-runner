@@ -19,7 +19,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        api-level: [23, 29]
+        api-level: [23]
         target: [default]
         arch: [x86]
         include:
@@ -30,7 +30,7 @@ jobs:
           - os: ubuntu-latest
             api-level: 30
             target: aosp_atd
-            arch: x86
+            arch: x86_64
           - os: ubuntu-latest
             api-level: 34
             target: aosp_atd
