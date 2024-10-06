@@ -20,15 +20,8 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         api-level: [23, 29]
-        target: [default, google_apis]
+        target: [default]
         arch: [x86]
-        exclude:
-          - target: google_apis
-            api-level: 16
-          - target: google_apis
-            api-level: 23
-          - target: google_apis
-            api-level: 29
         include:
           - os: ubuntu-latest
             api-level: 24
