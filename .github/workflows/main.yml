@@ -18,18 +18,21 @@ jobs:
     timeout-minutes: 15
     strategy:
       matrix:
-        os: [ubuntu-latest]
         include:
-          - api-level: 23
+          - os: ubuntu-latest
+            api-level: 23
             target: default
             arch: x86
-          - api-level: 24
+          - os: ubuntu-latest
+            api-level: 24
             target: playstore
             arch: x86
-          - api-level: 31
+          - os: ubuntu-latest
+            api-level: 31
             target: aosp_atd
             arch: x86_64
-          - api-level: 34
+          - os: ubuntu-latest
+            api-level: 34
             target: aosp_atd
             arch: x86_64
           - os: macos-latest
