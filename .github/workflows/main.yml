@@ -38,13 +38,13 @@ jobs:
             api-level: 30
             target: aosp_atd
             arch: x86
-          - os: macos-latest
-            api-level: 31
-            target: google_apis
-            arch: x86_64
           - os: ubuntu-latest
             api-level: 34
             target: aosp_atd
+            arch: x86_64
+          - os: macos-latest
+            api-level: 35
+            target: google_apis
             arch: x86_64
 
     steps:
@@ -64,7 +64,7 @@ jobs:
     - uses: actions/setup-java@v4
       with:
         distribution: 'zulu'
-        java-version: 21
+        java-version: 23
 
     - uses: actions/cache@v4
       id: avd-cache
