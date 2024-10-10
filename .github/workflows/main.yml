@@ -23,7 +23,7 @@ jobs:
             api-level: 23
             target: default
             arch: x86
-          - os: ubuntu-24.04
+          - os: ubuntu-latest
             api-level: 24
             target: playstore
             arch: x86
@@ -31,18 +31,14 @@ jobs:
             api-level: 31
             target: default
             arch: x86_64
-          - os: ubuntu-22.04
+          - os: ubuntu-latest
             api-level: 34
             target: aosp_atd
             arch: x86_64
-          - os: ubuntu-latest
+          - os: ubuntu-24.04
             api-level: 35
             target: google_apis
             arch: x86_64
-          - os: ubuntu-latest
-            api-level: 29
-            target: default
-            arch: x86
 
     steps:
     - name: checkout
@@ -97,7 +93,7 @@ jobs:
         emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
         disable-animations: false
         working-directory: ./test-fixture/
-        channel: stable
+        channel: canary
         script: echo "Generated AVD snapshot for caching."
 
     - name: run action
@@ -115,7 +111,7 @@ jobs:
         emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
         disable-animations: true
         working-directory: ./test-fixture/
-        channel: stable
+        channel: canary
         pre-emulator-launch-script: |
           echo "Running pre emulator launch script. Printing the working directory now:"
           pwd
