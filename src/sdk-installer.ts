@@ -20,9 +20,10 @@ export async function installAndroidSdk(apiLevel: string, target: string, arch: 
     const isArm = process.arch === 'arm64';
 
     if (!isOnMac) {
-      await exec.exec(`sh -c \\"sudo chown $USER:$USER ${process.env.ANDROID_HOME}/platform-tools -R`);
-      await exec.exec(`sh -c \\"sudo chown $USER:$USER ${process.env.ANDROID_HOME}/cmdline-tools/latest -R`);
-      await exec.exec(`sh -c \\"sudo chown $USER:$USER ${process.env.ANDROID_HOME}/build-tools/${BUILD_TOOLS_VERSION} -R`);
+      await exec.exec(`sh -c "sudo chown $USER:$USER ${process.env.ANDROID_HOME}"`);
+      await exec.exec(`sh -c "sudo chown -R $USER:$USER ${process.env.ANDROID_HOME}/platform-tools || true"`);
+      await exec.exec(`sh -c "sudo chown -R $USER:$USER ${process.env.ANDROID_HOME}/cmdline-tools/latest || true"`);
+      await exec.exec(`sh -c "sudo chown -R $USER:$USER ${process.env.ANDROID_HOME}/build-tools/${BUILD_TOOLS_VERSION} || true"`);
     }
 
     const cmdlineToolsPath = `${process.env.ANDROID_HOME}/cmdline-tools`;
