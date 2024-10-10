@@ -31,9 +31,28 @@ export async function installAndroidSdk(apiLevel: string, target: string, arch: 
     // add paths for commandline-tools and platform-tools
     core.addPath(`${cmdlineToolsPath}/latest:${cmdlineToolsPath}/latest/bin:${process.env.ANDROID_HOME}/platform-tools`);
 
-    // set standard AVD path
-    await io.mkdirP(`${process.env.HOME}/.android/avd`);
-    core.exportVariable('ANDROID_AVD_HOME', `${process.env.HOME}/.android/avd`);
+    // There are several environment variables that determine where AVD config and disk images go:
+    // https://developer.android.com/tools/variables#envar
+    // Users may set these for various reasons (self-hosted runners with specific disk space situations)
+    // so only set them if they are not already set.
+
+    // "user preferences directory for tools that are part of the Android SDK. Defaults to $HOME/.android/."
+    if (!process.env.ANDROID_USER_HOME) {
+      core.exportVariable('ANDROID_USER_HOME', `${process.env.HOME}/.android`);
+    }
+    await io.mkdirP(`${process.env.ANDROID_USER_HOME}`);
+
+    // "user-specific emulator configuration directory. Defaults to $ANDROID_USER_HOME"
+    if (!process.env.ANDROID_EMULATOR_HOME) {
+      core.exportVariable('ANDROID_EMULATOR_HOME', process.env.ANDROID_USER_HOME);
+    }
+    await io.mkdirP(`${process.env.ANDROID_EMULATOR_HOME}`);
+
+    // "all AVD-specific files, which mostly consist of very large disk images. Default is $ANDROID_EMULATOR_HOME/avd/"
+    if (!process.env.ANDROID_AVD_HOME) {
+      core.exportVariable('ANDROID_AVD_HOME', `${process.env.ANDROID_EMULATOR_HOME}/avd`);
+    }
+    await io.mkdirP(`${process.env.ANDROID_AVD_HOME}`);
 
     // accept all Android SDK licenses
     await exec.exec(`sh -c \\"yes | sdkmanager --licenses > /dev/null"`);
