@@ -9,6 +9,7 @@ import {
   checkDisableSpellchecker,
   checkDisableLinuxHardwareAcceleration,
   checkForceAvdCreation,
+  checkForceCommandLineToolsUpdate,
   checkChannel,
   checkEnableHardwareKeyboard,
   checkDiskSize,
@@ -91,6 +92,12 @@ async function run() {
     checkForceAvdCreation(forceAvdCreationInput);
     const forceAvdCreation = forceAvdCreationInput === 'true';
     console.log(`force avd creation: ${forceAvdCreation}`);
+
+    // force cmdline-tools update
+    const forceCmdlineToolsUpdateInput = core.getInput('force-cmdline-tools-update');
+    checkForceCommandLineToolsUpdate(forceCmdlineToolsUpdateInput);
+    const forceCmdlineToolsUpdate = forceCmdlineToolsUpdateInput === 'true';
+    console.log(`force cmdline-tools update: ${forceCmdlineToolsUpdate}`);
 
     // Emulator boot timeout seconds
     const emulatorBootTimeout = parseInt(core.getInput('emulator-boot-timeout'), 10);
@@ -185,7 +192,7 @@ async function run() {
     console.log(`::endgroup::`);
 
     // install SDK
-    await installAndroidSdk(apiLevel, target, arch, channelId, emulatorBuild, ndkVersion, cmakeVersion);
+    await installAndroidSdk(apiLevel, target, arch, channelId, forceCmdlineToolsUpdate, emulatorBuild, ndkVersion, cmakeVersion);
 
     // execute pre emulator launch script if set
     if (preEmulatorLaunchScripts !== undefined) {

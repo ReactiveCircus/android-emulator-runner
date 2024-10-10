@@ -199,6 +199,7 @@ jobs:
 | `enable-hw-keyboard` | Optional | `false` | Whether to enable hardware keyboard - `true` or `false`. |
 | `emulator-build` | Optional | N/A | Build number of a specific version of the emulator binary to use e.g. `6061023` for emulator v29.3.0.0. |
 | `working-directory` | Optional | `./` | A custom working directory - e.g. `./android` if your root Gradle project is under the `./android` sub-directory within your repository. Will be used for `script` & `pre-emulator-launch-script`. |
+| `force-cmdline-tools-update` | Optional | `true` | Whether to update any pre-installed version of cmdline-tools if out of date. |
 | `ndk` | Optional | N/A | Version of NDK to install - e.g. `21.0.6113669` |
 | `cmake` | Optional | N/A | Version of CMake to install - e.g. `3.10.2.4988404` |
 | `channel` | Optional | stable | Channel to download the SDK components from - `stable`, `beta`, `dev`, `canary` |
