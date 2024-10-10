@@ -19,12 +19,6 @@ export async function installAndroidSdk(apiLevel: string, target: string, arch: 
     const isOnMac = process.platform === 'darwin';
     const isArm = process.arch === 'arm64';
 
-    // if (!isOnMac) {
-    //   await exec.exec(`sh -c \\"sudo chown $USER:$USER ${process.env.ANDROID_HOME}/platform-tools -R`);
-    //   await exec.exec(`sh -c \\"sudo chown $USER:$USER ${process.env.ANDROID_HOME}/cmdline-tools/latest -R`);
-    //   await exec.exec(`sh -c \\"sudo chown $USER:$USER ${process.env.ANDROID_HOME}/build-tools/${BUILD_TOOLS_VERSION} -R`);
-    // }
-
     const cmdlineToolsPath = `${process.env.ANDROID_HOME}/cmdline-tools`;
     if (!fs.existsSync(cmdlineToolsPath)) {
       console.log('Installing new cmdline-tools.');
