@@ -32,7 +32,6 @@ export async function installAndroidSdk(apiLevel: string, target: string, arch: 
     core.addPath(`${cmdlineToolsPath}/latest:${cmdlineToolsPath}/latest/bin:${process.env.ANDROID_HOME}/platform-tools`);
 
     // set standard AVD path
-    await io.mkdirP(`${process.env.HOME}/.android/avd`);
     core.exportVariable('ANDROID_AVD_HOME', `${process.env.HOME}/.android/avd`);
 
     // accept all Android SDK licenses
