@@ -20,6 +20,10 @@ export async function installAndroidSdk(apiLevel: string, target: string, arch: 
     const isArm = process.arch === 'arm64';
 
     const cmdlineToolsPath = `${process.env.ANDROID_HOME}/cmdline-tools`;
+
+    if (fs.existsSync(cmdlineToolsPath)) {
+      await io.rmRF(cmdlineToolsPath);
+    }
     if (!fs.existsSync(cmdlineToolsPath)) {
       console.log('Installing new cmdline-tools.');
       const sdkUrl = isOnMac ? CMDLINE_TOOLS_URL_MAC : CMDLINE_TOOLS_URL_LINUX;
@@ -27,9 +31,6 @@ export async function installAndroidSdk(apiLevel: string, target: string, arch: 
       await tc.extractZip(downloadPath, cmdlineToolsPath);
       await io.mv(`${cmdlineToolsPath}/cmdline-tools`, `${cmdlineToolsPath}/latest`);
     }
-
-    // print all folders under cmdline-tools
-    await exec.exec(`ls -l ${cmdlineToolsPath}`);
 
     // add paths for commandline-tools and platform-tools
     core.addPath(`${cmdlineToolsPath}/latest:${cmdlineToolsPath}/latest/bin:${process.env.ANDROID_HOME}/platform-tools`);
