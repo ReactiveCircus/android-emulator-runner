@@ -29,7 +29,7 @@ export async function installAndroidSdk(apiLevel: string, target: string, arch: 
     }
 
     // add paths for commandline-tools and platform-tools
-    core.addPath(`${cmdlineToolsPath}/latest:${cmdlineToolsPath}/latest/bin:${process.env.ANDROID_HOME}/platform-tools`);
+    core.addPath(`${cmdlineToolsPath}/12.0:${cmdlineToolsPath}/12.0/bin:${process.env.ANDROID_HOME}/platform-tools`);
 
     // set standard AVD path
     core.exportVariable('ANDROID_AVD_HOME', `${process.env.HOME}/.android/avd`);
