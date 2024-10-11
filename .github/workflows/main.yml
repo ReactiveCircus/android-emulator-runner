@@ -19,11 +19,11 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: ubuntu-latest
+          - os: ubuntu-22.04
             api-level: 23
             target: default
             arch: x86
-          - os: ubuntu-latest
+          - os: ubuntu-24.04
             api-level: 24
             target: playstore
             arch: x86
@@ -31,11 +31,11 @@ jobs:
             api-level: 31
             target: default
             arch: x86_64
-          - os: ubuntu-latest
+          - os: ubuntu-24.04
             api-level: 34
             target: aosp_atd
             arch: x86_64
-          - os: ubuntu-latest
+          - os: ubuntu-24.04
             api-level: 35
             target: google_apis
             arch: x86_64
