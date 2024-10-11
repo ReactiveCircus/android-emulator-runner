@@ -20,10 +20,6 @@ export async function installAndroidSdk(apiLevel: string, target: string, arch: 
     const isArm = process.arch === 'arm64';
 
     const cmdlineToolsPath = `${process.env.ANDROID_HOME}/cmdline-tools`;
-
-    if (fs.existsSync(cmdlineToolsPath)) {
-      await io.rmRF(cmdlineToolsPath);
-    }
     if (!fs.existsSync(cmdlineToolsPath)) {
       console.log('Installing new cmdline-tools.');
       const sdkUrl = isOnMac ? CMDLINE_TOOLS_URL_MAC : CMDLINE_TOOLS_URL_LINUX;
@@ -36,6 +32,7 @@ export async function installAndroidSdk(apiLevel: string, target: string, arch: 
     core.addPath(`${cmdlineToolsPath}/latest:${cmdlineToolsPath}/latest/bin:${process.env.ANDROID_HOME}/platform-tools`);
 
     // set standard AVD path
+    await io.mkdirP(`${process.env.HOME}/.android/avd`);
     core.exportVariable('ANDROID_AVD_HOME', `${process.env.HOME}/.android/avd`);
 
     // accept all Android SDK licenses
