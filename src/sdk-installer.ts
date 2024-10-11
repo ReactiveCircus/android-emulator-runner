@@ -32,8 +32,14 @@ export async function installAndroidSdk(apiLevel: string, target: string, arch: 
     core.addPath(`${cmdlineToolsPath}/latest:${cmdlineToolsPath}/latest/bin:${process.env.ANDROID_HOME}/platform-tools`);
 
     // set standard AVD path
-    await io.mkdirP(`${process.env.HOME}/.android/avd`);
-    core.exportVariable('ANDROID_AVD_HOME', `${process.env.HOME}/.android/avd`);
+    await exec.exec(`echo ${process.env.ANDROID_AVD_HOME}`);
+
+    if (!process.env.ANDROID_AVD_HOME) {
+      console.log('Setting $ANDROID_AVD_HOME.');
+      core.exportVariable('ANDROID_AVD_HOME', `${process.env.HOME}/.android/avd`);
+    }
+    // await io.mkdirP(`${process.env.HOME}/.android/avd`);
+    // core.exportVariable('ANDROID_AVD_HOME', `${process.env.HOME}/.android/avd`);
 
     // accept all Android SDK licenses
     await exec.exec(`sh -c \\"yes | sdkmanager --licenses > /dev/null"`);
