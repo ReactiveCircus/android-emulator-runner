@@ -9,14 +9,14 @@ on:
       api-level:
         description: 'API level of the platform and system image'
         required: true
-        default: '30'
+        default: '34'
       target:
         description: 'target of the system image - default, google_apis, google_apis_playstore, aosp_atd, google_atd, android-wear, android-wear-cn, android-tv or google-tv'
         required: true
         default: 'default'
       arch:
         description: 'CPU architecture of the system image - x86, x86_64 or arm64-v8a'
-        default: 'x86'
+        default: 'x86_64'
       emulator-options:
         description: 'command-line options used when launching the emulator'
         default: '-no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim'
@@ -41,9 +41,6 @@ jobs:
     - name: checkout
       uses: actions/checkout@v4
 
-    - name: validate gradle wrapper
-      uses: gradle/wrapper-validation-action@v2
-
     - name: build, test and lint
       run: |
         npm install
@@ -54,11 +51,9 @@ jobs:
     - uses: actions/setup-java@v4
       with:
         distribution: 'zulu'
-        java-version: 21
+        java-version: 23
 
-    - uses: gradle/actions/setup-gradle@v3
-      with:
-        gradle-home-cache-cleanup: true
+    - uses: gradle/actions/setup-gradle@v4
 
     - name: enable KVM for linux runners
       if: runner.os == 'Linux'

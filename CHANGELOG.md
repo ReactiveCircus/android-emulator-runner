@@ -1,5 +1,12 @@
 # Change Log
 
+## v2.33.0
+
+* Fix missing AVD directory in `ubuntu-24.04` runner. - [415](https://github.com/ReactiveCircus/android-emulator-runner/pull/415)
+* Update SDK build tools to `35.0.0`, update SDK command-line tools to `16.0`. - [#356](https://github.com/ReactiveCircus/android-emulator-runner/pull/356)
+* Stop changing owner of the SDK directory. - [406](https://github.com/ReactiveCircus/android-emulator-runner/pull/406) [#409](https://github.com/ReactiveCircus/android-emulator-runner/pull/409)
+* Upgrade to latest npm dependencies. - [#401](https://github.com/ReactiveCircus/android-emulator-runner/pull/401)
+
 ## v2.32.0
 
 * Add `port` parameter for customizing the emulator port to use. - [#383](https://github.com/ReactiveCircus/android-emulator-runner/pull/383)
