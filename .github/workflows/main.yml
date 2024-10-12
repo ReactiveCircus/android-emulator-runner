@@ -35,7 +35,7 @@ jobs:
             api-level: 34
             target: aosp_atd
             arch: x86_64
-          - os: ubuntu-24.04
+          - os: ubuntu-lastest
             api-level: 35
             target: google_apis
             arch: x86_64
@@ -63,7 +63,7 @@ jobs:
           ~/.android/avd/*
           ~/.android/adb*
           ~/.android/debug.keystore
-        key: avd-${{ matrix.api-level }}-${{ matrix.os }}-${{ matrix.target }}
+        key: avd-${{ matrix.api-level }}-${{ matrix.os }}-${{ matrix.target }}-${{ matrix.arch }}
 
     - uses: gradle/actions/setup-gradle@v4
 
