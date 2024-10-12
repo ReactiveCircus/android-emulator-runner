@@ -35,7 +35,7 @@ jobs:
             api-level: 34
             target: aosp_atd
             arch: x86_64
-          - os: ubuntu-24.04
+          - os: ubuntu-lastest
             api-level: 35
             target: google_apis
             arch: x86_64
@@ -56,14 +56,14 @@ jobs:
         distribution: 'zulu'
         java-version: 23
 
-    - uses: actions/cache@v4
-      id: avd-cache
-      with:
-        path: |
-          ~/.android/avd/*
-          ~/.android/adb*
-          ~/.android/debug.keystore
-        key: avd-${{ matrix.api-level }}-${{ matrix.os }}-${{ matrix.target }}
+    # - uses: actions/cache@v4
+    #   id: avd-cache
+    #   with:
+    #     path: |
+    #       ~/.android/avd/*
+    #       ~/.android/adb*
+    #       ~/.android/debug.keystore
+    #     key: avd-${{ matrix.api-level }}-${{ matrix.os }}-${{ matrix.target }}-${{ matrix.arch }}
 
     - uses: gradle/actions/setup-gradle@v4
 
@@ -78,23 +78,23 @@ jobs:
         sudo udevadm control --reload-rules
         sudo udevadm trigger --name-match=kvm
 
-    - name: run emulator to generate snapshot for caching
-      if: steps.avd-cache.outputs.cache-hit != 'true'
-      uses: ./
-      with:
-        api-level: ${{ matrix.api-level }}
-        target: ${{ matrix.target }}
-        arch: ${{ matrix.arch }}
-        profile: Galaxy Nexus
-        cores: 2
-        sdcard-path-or-size: 100M
-        avd-name: test
-        force-avd-creation: false
-        emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-        disable-animations: false
-        working-directory: ./test-fixture/
-        channel: canary
-        script: echo "Generated AVD snapshot for caching."
+    # - name: run emulator to generate snapshot for caching
+    #   if: steps.avd-cache.outputs.cache-hit != 'true'
+    #   uses: ./
+    #   with:
+    #     api-level: ${{ matrix.api-level }}
+    #     target: ${{ matrix.target }}
+    #     arch: ${{ matrix.arch }}
+    #     profile: Galaxy Nexus
+    #     cores: 2
+    #     sdcard-path-or-size: 100M
+    #     avd-name: test
+    #     force-avd-creation: false
+    #     emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+    #     disable-animations: false
+    #     working-directory: ./test-fixture/
+    #     channel: canary
+    #     script: echo "Generated AVD snapshot for caching."
 
     - name: run action
       uses: ./
