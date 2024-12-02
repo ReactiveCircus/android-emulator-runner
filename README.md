@@ -121,7 +121,7 @@ jobs:
 
 We can significantly reduce emulator startup time by setting up AVD snapshot caching:
 
-1. add a `gradle/actions/setup-gradle@v3` step for caching Gradle, more details see [#229](https://github.com/ReactiveCircus/android-emulator-runner/issues/229)
+1. add a `gradle/actions/setup-gradle@v4` step for caching Gradle, more details see [#229](https://github.com/ReactiveCircus/android-emulator-runner/issues/229)
 2. add an `actions/cache@v4` step for caching the `avd`
 3. add a `reactivecircus/android-emulator-runner@v2` step to generate a clean snapshot - specify `emulator-options` without `no-snapshot`
 4. add another `reactivecircus/android-emulator-runner@v2` step to run your tests using existing AVD / snapshot - specify `emulator-options` with `no-snapshot-save`
@@ -197,6 +197,7 @@ jobs:
 | `avd-name` | Optional | `test` | Custom AVD name used for creating the Android Virtual Device. |
 | `force-avd-creation` | Optional | `true` | Whether to force create the AVD by overwriting an existing AVD with the same name as `avd-name` - `true` or `false`. |
 | `emulator-boot-timeout` | Optional | `600` | Emulator boot timeout in seconds. If it takes longer to boot, the action would fail - e.g. `300` for 5 minutes. |
+| `emulator-port` | Optional | `5554` | Emulator port to use. Allows to run this action on multiple workers on a single machine at the same time. This input is available for the script as `EMULATOR_PORT` enviromental variable. This port is automatically used by android device related tasks in gradle |
 | `emulator-options` | Optional | See below | Command-line options used when launching the emulator (replacing all default options) - e.g. `-no-window -no-snapshot -camera-back emulated`. |
 | `disable-animations` | Optional | `true` | Whether to disable animations - `true` or `false`. |
 | `disable-spellchecker` | Optional | `false` | Whether to disable spellchecker - `true` or `false`. |

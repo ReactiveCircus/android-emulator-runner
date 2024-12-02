@@ -4,10 +4,10 @@ import * as io from '@actions/io';
 import * as tc from '@actions/tool-cache';
 import * as fs from 'fs';
 
-const BUILD_TOOLS_VERSION = '34.0.0';
-// SDK command-line tools 11.0
-const CMDLINE_TOOLS_URL_MAC = 'https://dl.google.com/android/repository/commandlinetools-mac-10406996_latest.zip';
-const CMDLINE_TOOLS_URL_LINUX = 'https://dl.google.com/android/repository/commandlinetools-linux-10406996_latest.zip';
+const BUILD_TOOLS_VERSION = '35.0.0';
+// SDK command-line tools 16.0
+const CMDLINE_TOOLS_URL_MAC = 'https://dl.google.com/android/repository/commandlinetools-mac-12266719_latest.zip';
+const CMDLINE_TOOLS_URL_LINUX = 'https://dl.google.com/android/repository/commandlinetools-linux-12266719_latest.zip';
 
 /**
  * Installs & updates the Android SDK for the macOS platform, including SDK platform for the chosen API level, latest build tools, platform tools, Android Emulator,
@@ -18,10 +18,6 @@ export async function installAndroidSdk(apiLevel: string, target: string, arch: 
     console.log(`::group::Install Android SDK`);
     const isOnMac = process.platform === 'darwin';
     const isArm = process.arch === 'arm64';
-
-    if (!isOnMac) {
-      await exec.exec(`sh -c \\"sudo chown $USER:$USER ${process.env.ANDROID_HOME} -R`);
-    }
 
     const cmdlineToolsPath = `${process.env.ANDROID_HOME}/cmdline-tools`;
     if (!fs.existsSync(cmdlineToolsPath)) {
@@ -36,6 +32,7 @@ export async function installAndroidSdk(apiLevel: string, target: string, arch: 
     core.addPath(`${cmdlineToolsPath}/latest:${cmdlineToolsPath}/latest/bin:${process.env.ANDROID_HOME}/platform-tools`);
 
     // set standard AVD path
+    await io.mkdirP(`${process.env.HOME}/.android/avd`);
     core.exportVariable('ANDROID_AVD_HOME', `${process.env.HOME}/.android/avd`);
 
     // accept all Android SDK licenses
