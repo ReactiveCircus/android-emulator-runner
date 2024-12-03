@@ -16,55 +16,57 @@ inputs:
   arch:
     type: enum
     allowed-values:
-     - x86
-     - x86_64
-     - arm64-v8a
+      - x86
+      - x86_64
+      - arm64-v8a
   profile:
-   type: string
+    type: string
   cores:
-   type: integer
+    type: integer
   ram-size:
-   type: string
+    type: string
   heap-size:
-   type: string
+    type: string
   sdcard-path-or-size:
-   type: string
+    type: string
   disk-size:
-   type: string
+    type: string
   avd-name:
-   type: string
+    type: string
   force-avd-creation:
-   type: boolean
+    type: boolean
   emulator-boot-timeout:
-   type: integer
+    type: integer
   emulator-port:
     type: integer
   emulator-options:
-   type: string
+    type: string
   disable-animations:
-   type: boolean
+    type: boolean
   disable-spellchecker:
-   type: boolean
+    type: boolean
   disable-linux-hw-accel:
-   type: string
+    type: string
   enable-hw-keyboard:
-   type: boolean
+    type: boolean
   emulator-build:
-   type: string
+    type: string
   working-directory:
-   type: string
+    type: string
   ndk:
-   type: string
+    type: string
   cmake:
-   type: string
+    type: string
   channel:
-   type: enum
-   allowed-values:
-    - stable
-    - beta
-    - dev
-    - canary
+    type: enum
+    allowed-values:
+      - stable
+      - beta
+      - dev
+      - canary
   script:
-   type: string
+    type: string
   pre-emulator-launch-script:
-   type: string
+    type: string
+  retry-count:
+    type: integer

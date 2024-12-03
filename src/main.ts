@@ -184,8 +184,10 @@ async function run() {
     });
     console.log(`::endgroup::`);
 
+    const retryCount: number = parseInt(core.getInput('retry-count', { required: true }));
+
     // install SDK
-    await installAndroidSdk(apiLevel, target, arch, channelId, emulatorBuild, ndkVersion, cmakeVersion);
+    await installAndroidSdk(apiLevel, target, arch, channelId, emulatorBuild, ndkVersion, cmakeVersion, retryCount);
 
     // execute pre emulator launch script if set
     if (preEmulatorLaunchScripts !== undefined) {
@@ -205,26 +207,36 @@ async function run() {
     }
 
     // launch an emulator
-    await launchEmulator(
-      apiLevel,
-      target,
-      arch,
-      profile,
-      cores,
-      ramSize,
-      heapSize,
-      sdcardPathOrSize,
-      diskSize,
-      avdName,
-      forceAvdCreation,
-      emulatorBootTimeout,
-      port,
-      emulatorOptions,
-      disableAnimations,
-      disableSpellchecker,
-      disableLinuxHardwareAcceleration,
-      enableHardwareKeyboard
-    );
+    try {
+      await launchEmulator(
+        apiLevel,
+        target,
+        arch,
+        profile,
+        cores,
+        ramSize,
+        heapSize,
+        sdcardPathOrSize,
+        diskSize,
+        avdName,
+        forceAvdCreation,
+        emulatorBootTimeout,
+        port,
+        emulatorOptions,
+        disableAnimations,
+        disableSpellchecker,
+        disableLinuxHardwareAcceleration,
+        enableHardwareKeyboard,
+        retryCount
+      );
+    } catch (error) {
+      core.setFailed(error instanceof Error ? error.message : (error as string));
+    }
+
+    if (scripts.length === 0) {
+      console.log('No custom script to run. Be sure to shut down the emulator in your script.');
+      console.log(`(adb -s emulator-${port} emu kill)`);
+    }
 
     // execute the custom script
     try {
