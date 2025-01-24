@@ -3,6 +3,7 @@ import * as exec from '@actions/exec';
 import * as io from '@actions/io';
 import * as tc from '@actions/tool-cache';
 import * as fs from 'fs';
+import { execWithRetry } from './retry';
 
 const BUILD_TOOLS_VERSION = '35.0.0';
 // SDK command-line tools 16.0
@@ -13,7 +14,17 @@ const CMDLINE_TOOLS_URL_LINUX = 'https://dl.google.com/android/repository/comman
  * Installs & updates the Android SDK for the macOS platform, including SDK platform for the chosen API level, latest build tools, platform tools, Android Emulator,
  * and the system image for the chosen API level, CPU arch, and target.
  */
-export async function installAndroidSdk(apiLevel: string, target: string, arch: string, channelId: number, emulatorBuild?: string, ndkVersion?: string, cmakeVersion?: string): Promise<void> {
+export async function installAndroidSdk(
+  apiLevel: string,
+  target: string,
+  arch: string,
+  channelId: number,
+  emulatorBuild?: string,
+  ndkVersion?: string,
+  cmakeVersion?: string,
+  retryCount?: number
+): Promise<void> {
+  retryCount = retryCount || 0;
   try {
     console.log(`::group::Install Android SDK`);
     const isOnMac = process.platform === 'darwin';
@@ -40,10 +51,10 @@ export async function installAndroidSdk(apiLevel: string, target: string, arch: 
 
     console.log('Installing latest build tools, platform tools, and platform.');
 
-    await exec.exec(`sh -c \\"sdkmanager --install 'build-tools;${BUILD_TOOLS_VERSION}' platform-tools 'platforms;android-${apiLevel}'> /dev/null"`);
+    await execWithRetry(() => exec.exec(`sh -c \\"sdkmanager --install 'build-tools;${BUILD_TOOLS_VERSION}' platform-tools 'platforms;android-${apiLevel}'> /dev/null"`), retryCount);
 
     console.log('Installing latest emulator.');
-    await exec.exec(`sh -c \\"sdkmanager --install emulator --channel=${channelId} > /dev/null"`);
+    await execWithRetry(() => exec.exec(`sh -c \\"sdkmanager --install emulator --channel=${channelId} > /dev/null"`), retryCount);
 
     if (emulatorBuild) {
       console.log(`Installing emulator build ${emulatorBuild}.`);
@@ -61,20 +72,20 @@ export async function installAndroidSdk(apiLevel: string, target: string, arch: 
       } else {
         downloadUrlSuffix = `-${emulatorBuild}`;
       }
-      await exec.exec(`curl -fo emulator.zip https://dl.google.com/android/repository/emulator-${isOnMac ? 'darwin' : 'linux'}${downloadUrlSuffix}.zip`);
+      await execWithRetry(() => exec.exec(`curl -fo emulator.zip https://dl.google.com/android/repository/emulator-${isOnMac ? 'darwin' : 'linux'}${downloadUrlSuffix}.zip`), retryCount);
       await exec.exec(`unzip -o -q emulator.zip -d ${process.env.ANDROID_HOME}`);
       await io.rmRF('emulator.zip');
     }
     console.log('Installing system images.');
-    await exec.exec(`sh -c \\"sdkmanager --install 'system-images;android-${apiLevel};${target};${arch}' --channel=${channelId} > /dev/null"`);
+    await execWithRetry(() => exec.exec(`sh -c \\"sdkmanager --install 'system-images;android-${apiLevel};${target};${arch}' --channel=${channelId} > /dev/null"`), retryCount);
 
     if (ndkVersion) {
       console.log(`Installing NDK ${ndkVersion}.`);
-      await exec.exec(`sh -c \\"sdkmanager --install 'ndk;${ndkVersion}' --channel=${channelId} > /dev/null"`);
+      await execWithRetry(() => exec.exec(`sh -c \\"sdkmanager --install 'ndk;${ndkVersion}' --channel=${channelId} > /dev/null"`), retryCount);
     }
     if (cmakeVersion) {
       console.log(`Installing CMake ${cmakeVersion}.`);
-      await exec.exec(`sh -c \\"sdkmanager --install 'cmake;${cmakeVersion}' --channel=${channelId} > /dev/null"`);
+      await execWithRetry(() => exec.exec(`sh -c \\"sdkmanager --install 'cmake;${cmakeVersion}' --channel=${channelId} > /dev/null"`), retryCount);
     }
   } finally {
     console.log(`::endgroup::`);

@@ -9,10 +9,5 @@ export function parseScript(rawScript: string): Array<string> {
     .filter((value: string) => {
       return !value.startsWith('#') && value.length > 0;
     });
-
-  if (scripts.length == 0) {
-    throw new Error(`No valid script found.`);
-  }
-
   return scripts;
 }

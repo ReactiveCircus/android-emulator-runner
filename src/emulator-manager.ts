@@ -1,5 +1,6 @@
 import * as exec from '@actions/exec';
 import * as fs from 'fs';
+import { execWithRetry } from './retry';
 
 /**
  * Creates and launches a new AVD instance with the specified configurations.
@@ -22,7 +23,8 @@ export async function launchEmulator(
   disableAnimations: boolean,
   disableSpellChecker: boolean,
   disableLinuxHardwareAcceleration: boolean,
-  enableHardwareKeyboard: boolean
+  enableHardwareKeyboard: boolean,
+  retryCount: number
 ): Promise<void> {
   try {
     console.log(`::group::Launch Emulator`);
@@ -32,9 +34,13 @@ export async function launchEmulator(
       const profileOption = profile.trim() !== '' ? `--device '${profile}'` : '';
       const sdcardPathOrSizeOption = sdcardPathOrSize.trim() !== '' ? `--sdcard '${sdcardPathOrSize}'` : '';
       console.log(`Creating AVD.`);
-      await exec.exec(
-        `sh -c \\"echo no | avdmanager create avd --force -n "${avdName}" --abi '${target}/${arch}' --package 'system-images;android-${apiLevel};${target};${arch}' ${profileOption} ${sdcardPathOrSizeOption}"`
-      );
+      // Don't believe this ever failed, but it seems like a strong candidate for failure...
+      const result = await execWithRetry(
+        () => exec.exec(
+          `sh -c \\"echo no | avdmanager create avd --force -n "${avdName}" --abi '${target}/${arch}' --package 'system-images;android-${apiLevel};${target};${arch}' ${profileOption} ${sdcardPathOrSizeOption}"`), retryCount);
+      if (result !== 0) {
+        throw new Error('Failed to create AVD.');
+      }
     }
 
     if (cores) {
@@ -66,15 +72,20 @@ export async function launchEmulator(
     // start emulator
     console.log('Starting emulator.');
 
-    await exec.exec(`sh -c \\"${process.env.ANDROID_HOME}/emulator/emulator -port ${port} -avd "${avdName}" ${emulatorOptions} &"`, [], {
-      listeners: {
-        stderr: (data: Buffer) => {
-          if (data.toString().includes('invalid command-line parameter')) {
-            throw new Error(data.toString());
-          }
-        },
-      },
-    });
+    const result = await execWithRetry(
+      () =>
+        exec.exec(`sh -c \\"${process.env.ANDROID_HOME}/emulator/emulator -port ${port} -avd "${avdName}" ${emulatorOptions} &"`, [], {
+          listeners: {
+            stderr: (data: Buffer) => {
+              if (data.toString().includes('invalid command-line parameter')) {
+                throw new Error(data.toString());
+              }
+            },
+          },
+        }), retryCount);
+    if (result !== 0) {
+      throw new Error('Failed to create AVD.');
+    }
 
     // wait for emulator to complete booting
     await waitForDevice(port, emulatorBootTimeout);
@@ -96,6 +107,8 @@ export async function launchEmulator(
     console.log(`::endgroup::`);
   }
 }
+
+
 
 /**
  * Kills the running emulator on the default port.
