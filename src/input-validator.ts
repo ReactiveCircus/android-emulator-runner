@@ -79,6 +79,12 @@ export function checkEmulatorBuild(emulatorBuild: string): void {
   }
 }
 
+export function checkForceCommandLineToolsUpdate(forceCmdlineToolsUpdate: string): void {
+  if (!isValidBoolean(forceCmdlineToolsUpdate)) {
+    throw new Error(`Input for input.force-cmdline-tools-update should be either 'true' or 'false'.`);
+  }
+}
+
 function isValidBoolean(value: string): boolean {
   return value === 'true' || value === 'false';
 }
