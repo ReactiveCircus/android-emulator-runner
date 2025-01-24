@@ -35,7 +35,7 @@ jobs:
             api-level: 34
             target: aosp_atd
             arch: x86_64
-          - os: ubuntu-lastest
+          - os: ubuntu-latest
             api-level: 35
             target: google_apis
             arch: x86_64
