@@ -13,6 +13,9 @@ inputs:
       - android-wear-cn
       - android-tv
       - google-tv
+      - andrdoid-automotive
+      - android-automotive-playstore
+      - android-desktop
   arch:
     type: enum
     allowed-values:

@@ -97,6 +97,21 @@ describe('target validator tests', () => {
       validator.checkTarget('google-tv');
     };
     expect(func9).not.toThrow();
+
+    const func10 = () => {
+      validator.checkTarget('andrdoid-automotive');
+    };
+    expect(func10).not.toThrow();
+
+    const func11 = () => {
+      validator.checkTarget('android-automotive-playstore');
+    };
+    expect(func11).not.toThrow();
+
+    const func12 = () => {
+      validator.checkTarget('android-desktop');
+    };
+    expect(func12).not.toThrow();
   });
 });
 
