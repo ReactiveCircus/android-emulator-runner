@@ -129,7 +129,7 @@ describe('target validator tests', () => {
     expect(func9).not.toThrow();
 
     const func10 = () => {
-      validator.checkTarget('andrdoid-automotive');
+      validator.checkTarget('android-automotive');
     };
     expect(func10).not.toThrow();
 

@@ -9,7 +9,7 @@ export const VALID_TARGETS: Array<string> = [
   'android-wear-cn',
   'android-tv',
   'google-tv',
-  'andrdoid-automotive',
+  'android-automotive',
   'android-automotive-playstore',
   'android-desktop',
 ];

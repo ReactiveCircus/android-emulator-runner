@@ -13,7 +13,7 @@ on:
       sdk-extension:
         description: 'SDK extension of a given api level'
       target:
-        description: 'target of the system image - default, google_apis, google_apis_playstore, aosp_atd, google_atd, android-wear, android-wear-cn, android-tv, google-tv, andrdoid-automotive, android-automotive-playstore or android-desktop'
+        description: 'target of the system image - default, google_apis, google_apis_playstore, aosp_atd, google_atd, android-wear, android-wear-cn, android-tv, google-tv, android-automotive, android-automotive-playstore or android-desktop'
         required: true
         default: 'default'
       arch:
