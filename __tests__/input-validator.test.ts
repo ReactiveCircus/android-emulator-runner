@@ -44,6 +44,36 @@ describe('api-level validator tests', () => {
   });
 });
 
+describe('sdk-extension validator tests', () => {
+  it('Empty sdk-extension is acceptable, means default', () => {
+    const func = () => {
+      validator.checkSDKExtension('');
+    };
+    expect(func).not.toThrow();
+  });
+
+  it('Throws if sdk-extension is not a number', () => {
+    const func = () => {
+      validator.checkSDKExtension('-ext9');
+    };
+    expect(func).toThrowError(`Unexpected SDKExtension: '-ext9'.`);
+  });
+
+  it('Throws if sdk-extension is not an integer', () => {
+    const func = () => {
+      validator.checkSDKExtension('9.1');
+    };
+    expect(func).toThrowError(`Unexpected SDKExtension: '9.1'.`);
+  });
+
+  it('Validates successfully with valid sdk-extension', () => {
+    const func1 = () => {
+      validator.checkSDKExtension('1');
+    };
+    expect(func1).not.toThrow();
+  });
+});
+
 describe('target validator tests', () => {
   it('Throws if target is unknown', () => {
     const func = () => {

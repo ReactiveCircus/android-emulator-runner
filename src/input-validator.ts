@@ -11,7 +11,8 @@ export const VALID_TARGETS: Array<string> = [
   'google-tv',
   'andrdoid-automotive',
   'android-automotive-playstore',
-  'android-desktop'];
+  'android-desktop',
+];
 export const VALID_ARCHS: Array<string> = ['x86', 'x86_64', 'arm64-v8a'];
 export const VALID_CHANNELS: Array<string> = ['stable', 'beta', 'dev', 'canary'];
 export const MIN_PORT = 5554;
@@ -25,6 +26,15 @@ export function checkApiLevel(apiLevel: string): void {
   }
   if (Number(apiLevel) < MIN_API_LEVEL) {
     throw new Error(`Minimum API level supported is ${MIN_API_LEVEL}.`);
+  }
+}
+
+export function checkSDKExtension(sdkExtension: string): void {
+  // SDK extension can be empty - the default value
+  if (sdkExtension) {
+    if (isNaN(Number(sdkExtension)) || !Number.isInteger(Number(sdkExtension))) {
+      throw new Error(`Unexpected SDKExtension: '${sdkExtension}'.`);
+    }
   }
 }
 

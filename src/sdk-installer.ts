@@ -13,11 +13,21 @@ const CMDLINE_TOOLS_URL_LINUX = 'https://dl.google.com/android/repository/comman
  * Installs & updates the Android SDK for the macOS platform, including SDK platform for the chosen API level, latest build tools, platform tools, Android Emulator,
  * and the system image for the chosen API level, CPU arch, and target.
  */
-export async function installAndroidSdk(apiLevel: string, target: string, arch: string, channelId: number, emulatorBuild?: string, ndkVersion?: string, cmakeVersion?: string): Promise<void> {
+export async function installAndroidSdk(
+  apiLevel: string,
+  sdkExtension: String,
+  target: string,
+  arch: string,
+  channelId: number,
+  emulatorBuild?: string,
+  ndkVersion?: string,
+  cmakeVersion?: string
+): Promise<void> {
   try {
     console.log(`::group::Install Android SDK`);
     const isOnMac = process.platform === 'darwin';
     const isArm = process.arch === 'arm64';
+    const apiTag = sdkExtension ? `${apiLevel}-ext${sdkExtension}` : `${apiLevel}`;
 
     const cmdlineToolsPath = `${process.env.ANDROID_HOME}/cmdline-tools`;
     if (!fs.existsSync(cmdlineToolsPath)) {
@@ -40,7 +50,7 @@ export async function installAndroidSdk(apiLevel: string, target: string, arch: 
 
     console.log('Installing latest build tools, platform tools, and platform.');
 
-    await exec.exec(`sh -c \\"sdkmanager --install 'build-tools;${BUILD_TOOLS_VERSION}' platform-tools 'platforms;android-${apiLevel}'> /dev/null"`);
+    await exec.exec(`sh -c \\"sdkmanager --install 'build-tools;${BUILD_TOOLS_VERSION}' platform-tools 'platforms;android-${apiTag}'> /dev/null"`);
 
     console.log('Installing latest emulator.');
     await exec.exec(`sh -c \\"sdkmanager --install emulator --channel=${channelId} > /dev/null"`);
@@ -66,7 +76,7 @@ export async function installAndroidSdk(apiLevel: string, target: string, arch: 
       await io.rmRF('emulator.zip');
     }
     console.log('Installing system images.');
-    await exec.exec(`sh -c \\"sdkmanager --install 'system-images;android-${apiLevel};${target};${arch}' --channel=${channelId} > /dev/null"`);
+    await exec.exec(`sh -c \\"sdkmanager --install 'system-images;android-${apiTag};${target};${arch}' --channel=${channelId} > /dev/null"`);
 
     if (ndkVersion) {
       console.log(`Installing NDK ${ndkVersion}.`);

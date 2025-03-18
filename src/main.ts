@@ -14,6 +14,7 @@ import {
   checkDiskSize,
   checkPort,
   MIN_PORT,
+  checkSDKExtension,
 } from './input-validator';
 import { launchEmulator, killEmulator } from './emulator-manager';
 import * as exec from '@actions/exec';
@@ -46,6 +47,13 @@ async function run() {
     const apiLevel = core.getInput('api-level', { required: true });
     checkApiLevel(apiLevel);
     console.log(`API level: ${apiLevel}`);
+
+    // SDK extension
+    const sdkExtension = core.getInput('sdk-extension');
+    checkSDKExtension(sdkExtension);
+    if (sdkExtension) {
+      console.log(`SDK extension: ${sdkExtension}`);
+    }
 
     // target of the system image
     const targetInput = core.getInput('target');
@@ -185,7 +193,7 @@ async function run() {
     console.log(`::endgroup::`);
 
     // install SDK
-    await installAndroidSdk(apiLevel, target, arch, channelId, emulatorBuild, ndkVersion, cmakeVersion);
+    await installAndroidSdk(apiLevel, sdkExtension, target, arch, channelId, emulatorBuild, ndkVersion, cmakeVersion);
 
     // execute pre emulator launch script if set
     if (preEmulatorLaunchScripts !== undefined) {
@@ -207,6 +215,7 @@ async function run() {
     // launch an emulator
     await launchEmulator(
       apiLevel,
+      sdkExtension,
       target,
       arch,
       profile,

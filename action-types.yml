@@ -1,6 +1,8 @@
 inputs:
   api-level:
     type: integer
+  sdk-extension:
+    type: integer
   target:
     type: enum
     allowed-values:

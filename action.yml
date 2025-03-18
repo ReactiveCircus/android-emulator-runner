@@ -8,6 +8,9 @@ inputs:
   api-level:
     description: 'API level of the platform and system image - e.g. 23 for Android Marshmallow, 29 for Android 10'
     required: true
+  sdk-extension:
+    description: 'SDK extension of a given api level - e.g. 9 for Android API 34 it will translate to 34-ext9. Check https://developer.android.com/guide/sdk-extensions for more details. `-ext` should not be part of the input, the input should be an integer.'
+    required: false
   target:
     description: 'target of the system image - default, google_apis, google_apis_playstore, aosp_atd, google_atd, android-wear, android-wear-cn, android-tv, google-tv, andrdoid-automotive, android-automotive-playstore or android-desktop'
     default: 'default'
