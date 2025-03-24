@@ -13,7 +13,6 @@ import {
   checkDiskSize,
   checkPort,
   MIN_PORT,
-  checkSDKExtension,
 } from './input-validator';
 import { launchEmulator, killEmulator } from './emulator-manager';
 import * as exec from '@actions/exec';

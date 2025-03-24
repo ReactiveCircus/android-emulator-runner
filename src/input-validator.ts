@@ -18,15 +18,6 @@ export const VALID_CHANNELS: Array<string> = ['stable', 'beta', 'dev', 'canary']
 export const MIN_PORT = 5554;
 export const MAX_PORT = 5584;
 
-export function checkSDKExtension(sdkExtension: string): void {
-  // SDK extension can be empty - the default value
-  if (sdkExtension) {
-    if (isNaN(Number(sdkExtension)) || !Number.isInteger(Number(sdkExtension))) {
-      throw new Error(`Unexpected SDKExtension: '${sdkExtension}'.`);
-    }
-  }
-}
-
 export function checkTarget(target: string): void {
   if (!VALID_TARGETS.includes(target)) {
     throw new Error(`Value for input.target '${target}' is unknown. Supported options: ${VALID_TARGETS}.`);
