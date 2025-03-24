@@ -1,7 +1,6 @@
 import * as core from '@actions/core';
 import { installAndroidSdk } from './sdk-installer';
 import {
-  checkApiLevel,
   checkTarget,
   checkArch,
   checkDisableAnimations,
@@ -45,15 +44,13 @@ async function run() {
 
     // API level of the platform and system image
     const apiLevel = core.getInput('api-level', { required: true });
-    checkApiLevel(apiLevel);
     console.log(`API level: ${apiLevel}`);
 
-    // SDK extension
-    const sdkExtension = core.getInput('sdk-extension');
-    checkSDKExtension(sdkExtension);
-    if (sdkExtension) {
-      console.log(`SDK extension: ${sdkExtension}`);
+    let systemImageApiLevel = core.getInput('system-image-api-level');
+    if (!systemImageApiLevel) {
+      systemImageApiLevel = apiLevel;
     }
+    console.log(`System image API level: ${systemImageApiLevel}`);
 
     // target of the system image
     const targetInput = core.getInput('target');
@@ -193,7 +190,7 @@ async function run() {
     console.log(`::endgroup::`);
 
     // install SDK
-    await installAndroidSdk(apiLevel, sdkExtension, target, arch, channelId, emulatorBuild, ndkVersion, cmakeVersion);
+    await installAndroidSdk(apiLevel, systemImageApiLevel, target, arch, channelId, emulatorBuild, ndkVersion, cmakeVersion);
 
     // execute pre emulator launch script if set
     if (preEmulatorLaunchScripts !== undefined) {
@@ -214,8 +211,7 @@ async function run() {
 
     // launch an emulator
     await launchEmulator(
-      apiLevel,
-      sdkExtension,
+      systemImageApiLevel,
       target,
       arch,
       profile,

@@ -15,7 +15,7 @@ const CMDLINE_TOOLS_URL_LINUX = 'https://dl.google.com/android/repository/comman
  */
 export async function installAndroidSdk(
   apiLevel: string,
-  sdkExtension: String,
+  systemImageApiLevel: String,
   target: string,
   arch: string,
   channelId: number,
@@ -27,7 +27,6 @@ export async function installAndroidSdk(
     console.log(`::group::Install Android SDK`);
     const isOnMac = process.platform === 'darwin';
     const isArm = process.arch === 'arm64';
-    const apiTag = sdkExtension ? `${apiLevel}-ext${sdkExtension}` : `${apiLevel}`;
 
     const cmdlineToolsPath = `${process.env.ANDROID_HOME}/cmdline-tools`;
     if (!fs.existsSync(cmdlineToolsPath)) {
@@ -50,7 +49,7 @@ export async function installAndroidSdk(
 
     console.log('Installing latest build tools, platform tools, and platform.');
 
-    await exec.exec(`sh -c \\"sdkmanager --install 'build-tools;${BUILD_TOOLS_VERSION}' platform-tools 'platforms;android-${apiTag}'> /dev/null"`);
+    await exec.exec(`sh -c \\"sdkmanager --install 'build-tools;${BUILD_TOOLS_VERSION}' platform-tools 'platforms;android-${apiLevel}'> /dev/null"`);
 
     console.log('Installing latest emulator.');
     await exec.exec(`sh -c \\"sdkmanager --install emulator --channel=${channelId} > /dev/null"`);
@@ -76,7 +75,7 @@ export async function installAndroidSdk(
       await io.rmRF('emulator.zip');
     }
     console.log('Installing system images.');
-    await exec.exec(`sh -c \\"sdkmanager --install 'system-images;android-${apiTag};${target};${arch}' --channel=${channelId} > /dev/null"`);
+    await exec.exec(`sh -c \\"sdkmanager --install 'system-images;android-${systemImageApiLevel};${target};${arch}' --channel=${channelId} > /dev/null"`);
 
     if (ndkVersion) {
       console.log(`Installing NDK ${ndkVersion}.`);

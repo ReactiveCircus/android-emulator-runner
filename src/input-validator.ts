@@ -17,17 +17,6 @@ export const VALID_ARCHS: Array<string> = ['x86', 'x86_64', 'arm64-v8a'];
 export const VALID_CHANNELS: Array<string> = ['stable', 'beta', 'dev', 'canary'];
 export const MIN_PORT = 5554;
 export const MAX_PORT = 5584;
-export const PREVIEW_API_LEVELS: Array<string> = ['Tiramisu', 'UpsideDownCake', 'VanillaIceCream', 'Baklava'];
-
-export function checkApiLevel(apiLevel: string): void {
-  if (PREVIEW_API_LEVELS.some((previewLevel) => apiLevel.startsWith(previewLevel))) return;
-  if (isNaN(Number(apiLevel)) || !Number.isInteger(Number(apiLevel))) {
-    throw new Error(`Unexpected API level: '${apiLevel}'.`);
-  }
-  if (Number(apiLevel) < MIN_API_LEVEL) {
-    throw new Error(`Minimum API level supported is ${MIN_API_LEVEL}.`);
-  }
-}
 
 export function checkSDKExtension(sdkExtension: string): void {
   // SDK extension can be empty - the default value

@@ -40,10 +40,10 @@ jobs:
             target: google_apis
             arch: x86_64
           - os: ubuntu-latest
-            api-level: 34
+            api-level: 34-ext10
             target: android-automotive
             arch: x86_64
-            sdk-extension: 9
+            system-image-api-level: 34-ext9
 
     steps:
     - name: checkout
@@ -90,7 +90,7 @@ jobs:
         api-level: ${{ matrix.api-level }}
         target: ${{ matrix.target }}
         arch: ${{ matrix.arch }}
-        sdk-extension: ${{ matrix.sdk-extension }}
+        system-image-api-level: ${{ matrix.system-image-api-level }}
         profile: Galaxy Nexus
         cores: 2
         sdcard-path-or-size: 100M
@@ -108,7 +108,7 @@ jobs:
         api-level: ${{ matrix.api-level }}
         target: ${{ matrix.target }}
         arch: ${{ matrix.arch }}
-        sdk-extension: ${{ matrix.sdk-extension }}
+        system-image-api-level: ${{ matrix.system-image-api-level }}
         profile: Galaxy Nexus
         cores: 2
         ram-size: 2048M

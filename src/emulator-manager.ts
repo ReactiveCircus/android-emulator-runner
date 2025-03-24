@@ -5,8 +5,7 @@ import * as fs from 'fs';
  * Creates and launches a new AVD instance with the specified configurations.
  */
 export async function launchEmulator(
-  apiLevel: string,
-  sdkExtension: string,
+  systemImageApiLevel: string,
   target: string,
   arch: string,
   profile: string,
@@ -27,7 +26,6 @@ export async function launchEmulator(
 ): Promise<void> {
   try {
     console.log(`::group::Launch Emulator`);
-    const apiTag = sdkExtension ? `${apiLevel}-ext${sdkExtension}` : `${apiLevel}`;
     // create a new AVD if AVD directory does not already exist or forceAvdCreation is true
     const avdPath = `${process.env.ANDROID_AVD_HOME}/${avdName}.avd`;
     if (!fs.existsSync(avdPath) || forceAvdCreation) {
@@ -35,7 +33,7 @@ export async function launchEmulator(
       const sdcardPathOrSizeOption = sdcardPathOrSize.trim() !== '' ? `--sdcard '${sdcardPathOrSize}'` : '';
       console.log(`Creating AVD.`);
       await exec.exec(
-        `sh -c \\"echo no | avdmanager create avd --force -n "${avdName}" --abi '${target}/${arch}' --package 'system-images;android-${apiTag};${target};${arch}' ${profileOption} ${sdcardPathOrSizeOption}"`
+        `sh -c \\"echo no | avdmanager create avd --force -n "${avdName}" --abi '${target}/${arch}' --package 'system-images;android-${systemImageApiLevel};${target};${arch}' ${profileOption} ${sdcardPathOrSizeOption}"`
       );
     }
 

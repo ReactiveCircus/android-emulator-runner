@@ -119,7 +119,7 @@ jobs:
           script: ./gradlew connectedCheck
 ```
 
-If you need a specific [SDKExtension](https://developer.android.com/guide/sdk-extensions)
+If you need a specific [SDKExtension](https://developer.android.com/guide/sdk-extensions) for the system image but not the platform
 
 ```yml
 jobs:
@@ -139,7 +139,7 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 34
-          sdk-extension: 9
+          system-image-api-level: 34-ext9
           target: android-automotive
           script: ./gradlew connectedCheck
 ```
@@ -205,7 +205,7 @@ jobs:
 | **Input** | **Required** | **Default** | **Description** |
 |-|-|-|-|
 | `api-level` | Required | N/A | API level of the platform system image - e.g. 23 for Android Marshmallow, 29 for Android 10. **Minimum API level supported is 15**. |
-| `sdk-extension` | Optional | N/A | SDK extension of a given api level - e.g. 9 for Android API 34 it will translate to 34-ext9. Check https://developer.android.com/guide/sdk-extensions for more details. `-ext` should not be part of the input, **the input should be an integer**. |
+| `system-image-api-level` | Optional | `ap-level` | API level of the system image - e.g. 23 for Android Marshmallow, 29 for Android 10. |
 | `target` | Optional | `default` | Target of the system image - `default`, `google_apis`, `playstore`, `android-wear`, `android-wear-cn`, `android-tv`, `google-tv`, `aosp_atd`, `google_atd`, `android-automotive`, `android-automotive-playstore` or `android-desktop`. Note that `aosp_atd` and `google_atd` currently require the following: `api-level: 30`, `arch: x86` or `arch: arm64-v8` and `channel: canary`. |
 | `arch` | Optional | `x86` | CPU architecture of the system image - `x86`, `x86_64` or `arm64-v8a`. Note that `x86_64` image is only available for API 21+. `arm64-v8a` images require Android 4.2+ and are limited to fewer API levels (e.g. 30). |
 | `profile` | Optional | N/A | Hardware profile used for creating the AVD - e.g. `Nexus 6`. For a list of all profiles available, run `avdmanager list device`. |
