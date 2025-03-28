@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+No changes yet.
+
+## v2.34.0
+
 * Allow arbitrary value for `api-level` such as `Baklava` and `35-ext15`. - [428](https://github.com/ReactiveCircus/android-emulator-runner/pull/428)
 * Add option to specify `system-image-api-level` to use a system image with a different API level than the platform. - [428](https://github.com/ReactiveCircus/android-emulator-runner/pull/428)
 * Support automotive and desktop targets: `android-automotive`, `android-automotive-playstore`, `android-desktop`. - [428](https://github.com/ReactiveCircus/android-emulator-runner/pull/428)
