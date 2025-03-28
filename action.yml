@@ -6,10 +6,10 @@ branding:
   color: 'green'
 inputs:
   api-level:
-    description: 'API level of the platform and system image - e.g. 23 for Android Marshmallow, 29 for Android 10'
+    description: 'API level of the platform and system image - e.g. 23, 33, 35-ext15, Baklava'
     required: true
   system-image-api-level:
-    description: 'API level of the system image - e.g. 23 for Android Marshmallow, 29 for Android 10. If not set the `api-level` input will be used.'
+    description: 'API level of the system image - e.g. 34-ext10, 35-ext15. If not set the `api-level` input will be used.'
     required: false
   target:
     description: 'target of the system image - default, google_apis, google_apis_playstore, aosp_atd, google_atd, android-wear, android-wear-cn, android-tv, google-tv, android-automotive, android-automotive-playstore or android-desktop'
