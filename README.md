@@ -119,6 +119,31 @@ jobs:
           script: ./gradlew connectedCheck
 ```
 
+If you need a specific [SDKExtension](https://developer.android.com/guide/sdk-extensions) for the system image but not the platform
+
+```yml
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: run tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          system-image-api-level: 34-ext9
+          target: android-automotive
+          script: ./gradlew connectedCheck
+```
+
 We can significantly reduce emulator startup time by setting up AVD snapshot caching:
 
 1. add a `gradle/actions/setup-gradle@v4` step for caching Gradle, more details see [#229](https://github.com/ReactiveCircus/android-emulator-runner/issues/229)
@@ -180,7 +205,8 @@ jobs:
 | **Input** | **Required** | **Default** | **Description** |
 |-|-|-|-|
 | `api-level` | Required | N/A | API level of the platform system image - e.g. 23 for Android Marshmallow, 29 for Android 10. **Minimum API level supported is 15**. |
-| `target` | Optional | `default` | Target of the system image - `default`, `google_apis`, `playstore`, `android-wear`, `android-wear-cn`, `android-tv`, `google-tv`, `aosp_atd` or `google_atd`. Note that `aosp_atd` and `google_atd` currently require the following: `api-level: 30`, `arch: x86` or `arch: arm64-v8` and `channel: canary`. |
+| `system-image-api-level` | Optional | `ap-level` | API level of the system image - e.g. 23 for Android Marshmallow, 29 for Android 10. |
+| `target` | Optional | `default` | Target of the system image - `default`, `google_apis`, `playstore`, `android-wear`, `android-wear-cn`, `android-tv`, `google-tv`, `aosp_atd`, `google_atd`, `android-automotive`, `android-automotive-playstore` or `android-desktop`. Note that `aosp_atd` and `google_atd` currently require the following: `api-level: 30`, `arch: x86` or `arch: arm64-v8` and `channel: canary`. |
 | `arch` | Optional | `x86` | CPU architecture of the system image - `x86`, `x86_64` or `arm64-v8a`. Note that `x86_64` image is only available for API 21+. `arm64-v8a` images require Android 4.2+ and are limited to fewer API levels (e.g. 30). |
 | `profile` | Optional | N/A | Hardware profile used for creating the AVD - e.g. `Nexus 6`. For a list of all profiles available, run `avdmanager list device`. |
 | `cores` | Optional | 2 | Number of cores to use for the emulator (`hw.cpu.ncore` in config.ini). |
@@ -243,5 +269,6 @@ These are some of the open-source projects using (or used) **Android Emulator Ru
 - [ACRA/acra](https://github.com/ACRA/acra/blob/master/.github/workflows/test.yml)
 - [bitfireAT/davx5-ose](https://github.com/bitfireAT/davx5-ose/blob/dev-ose/.github/workflows/test-dev.yml)
 - [robolectric/robolectric](https://github.com/robolectric/robolectric/blob/master/.github/workflows/tests.yml)
+- [home-assistant/android](https://github.com/home-assistant/android/blob/master/.github/workflows/pr.yml)
 
 If you are using **Android Emulator Runner** and want your project included in the list, please feel free to open a pull request.
