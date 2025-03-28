@@ -1,6 +1,8 @@
 inputs:
   api-level:
-    type: integer
+    type: string
+  system-image-api-level:
+    type: string
   target:
     type: enum
     allowed-values:
@@ -13,6 +15,9 @@ inputs:
       - android-wear-cn
       - android-tv
       - google-tv
+      - android-automotive
+      - android-automotive-playstore
+      - android-desktop
   arch:
     type: enum
     allowed-values:

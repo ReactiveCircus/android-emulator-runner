@@ -7,11 +7,13 @@ on:
         required: true
         default: 'ubuntu-latest'
       api-level:
-        description: 'API level of the platform and system image'
+        description: 'API level of the platform and system image (if not overridden with system-image-api-level input) - e.g. 33, 35-ext15, Baklava'
         required: true
         default: '34'
+      system-image-api-level:
+        description: 'API level of the system image - e.g. 34-ext10, 35-ext15'
       target:
-        description: 'target of the system image - default, google_apis, google_apis_playstore, aosp_atd, google_atd, android-wear, android-wear-cn, android-tv or google-tv'
+        description: 'target of the system image - default, google_apis, google_apis_playstore, aosp_atd, google_atd, android-wear, android-wear-cn, android-tv, google-tv, android-automotive, android-automotive-playstore or android-desktop'
         required: true
         default: 'default'
       arch:
@@ -68,6 +70,7 @@ jobs:
         api-level: ${{ github.event.inputs.api-level }}
         target: ${{ github.event.inputs.target }}
         arch: ${{ github.event.inputs.arch }}
+        system-image-api-level: ${{ github.event.inputs.system-image-api-level }}
         profile: Galaxy Nexus
         emulator-options: ${{ github.event.inputs.emulator-options }}
         emulator-build: ${{ github.event.inputs.emulator-build }}
