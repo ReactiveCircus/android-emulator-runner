@@ -173,7 +173,7 @@ async function run() {
 
     // custom script to run
     const scriptInput = core.getInput('script', { required: true });
-    const scripts = parseScript(scriptInput);
+    const scripts = [scriptInput];
     console.log(`Script:`);
     scripts.forEach(async (script: string) => {
       console.log(`${script}`);
@@ -181,7 +181,7 @@ async function run() {
 
     // custom pre emulator launch script
     const preEmulatorLaunchScriptInput = core.getInput('pre-emulator-launch-script');
-    const preEmulatorLaunchScripts = !preEmulatorLaunchScriptInput ? undefined : parseScript(preEmulatorLaunchScriptInput);
+    const preEmulatorLaunchScripts = !preEmulatorLaunchScriptInput ? undefined : [preEmulatorLaunchScriptInput];
     console.log(`Pre emulator launch script:`);
     preEmulatorLaunchScripts?.forEach(async (script: string) => {
       console.log(`${script}`);
