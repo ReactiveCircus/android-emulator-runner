@@ -37,24 +37,29 @@ export async function launchEmulator(
       );
     }
 
-    if (cores) {
-      await exec.exec(`sh -c \\"printf 'hw.cpu.ncore=${cores}\n' >> ${process.env.ANDROID_AVD_HOME}/"${avdName}".avd"/config.ini`);
-    }
+    if (cores || ramSize || heapSize || enableHardwareKeyboard || diskSize) {
+      const configEntries: string[] = [];
 
-    if (ramSize) {
-      await exec.exec(`sh -c \\"printf 'hw.ramSize=${ramSize}\n' >> ${process.env.ANDROID_AVD_HOME}/"${avdName}".avd"/config.ini`);
-    }
+      if (cores) {
+        configEntries.push(`hw.cpu.ncore=${cores}`);
+      }
+      if (ramSize) {
+        configEntries.push(`hw.ramSize=${ramSize}`);
+      }
+      if (heapSize) {
+        configEntries.push(`hw.heapSize=${heapSize}`);
+      }
+      if (enableHardwareKeyboard) {
+        configEntries.push('hw.keyboard=yes');
+      }
+      if (diskSize) {
+        configEntries.push(`disk.dataPartition.size=${diskSize}`);
+      }
 
-    if (heapSize) {
-      await exec.exec(`sh -c \\"printf 'hw.heapSize=${heapSize}\n' >> ${process.env.ANDROID_AVD_HOME}/"${avdName}".avd"/config.ini`);
-    }
-
-    if (enableHardwareKeyboard) {
-      await exec.exec(`sh -c \\"printf 'hw.keyboard=yes\n' >> ${process.env.ANDROID_AVD_HOME}/"${avdName}".avd"/config.ini`);
-    }
-
-    if (diskSize) {
-      await exec.exec(`sh -c \\"printf 'disk.dataPartition.size=${diskSize}\n' >> ${process.env.ANDROID_AVD_HOME}/"${avdName}".avd"/config.ini`);
+      if (configEntries.length > 0) {
+        const configContent = configEntries.join('\\n') + '\\n';
+        await exec.exec(`sh -c \\"printf '${configContent}' >> ${process.env.ANDROID_AVD_HOME}/"${avdName}".avd"/config.ini"`);
+      }
     }
 
     // turn off hardware acceleration on Linux
