@@ -14,7 +14,7 @@ import {
   checkPort,
   MIN_PORT,
 } from './input-validator';
-import { launchEmulator, killEmulator } from './emulator-manager';
+import { createAvd, launchEmulator, killEmulator } from './emulator-manager';
 import * as exec from '@actions/exec';
 import { parseScript } from './script-parser';
 import { getChannelId } from './channel-id-mapper';
@@ -191,6 +191,22 @@ async function run() {
     // install SDK
     await installAndroidSdk(apiLevel, systemImageApiLevel, target, arch, channelId, emulatorBuild, ndkVersion, cmakeVersion);
 
+    // create AVD
+    await createAvd(
+      systemImageApiLevel,
+      target,
+      arch,
+      profile,
+      cores,
+      ramSize,
+      heapSize,
+      sdcardPathOrSize,
+      diskSize,
+      avdName,
+      forceAvdCreation,
+      enableHardwareKeyboard
+    );
+
     // execute pre emulator launch script if set
     if (preEmulatorLaunchScripts !== undefined) {
       console.log(`::group::Run pre emulator launch script`);
@@ -210,17 +226,7 @@ async function run() {
 
     // launch an emulator
     await launchEmulator(
-      systemImageApiLevel,
-      target,
-      arch,
-      profile,
-      cores,
-      ramSize,
-      heapSize,
-      sdcardPathOrSize,
-      diskSize,
       avdName,
-      forceAvdCreation,
       emulatorBootTimeout,
       port,
       emulatorOptions,

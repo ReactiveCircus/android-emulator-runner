@@ -2,9 +2,9 @@ import * as exec from '@actions/exec';
 import * as fs from 'fs';
 
 /**
- * Creates and launches a new AVD instance with the specified configurations.
+ * Creates a new AVD instance with the specified configurations.
  */
-export async function launchEmulator(
+export async function createAvd(
   systemImageApiLevel: string,
   target: string,
   arch: string,
@@ -16,16 +16,10 @@ export async function launchEmulator(
   diskSize: string,
   avdName: string,
   forceAvdCreation: boolean,
-  emulatorBootTimeout: number,
-  port: number,
-  emulatorOptions: string,
-  disableAnimations: boolean,
-  disableSpellChecker: boolean,
-  disableLinuxHardwareAcceleration: boolean,
   enableHardwareKeyboard: boolean
 ): Promise<void> {
   try {
-    console.log(`::group::Launch Emulator`);
+    console.log(`::group::Create AVD`);
     // create a new AVD if AVD directory does not already exist or forceAvdCreation is true
     const avdPath = `${process.env.ANDROID_AVD_HOME}/${avdName}.avd`;
     if (!fs.existsSync(avdPath) || forceAvdCreation) {
@@ -61,6 +55,26 @@ export async function launchEmulator(
         await exec.exec(`sh -c \\"printf '${configContent}' >> ${process.env.ANDROID_AVD_HOME}/"${avdName}".avd"/config.ini"`);
       }
     }
+  } finally {
+    console.log(`::endgroup::`);
+  }
+}
+
+/**
+ * Launches an existing AVD instance with the specified configurations.
+ */
+export async function launchEmulator(
+  avdName: string,
+  emulatorBootTimeout: number,
+  port: number,
+  emulatorOptions: string,
+  disableAnimations: boolean,
+  disableSpellChecker: boolean,
+  disableLinuxHardwareAcceleration: boolean,
+  enableHardwareKeyboard: boolean
+): Promise<void> {
+  try {
+    console.log(`::group::Launch Emulator`);
 
     // turn off hardware acceleration on Linux
     if (process.platform === 'linux' && disableLinuxHardwareAcceleration) {
