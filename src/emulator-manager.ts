@@ -5,18 +5,18 @@ import * as fs from 'fs';
  * Creates a new AVD instance with the specified configurations.
  */
 export async function createAvd(
-  systemImageApiLevel: string,
-  target: string,
   arch: string,
-  profile: string,
-  cores: string,
-  ramSize: string,
-  heapSize: string,
-  sdcardPathOrSize: string,
-  diskSize: string,
   avdName: string,
+  cores: string,
+  diskSize: string,
+  enableHardwareKeyboard: boolean,
   forceAvdCreation: boolean,
-  enableHardwareKeyboard: boolean
+  heapSize: string,
+  profile: string,
+  ramSize: string,
+  sdcardPathOrSize: string,
+  systemImageApiLevel: string,
+  target: string
 ): Promise<void> {
   try {
     console.log(`::group::Create AVD`);
@@ -65,13 +65,13 @@ export async function createAvd(
  */
 export async function launchEmulator(
   avdName: string,
-  emulatorBootTimeout: number,
-  port: number,
-  emulatorOptions: string,
   disableAnimations: boolean,
-  disableSpellChecker: boolean,
   disableLinuxHardwareAcceleration: boolean,
-  enableHardwareKeyboard: boolean
+  disableSpellChecker: boolean,
+  emulatorBootTimeout: number,
+  emulatorOptions: string,
+  enableHardwareKeyboard: boolean,
+  port: number
 ): Promise<void> {
   try {
     console.log(`::group::Launch Emulator`);

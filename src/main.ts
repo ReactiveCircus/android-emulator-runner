@@ -192,20 +192,7 @@ async function run() {
     await installAndroidSdk(apiLevel, systemImageApiLevel, target, arch, channelId, emulatorBuild, ndkVersion, cmakeVersion);
 
     // create AVD
-    await createAvd(
-      systemImageApiLevel,
-      target,
-      arch,
-      profile,
-      cores,
-      ramSize,
-      heapSize,
-      sdcardPathOrSize,
-      diskSize,
-      avdName,
-      forceAvdCreation,
-      enableHardwareKeyboard
-    );
+    await createAvd(arch, avdName, cores, diskSize, enableHardwareKeyboard, forceAvdCreation, heapSize, profile, ramSize, sdcardPathOrSize, systemImageApiLevel, target);
 
     // execute pre emulator launch script if set
     if (preEmulatorLaunchScripts !== undefined) {
@@ -225,16 +212,7 @@ async function run() {
     }
 
     // launch an emulator
-    await launchEmulator(
-      avdName,
-      emulatorBootTimeout,
-      port,
-      emulatorOptions,
-      disableAnimations,
-      disableSpellchecker,
-      disableLinuxHardwareAcceleration,
-      enableHardwareKeyboard
-    );
+    await launchEmulator(avdName, disableAnimations, disableLinuxHardwareAcceleration, disableSpellchecker, emulatorBootTimeout, emulatorOptions, enableHardwareKeyboard, port);
 
     // execute the custom script
     try {
