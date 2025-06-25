@@ -12,6 +12,7 @@ import {
   checkEnableHardwareKeyboard,
   checkDiskSize,
   checkPort,
+  playstoreTargetSubstitution,
   MIN_PORT,
 } from './input-validator';
 import { createAvd, launchEmulator, killEmulator } from './emulator-manager';
@@ -52,8 +53,7 @@ async function run() {
     console.log(`System image API level: ${systemImageApiLevel}`);
 
     // target of the system image
-    const targetInput = core.getInput('target');
-    const target = targetInput == 'playstore' ? 'google_apis_playstore' : targetInput;
+    const target = playstoreTargetSubstitution(core.getInput('target'));
     checkTarget(target);
     console.log(`target: ${target}`);
 

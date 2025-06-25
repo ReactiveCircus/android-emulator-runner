@@ -2,9 +2,11 @@ export const MIN_API_LEVEL = 15;
 export const VALID_TARGETS: Array<string> = [
   'default',
   'google_apis',
+  'google_apis_ps16k',
   'aosp_atd',
   'google_atd',
   'google_apis_playstore',
+  'google_apis_playstore_ps16k',
   'android-wear',
   'android-wear-cn',
   'android-tv',
@@ -18,8 +20,16 @@ export const VALID_CHANNELS: Array<string> = ['stable', 'beta', 'dev', 'canary']
 export const MIN_PORT = 5554;
 export const MAX_PORT = 5584;
 
+export function playstoreTargetSubstitution(target: string): string {
+  // "playstore" is an allowed shorthand for "google_apis_playstore" images
+  // this is idempotent - return same even if run multiple times on same target
+  if (target === 'playstore') return 'google_apis_playstore';
+  if (target === 'playstore_ps16k') return 'google_apis_playstore_ps16k';
+  return target;
+}
+
 export function checkTarget(target: string): void {
-  if (!VALID_TARGETS.includes(target)) {
+  if (!VALID_TARGETS.includes(playstoreTargetSubstitution(target))) {
     throw new Error(`Value for input.target '${target}' is unknown. Supported options: ${VALID_TARGETS}.`);
   }
 }
