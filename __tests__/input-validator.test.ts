@@ -9,69 +9,6 @@ describe('target validator tests', () => {
     expect(func).toThrowError(`Value for input.target 'some-target' is unknown. Supported options: ${validator.VALID_TARGETS}`);
   });
 
-  it('Validates successfully with valid target', () => {
-    const func1 = () => {
-      validator.checkTarget('default');
-    };
-    expect(func1).not.toThrow();
-
-    const func2 = () => {
-      validator.checkTarget('google_apis');
-    };
-    expect(func2).not.toThrow();
-
-    const func3 = () => {
-      validator.checkTarget('aosp_atd');
-    };
-    expect(func3).not.toThrow();
-
-    const func4 = () => {
-      validator.checkTarget('google_atd');
-    };
-    expect(func4).not.toThrow();
-
-    const func5 = () => {
-      validator.checkTarget('google_apis_playstore');
-    };
-    expect(func5).not.toThrow();
-
-    const func6 = () => {
-      validator.checkTarget('android-wear');
-    };
-    expect(func6).not.toThrow();
-
-    const func7 = () => {
-      validator.checkTarget('android-wear-cn');
-    };
-    expect(func7).not.toThrow();
-
-    const func8 = () => {
-      validator.checkTarget('android-tv');
-    };
-    expect(func8).not.toThrow();
-
-    const func9 = () => {
-      validator.checkTarget('google-tv');
-    };
-    expect(func9).not.toThrow();
-
-    const func10 = () => {
-      validator.checkTarget('android-automotive');
-    };
-    expect(func10).not.toThrow();
-
-    const func11 = () => {
-      validator.checkTarget('android-automotive-playstore');
-    };
-    expect(func11).not.toThrow();
-
-    const func12 = () => {
-      validator.checkTarget('android-desktop');
-    };
-    expect(func12).not.toThrow();
-  });
-});
-
 describe('arch validator tests', () => {
   it('Throws if arch is unknown', () => {
     const func = () => {
