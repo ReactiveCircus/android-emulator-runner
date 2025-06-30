@@ -1,7 +1,6 @@
 import * as core from '@actions/core';
 import { installAndroidSdk } from './sdk-installer';
 import {
-  checkTarget,
   checkArch,
   checkDisableAnimations,
   checkEmulatorBuild,
@@ -54,7 +53,6 @@ async function run() {
 
     // target of the system image
     const target = playstoreTargetSubstitution(core.getInput('target'));
-    checkTarget(target);
     console.log(`target: ${target}`);
 
     // CPU architecture of the system image

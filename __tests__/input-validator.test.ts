@@ -1,26 +1,6 @@
 import * as validator from '../src/input-validator';
 import { MAX_PORT, MIN_PORT } from '../src/input-validator';
 
-describe('target validator tests', () => {
-  it('Throws if target is unknown', () => {
-    const func = () => {
-      validator.checkTarget('some-target');
-    };
-    expect(func).toThrowError(`Value for input.target 'some-target' is unknown. Supported options: ${validator.VALID_TARGETS}`);
-  });
-
-  it('Validates successfully with playstore target shorthands', () => {
-    const func1 = () => {
-      validator.checkTarget('playstore');
-    };
-    expect(func1).not.toThrow();
-    const func2 = () => {
-      validator.checkTarget('playstore_ps16k');
-    };
-    expect(func2).not.toThrow();
-  });
-});
-
 describe('arch validator tests', () => {
   it('Throws if arch is unknown', () => {
     const func = () => {

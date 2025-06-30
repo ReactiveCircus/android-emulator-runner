@@ -1,20 +1,4 @@
 export const MIN_API_LEVEL = 15;
-export const VALID_TARGETS: Array<string> = [
-  'default',
-  'google_apis',
-  'google_apis_ps16k',
-  'aosp_atd',
-  'google_atd',
-  'google_apis_playstore',
-  'google_apis_playstore_ps16k',
-  'android-wear',
-  'android-wear-cn',
-  'android-tv',
-  'google-tv',
-  'android-automotive',
-  'android-automotive-playstore',
-  'android-desktop',
-];
 export const VALID_ARCHS: Array<string> = ['x86', 'x86_64', 'arm64-v8a'];
 export const VALID_CHANNELS: Array<string> = ['stable', 'beta', 'dev', 'canary'];
 export const MIN_PORT = 5554;
@@ -26,12 +10,6 @@ export function playstoreTargetSubstitution(target: string): string {
   if (target === 'playstore') return 'google_apis_playstore';
   if (target === 'playstore_ps16k') return 'google_apis_playstore_ps16k';
   return target;
-}
-
-export function checkTarget(target: string): void {
-  if (!VALID_TARGETS.includes(playstoreTargetSubstitution(target))) {
-    throw new Error(`Value for input.target '${target}' is unknown. Supported options: ${VALID_TARGETS}.`);
-  }
 }
 
 export function checkArch(arch: string): void {
