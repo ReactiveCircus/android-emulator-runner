@@ -1,7 +1,6 @@
 import * as core from '@actions/core';
 import { installAndroidSdk } from './sdk-installer';
 import {
-  checkTarget,
   checkArch,
   checkDisableAnimations,
   checkEmulatorBuild,
@@ -12,6 +11,7 @@ import {
   checkEnableHardwareKeyboard,
   checkDiskSize,
   checkPort,
+  playstoreTargetSubstitution,
   MIN_PORT,
 } from './input-validator';
 import { createAvd, launchEmulator, killEmulator } from './emulator-manager';
@@ -52,9 +52,7 @@ async function run() {
     console.log(`System image API level: ${systemImageApiLevel}`);
 
     // target of the system image
-    const targetInput = core.getInput('target');
-    const target = targetInput == 'playstore' ? 'google_apis_playstore' : targetInput;
-    checkTarget(target);
+    const target = playstoreTargetSubstitution(core.getInput('target'));
     console.log(`target: ${target}`);
 
     // CPU architecture of the system image
