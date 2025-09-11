@@ -90,7 +90,7 @@ jobs:
           api-level: ${{ matrix.api-level }}
           target: ${{ matrix.target }}
           arch: x86_64
-          profile: Nexus 6
+          profile: pixel_7_pro
           script: ./gradlew connectedCheck
 ```
 
@@ -208,7 +208,7 @@ jobs:
 | `system-image-api-level` | Optional | same as `api-level` | API level of the system image - e.g. `34-ext10`, `35-ext15`. |
 | `target` | Optional | `default` | Target of the system image - e.g. `default`, `google_apis`, `google_apis_ps16k`, `google_apis_playstore`, `google_apis_playstore_ps16k`, `android-wear`, `android-wear-cn`, `android-tv`, `google-tv`, `aosp_atd`, `google_atd`, `android-automotive`, `android-automotive-playstore`, `android-desktop`. Please run `sdkmanager --list` to see the available targets. |
 | `arch` | Optional | `x86` | CPU architecture of the system image - `x86`, `x86_64` or `arm64-v8a`. Note that `x86_64` image is only available for API 21+. `arm64-v8a` images require Android 4.2+ and are limited to fewer API levels (e.g. 30). |
-| `profile` | Optional | N/A | Hardware profile used for creating the AVD - e.g. `Nexus 6`. For a list of all profiles available, run `avdmanager list device`. |
+| `profile` | Optional | N/A | Hardware profile id used for creating the AVD - e.g. `pixel_7_pro`. For a list of all profiles available, run `avdmanager list device`. |
 | `cores` | Optional | 2 | Number of cores to use for the emulator (`hw.cpu.ncore` in config.ini). |
 | `ram-size` | Optional | N/A | Size of RAM to use for this AVD, in KB or MB, denoted with K or M. - e.g. `2048M` |
 | `heap-size` | Optional | N/A | Heap size to use for this AVD, in KB or MB, denoted with K or M. - e.g. `512M` |
