@@ -2,7 +2,11 @@
 
 ## Unreleased
 
-No changes yet.
+## v2.35.0
+
+* Optimize config.ini updates and efficiency improvements report (#436).
+* Fix `pre-emulator-launch-script` (#439).
+* Allow `google_apis_ps16k` as a valid target (#440).
 
 ## v2.34.0
 

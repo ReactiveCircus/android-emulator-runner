@@ -1,7 +1,6 @@
 import * as core from '@actions/core';
 import { installAndroidSdk } from './sdk-installer';
 import {
-  checkTarget,
   checkArch,
   checkDisableAnimations,
   checkEmulatorBuild,
@@ -12,9 +11,10 @@ import {
   checkEnableHardwareKeyboard,
   checkDiskSize,
   checkPort,
+  playstoreTargetSubstitution,
   MIN_PORT,
 } from './input-validator';
-import { launchEmulator, killEmulator } from './emulator-manager';
+import { createAvd, launchEmulator, killEmulator } from './emulator-manager';
 import * as exec from '@actions/exec';
 import { parseScript } from './script-parser';
 import { getChannelId } from './channel-id-mapper';
@@ -52,9 +52,7 @@ async function run() {
     console.log(`System image API level: ${systemImageApiLevel}`);
 
     // target of the system image
-    const targetInput = core.getInput('target');
-    const target = targetInput == 'playstore' ? 'google_apis_playstore' : targetInput;
-    checkTarget(target);
+    const target = playstoreTargetSubstitution(core.getInput('target'));
     console.log(`target: ${target}`);
 
     // CPU architecture of the system image
@@ -191,6 +189,9 @@ async function run() {
     // install SDK
     await installAndroidSdk(apiLevel, systemImageApiLevel, target, arch, channelId, emulatorBuild, ndkVersion, cmakeVersion);
 
+    // create AVD
+    await createAvd(arch, avdName, cores, diskSize, enableHardwareKeyboard, forceAvdCreation, heapSize, profile, ramSize, sdcardPathOrSize, systemImageApiLevel, target);
+
     // execute pre emulator launch script if set
     if (preEmulatorLaunchScripts !== undefined) {
       console.log(`::group::Run pre emulator launch script`);
@@ -209,26 +210,7 @@ async function run() {
     }
 
     // launch an emulator
-    await launchEmulator(
-      systemImageApiLevel,
-      target,
-      arch,
-      profile,
-      cores,
-      ramSize,
-      heapSize,
-      sdcardPathOrSize,
-      diskSize,
-      avdName,
-      forceAvdCreation,
-      emulatorBootTimeout,
-      port,
-      emulatorOptions,
-      disableAnimations,
-      disableSpellchecker,
-      disableLinuxHardwareAcceleration,
-      enableHardwareKeyboard
-    );
+    await launchEmulator(avdName, disableAnimations, disableLinuxHardwareAcceleration, disableSpellchecker, emulatorBootTimeout, emulatorOptions, enableHardwareKeyboard, port);
 
     // execute the custom script
     try {
