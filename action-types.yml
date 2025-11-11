@@ -54,6 +54,8 @@ inputs:
    type: string
   enable-hw-keyboard:
    type: boolean
+  cleanup-avd:
+   type: boolean
   emulator-build:
    type: string
   working-directory:

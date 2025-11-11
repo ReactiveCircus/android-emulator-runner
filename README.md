@@ -119,6 +119,30 @@ jobs:
           script: ./gradlew connectedCheck
 ```
 
+If you want to automatically clean up the created AVD after the tests run (to save disk space):
+
+```yml
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: run tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          cleanup-avd: true
+          script: ./gradlew connectedCheck
+```
+
 If you need a specific [SDK Extensions](https://developer.android.com/guide/sdk-extensions) for the system image but not the platform:
 
 ```yml
@@ -223,6 +247,7 @@ jobs:
 | `disable-spellchecker` | Optional | `false` | Whether to disable spellchecker - `true` or `false`. |
 | `disable-linux-hw-accel` | Optional | `auto` | Whether to disable hardware acceleration on Linux machines - `true`, `false` or `auto`.|
 | `enable-hw-keyboard` | Optional | `false` | Whether to enable hardware keyboard - `true` or `false`. |
+| `cleanup-avd` | Optional | `false` | Whether to delete the created AVD after execution - `true` or `false`. |
 | `emulator-build` | Optional | N/A | Build number of a specific version of the emulator binary to use e.g. `6061023` for emulator v29.3.0.0. |
 | `working-directory` | Optional | `./` | A custom working directory - e.g. `./android` if your root Gradle project is under the `./android` sub-directory within your repository. Will be used for `script` & `pre-emulator-launch-script`. |
 | `ndk` | Optional | N/A | Version of NDK to install - e.g. `21.0.6113669` |
