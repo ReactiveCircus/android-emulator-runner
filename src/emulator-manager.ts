@@ -27,7 +27,7 @@ export async function createAvd(
       const sdcardPathOrSizeOption = sdcardPathOrSize.trim() !== '' ? `--sdcard '${sdcardPathOrSize}'` : '';
       console.log(`Creating AVD.`);
       await exec.exec(
-        `sh -c \\"echo no | avdmanager create avd --force -n "${avdName}" --abi '${target}/${arch}' --package 'system-images;android-${systemImageApiLevel};${target};${arch}' ${profileOption} ${sdcardPathOrSizeOption}"`
+        `sh -c \\"echo no | avdmanager create avd --force -n "${avdName}" --package 'system-images;android-${systemImageApiLevel};${target};${arch}' ${profileOption} ${sdcardPathOrSizeOption}"`
       );
     }
 
