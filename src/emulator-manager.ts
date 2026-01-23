@@ -2,30 +2,24 @@ import * as exec from '@actions/exec';
 import * as fs from 'fs';
 
 /**
- * Creates and launches a new AVD instance with the specified configurations.
+ * Creates a new AVD instance with the specified configurations.
  */
-export async function launchEmulator(
-  systemImageApiLevel: string,
-  target: string,
+export async function createAvd(
   arch: string,
-  profile: string,
-  cores: string,
-  ramSize: string,
-  heapSize: string,
-  sdcardPathOrSize: string,
-  diskSize: string,
   avdName: string,
+  cores: string,
+  diskSize: string,
+  enableHardwareKeyboard: boolean,
   forceAvdCreation: boolean,
-  emulatorBootTimeout: number,
-  port: number,
-  emulatorOptions: string,
-  disableAnimations: boolean,
-  disableSpellChecker: boolean,
-  disableLinuxHardwareAcceleration: boolean,
-  enableHardwareKeyboard: boolean
+  heapSize: string,
+  profile: string,
+  ramSize: string,
+  sdcardPathOrSize: string,
+  systemImageApiLevel: string,
+  target: string
 ): Promise<void> {
   try {
-    console.log(`::group::Launch Emulator`);
+    console.log(`::group::Create AVD`);
     // create a new AVD if AVD directory does not already exist or forceAvdCreation is true
     const avdPath = `${process.env.ANDROID_AVD_HOME}/${avdName}.avd`;
     if (!fs.existsSync(avdPath) || forceAvdCreation) {
@@ -37,25 +31,50 @@ export async function launchEmulator(
       );
     }
 
-    if (cores) {
-      await exec.exec(`sh -c \\"printf 'hw.cpu.ncore=${cores}\n' >> ${process.env.ANDROID_AVD_HOME}/"${avdName}".avd"/config.ini`);
-    }
+    if (cores || ramSize || heapSize || enableHardwareKeyboard || diskSize) {
+      const configEntries: string[] = [];
 
-    if (ramSize) {
-      await exec.exec(`sh -c \\"printf 'hw.ramSize=${ramSize}\n' >> ${process.env.ANDROID_AVD_HOME}/"${avdName}".avd"/config.ini`);
-    }
+      if (cores) {
+        configEntries.push(`hw.cpu.ncore=${cores}`);
+      }
+      if (ramSize) {
+        configEntries.push(`hw.ramSize=${ramSize}`);
+      }
+      if (heapSize) {
+        configEntries.push(`hw.heapSize=${heapSize}`);
+      }
+      if (enableHardwareKeyboard) {
+        configEntries.push('hw.keyboard=yes');
+      }
+      if (diskSize) {
+        configEntries.push(`disk.dataPartition.size=${diskSize}`);
+      }
 
-    if (heapSize) {
-      await exec.exec(`sh -c \\"printf 'hw.heapSize=${heapSize}\n' >> ${process.env.ANDROID_AVD_HOME}/"${avdName}".avd"/config.ini`);
+      if (configEntries.length > 0) {
+        const configContent = configEntries.join('\\n') + '\\n';
+        await exec.exec(`sh -c \\"printf '${configContent}' >> ${process.env.ANDROID_AVD_HOME}/"${avdName}".avd"/config.ini"`);
+      }
     }
+  } finally {
+    console.log(`::endgroup::`);
+  }
+}
 
-    if (enableHardwareKeyboard) {
-      await exec.exec(`sh -c \\"printf 'hw.keyboard=yes\n' >> ${process.env.ANDROID_AVD_HOME}/"${avdName}".avd"/config.ini`);
-    }
-
-    if (diskSize) {
-      await exec.exec(`sh -c \\"printf 'disk.dataPartition.size=${diskSize}\n' >> ${process.env.ANDROID_AVD_HOME}/"${avdName}".avd"/config.ini`);
-    }
+/**
+ * Launches an existing AVD instance with the specified configurations.
+ */
+export async function launchEmulator(
+  avdName: string,
+  disableAnimations: boolean,
+  disableLinuxHardwareAcceleration: boolean,
+  disableSpellChecker: boolean,
+  emulatorBootTimeout: number,
+  emulatorOptions: string,
+  enableHardwareKeyboard: boolean,
+  port: number
+): Promise<void> {
+  try {
+    console.log(`::group::Launch Emulator`);
 
     // turn off hardware acceleration on Linux
     if (process.platform === 'linux' && disableLinuxHardwareAcceleration) {
