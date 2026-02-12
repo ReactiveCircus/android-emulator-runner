@@ -190,6 +190,27 @@ describe('enable-hw-keyboard validator tests', () => {
   });
 });
 
+describe('cleanup-avd validator tests', () => {
+  it('Throws if cleanup-avd is not a boolean', () => {
+    const func = () => {
+      validator.checkCleanupAvd('yes');
+    };
+    expect(func).toThrowError(`Input for input.cleanup-avd should be either 'true' or 'false'.`);
+  });
+
+  it('Validates successfully if cleanup-avd is either true or false', () => {
+    const func1 = () => {
+      validator.checkCleanupAvd('true');
+    };
+    expect(func1).not.toThrow();
+
+    const func2 = () => {
+      validator.checkCleanupAvd('false');
+    };
+    expect(func2).not.toThrow();
+  });
+});
+
 describe('emulator-build validator tests', () => {
   it('Throws if emulator-build is not a number', () => {
     const func = () => {

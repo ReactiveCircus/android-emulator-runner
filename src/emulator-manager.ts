@@ -130,6 +130,22 @@ export async function killEmulator(port: number): Promise<void> {
   }
 }
 
+/**
+ * Deletes the specified AVD.
+ */
+export async function deleteAvd(avdName: string): Promise<void> {
+  try {
+    console.log(`::group::Delete AVD`);
+    console.log(`Deleting AVD '${avdName}'.`);
+    await exec.exec(`avdmanager delete avd -n "${avdName}"`);
+    console.log(`AVD '${avdName}' deleted successfully.`);
+  } catch (error) {
+    console.log(`Failed to delete AVD '${avdName}': ${error instanceof Error ? error.message : error}`);
+  } finally {
+    console.log(`::endgroup::`);
+  }
+}
+
 async function adb(port: number, command: string): Promise<number> {
   return await exec.exec(`adb -s emulator-${port} ${command}`);
 }
