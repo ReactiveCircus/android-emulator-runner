@@ -1,0 +1,10 @@
+name: Re–Run Tests on PR Comment Workflow
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  rerun-tests-job:
+    if: github.event.issue.pull_request && github.event.comment.body == '/retest'
+    uses: ./.github/workflows/main.yml
