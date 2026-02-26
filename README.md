@@ -271,5 +271,6 @@ These are some of the open-source projects using (or used) **Android Emulator Ru
 - [robolectric/robolectric](https://github.com/robolectric/robolectric/blob/master/.github/workflows/tests.yml)
 - [home-assistant/android](https://github.com/home-assistant/android/blob/master/.github/workflows/pr.yml)
 - [composablehorizons/compose-unstyled](https://github.com/composablehorizons/compose-unstyled/tree/main/.github/workflows)
+- [f3d-app/f3d-android](https://github.com/f3d-app/f3d-android/blob/master/.github/workflows/ci.yml)
 
 If you are using **Android Emulator Runner** and want your project included in the list, please feel free to open a pull request.
