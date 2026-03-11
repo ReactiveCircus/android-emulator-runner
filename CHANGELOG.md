@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## v2.36.0
+
+* Remove `--abi` option to better support 16-KB-based system images (#456).
+
+
 ## v2.35.0
 
 * Optimize config.ini updates and efficiency improvements report (#436).
