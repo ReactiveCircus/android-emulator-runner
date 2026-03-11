@@ -27,7 +27,7 @@ jobs:
             api-level: 24
             target: playstore
             arch: x86
-          - os: macos-13
+          - os: macos-15-intel
             api-level: 31
             target: default
             arch: x86_64
