@@ -1,9 +1,0 @@
-name: Re-Run Tests on PR Comment Workflow
-on:
-  issue_comment:
-    types: [created]
-  
-jobs:
-  rerun-tests-job:
-    if: github.event.issue.pull_request && contains(github.event.comment.body, 'run tests') # if comment is created on a PR, can also use the syntax if: contains(github.event.comment.html_url, '/pull/')
-    uses: ./.github/workflows/main.yml
