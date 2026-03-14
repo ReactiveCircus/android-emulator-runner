@@ -33,7 +33,7 @@ async function run() {
           linuxSupportKVM = true;
         } catch {
           console.warn(
-            `You're running a Linux VM where hardware acceleration is not available. Please consider using a macOS VM instead to take advantage of native hardware acceleration support provided by HAXM.`
+            `You're running a Linux VM where hardware acceleration is not available. Please consider using a macOS VM instead to take advantage of native hardware acceleration support provided by HAXM.`,
           );
         }
       } else {
