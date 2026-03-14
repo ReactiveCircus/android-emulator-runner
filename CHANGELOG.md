@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+* Update SDK build tools to `36.0.0`, update SDK command-line tools to `20.0`. - [#467](https://github.com/ReactiveCircus/android-emulator-runner/pull/467)
 * Run action on Node 24. - [#466](https://github.com/ReactiveCircus/android-emulator-runner/pull/466)
 * Update Node and npm packages. - [#466](https://github.com/ReactiveCircus/android-emulator-runner/pull/466)
 
