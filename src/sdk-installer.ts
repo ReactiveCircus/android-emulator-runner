@@ -4,10 +4,10 @@ import * as io from '@actions/io';
 import * as tc from '@actions/tool-cache';
 import * as fs from 'fs';
 
-const BUILD_TOOLS_VERSION = '35.0.0';
-// SDK command-line tools 16.0
-const CMDLINE_TOOLS_URL_MAC = 'https://dl.google.com/android/repository/commandlinetools-mac-12266719_latest.zip';
-const CMDLINE_TOOLS_URL_LINUX = 'https://dl.google.com/android/repository/commandlinetools-linux-12266719_latest.zip';
+const BUILD_TOOLS_VERSION = '36.0.0';
+// SDK command-line tools 20.0
+const CMDLINE_TOOLS_URL_MAC = 'https://dl.google.com/android/repository/commandlinetools-mac-14742923_latest.zip';
+const CMDLINE_TOOLS_URL_LINUX = 'https://dl.google.com/android/repository/commandlinetools-linux-14742923_latest.zip';
 
 /**
  * Installs & updates the Android SDK for the macOS platform, including SDK platform for the chosen API level, latest build tools, platform tools, Android Emulator,
@@ -21,7 +21,7 @@ export async function installAndroidSdk(
   channelId: number,
   emulatorBuild?: string,
   ndkVersion?: string,
-  cmakeVersion?: string
+  cmakeVersion?: string,
 ): Promise<void> {
   try {
     console.log(`::group::Install Android SDK`);

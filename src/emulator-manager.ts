@@ -16,7 +16,7 @@ export async function createAvd(
   ramSize: string,
   sdcardPathOrSize: string,
   systemImageApiLevel: string,
-  target: string
+  target: string,
 ): Promise<void> {
   try {
     console.log(`::group::Create AVD`);
@@ -27,7 +27,7 @@ export async function createAvd(
       const sdcardPathOrSizeOption = sdcardPathOrSize.trim() !== '' ? `--sdcard '${sdcardPathOrSize}'` : '';
       console.log(`Creating AVD.`);
       await exec.exec(
-        `sh -c \\"echo no | avdmanager create avd --force -n "${avdName}" --package 'system-images;android-${systemImageApiLevel};${target};${arch}' ${profileOption} ${sdcardPathOrSizeOption}"`
+        `sh -c \\"echo no | avdmanager create avd --force -n "${avdName}" --package 'system-images;android-${systemImageApiLevel};${target};${arch}' ${profileOption} ${sdcardPathOrSizeOption}"`,
       );
     }
 
@@ -71,7 +71,7 @@ export async function launchEmulator(
   emulatorBootTimeout: number,
   emulatorOptions: string,
   enableHardwareKeyboard: boolean,
-  port: number
+  port: number,
 ): Promise<void> {
   try {
     console.log(`::group::Launch Emulator`);
