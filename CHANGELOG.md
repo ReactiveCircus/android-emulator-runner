@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+* Run action on Node 24. - [#466](https://github.com/ReactiveCircus/android-emulator-runner/pull/466)
+* Update Node and npm packages. - [#466](https://github.com/ReactiveCircus/android-emulator-runner/pull/466)
+
 ## v2.36.0
 
 * Remove `--abi` option to better support 16-KB-based system images (#456).

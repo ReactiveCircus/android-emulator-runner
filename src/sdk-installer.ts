@@ -21,7 +21,7 @@ export async function installAndroidSdk(
   channelId: number,
   emulatorBuild?: string,
   ndkVersion?: string,
-  cmakeVersion?: string
+  cmakeVersion?: string,
 ): Promise<void> {
   try {
     console.log(`::group::Install Android SDK`);
