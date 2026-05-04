@@ -272,5 +272,6 @@ These are some of the open-source projects using (or used) **Android Emulator Ru
 - [home-assistant/android](https://github.com/home-assistant/android/blob/master/.github/workflows/pr.yml)
 - [composablehorizons/compose-unstyled](https://github.com/composablehorizons/compose-unstyled/tree/main/.github/workflows)
 - [f3d-app/f3d-android](https://github.com/f3d-app/f3d-android/blob/master/.github/workflows/ci.yml)
+- [freeorion/freeorion](https://github.com/freeorion/freeorion/blob/master/.github/workflows/_build-android.yml)
 
 If you are using **Android Emulator Runner** and want your project included in the list, please feel free to open a pull request.
