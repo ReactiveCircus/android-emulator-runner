@@ -237,6 +237,7 @@ Default `emulator-options`: `-no-window -gpu swiftshader_indirect -no-snapshot -
 
 These are some of the open-source projects using (or used) **Android Emulator Runner**:
 
+- [actions/swift-android-action](https://github.com/marketplace/actions/swift-android-action)
 - [coil-kt/coil](https://github.com/coil-kt/coil/blob/master/.github/workflows)
 - [cashapp/sqldelight](https://github.com/cashapp/sqldelight/blob/master/.github/workflows)
 - [square/workflow-kotlin](https://github.com/square/workflow-kotlin/tree/main/.github/workflows)
