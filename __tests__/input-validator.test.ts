@@ -190,6 +190,27 @@ describe('enable-hw-keyboard validator tests', () => {
   });
 });
 
+describe('keep-running validator tests', () => {
+  it('Throws if keep-running is not a boolean', () => {
+    const func = () => {
+      validator.checkKeepRunning('yes');
+    };
+    expect(func).toThrowError(`Input for input.keep-running should be either 'true' or 'false'.`);
+  });
+
+  it('Validates successfully if keep-running is either true or false', () => {
+    const func1 = () => {
+      validator.checkKeepRunning('true');
+    };
+    expect(func1).not.toThrow();
+
+    const func2 = () => {
+      validator.checkKeepRunning('false');
+    };
+    expect(func2).not.toThrow();
+  });
+});
+
 describe('emulator-build validator tests', () => {
   it('Throws if emulator-build is not a number', () => {
     const func = () => {

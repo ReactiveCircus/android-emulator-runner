@@ -63,6 +63,12 @@ export function checkEnableHardwareKeyboard(enableHardwareKeyboard: string): voi
   }
 }
 
+export function checkKeepRunning(keepRunning: string): void {
+  if (!isValidBoolean(keepRunning)) {
+    throw new Error(`Input for input.keep-running should be either 'true' or 'false'.`);
+  }
+}
+
 export function checkEmulatorBuild(emulatorBuild: string): void {
   if (isNaN(Number(emulatorBuild)) || !Number.isInteger(Number(emulatorBuild))) {
     throw new Error(`Unexpected emulator build: '${emulatorBuild}'.`);
