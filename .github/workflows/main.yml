@@ -44,6 +44,14 @@ jobs:
             target: google_apis_playstore_ps16k
             arch: x86_64
           - os: ubuntu-latest
+            api-level: 37.0
+            target: google_apis_ps16k
+            arch: x86_64
+          - os: ubuntu-latest
+            api-level: 37.0
+            target: playstore_ps16k
+            arch: x86_64
+          - os: ubuntu-latest
             api-level: 34-ext10
             target: android-automotive
             arch: x86_64
