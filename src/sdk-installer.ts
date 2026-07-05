@@ -4,7 +4,7 @@ import * as io from '@actions/io';
 import * as tc from '@actions/tool-cache';
 import * as fs from 'fs';
 
-const BUILD_TOOLS_VERSION = '36.0.0';
+const BUILD_TOOLS_VERSION = '37.0.0';
 // SDK command-line tools 20.0
 const CMDLINE_TOOLS_URL_MAC = 'https://dl.google.com/android/repository/commandlinetools-mac-14742923_latest.zip';
 const CMDLINE_TOOLS_URL_LINUX = 'https://dl.google.com/android/repository/commandlinetools-linux-14742923_latest.zip';
