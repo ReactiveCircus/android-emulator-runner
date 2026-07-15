@@ -70,6 +70,7 @@ export async function launchEmulator(
   disableSpellChecker: boolean,
   emulatorBootTimeout: number,
   emulatorOptions: string,
+  emulatorStartupRetries: number,
   enableHardwareKeyboard: boolean,
   port: number,
 ): Promise<void> {
@@ -82,37 +83,79 @@ export async function launchEmulator(
       emulatorOptions += ' -accel off';
     }
 
-    // start emulator
-    console.log('Starting emulator.');
+    for (let attempt = 0; attempt <= emulatorStartupRetries; attempt++) {
+      try {
+        if (emulatorStartupRetries > 0) {
+          console.log(`Emulator startup attempt ${attempt + 1} of ${emulatorStartupRetries + 1}.`);
+        }
 
-    await exec.exec(`sh -c \\"${process.env.ANDROID_HOME}/emulator/emulator -port ${port} -avd "${avdName}" ${emulatorOptions} &"`, [], {
-      listeners: {
-        stderr: (data: Buffer) => {
-          if (data.toString().includes('invalid command-line parameter')) {
-            throw new Error(data.toString());
-          }
-        },
-      },
-    });
+        // start emulator
+        console.log('Starting emulator.');
 
-    // wait for emulator to complete booting
-    await waitForDevice(port, emulatorBootTimeout);
-    await adb(port, `shell input keyevent 82`);
+        await exec.exec(`sh -c \\"${process.env.ANDROID_HOME}/emulator/emulator -port ${port} -avd "${avdName}" ${emulatorOptions} &"`, [], {
+          listeners: {
+            stderr: (data: Buffer) => {
+              if (data.toString().includes('invalid command-line parameter')) {
+                throw new Error(data.toString());
+              }
+            },
+          },
+        });
 
-    if (disableAnimations) {
-      console.log('Disabling animations.');
-      await adb(port, `shell settings put global window_animation_scale 0.0`);
-      await adb(port, `shell settings put global transition_animation_scale 0.0`);
-      await adb(port, `shell settings put global animator_duration_scale 0.0`);
-    }
-    if (disableSpellChecker) {
-      await adb(port, `shell settings put secure spell_checker_enabled 0`);
-    }
-    if (enableHardwareKeyboard) {
-      await adb(port, `shell settings put secure show_ime_with_hard_keyboard 0`);
+        // wait for emulator to complete booting and accept console commands
+        await waitForDevice(port, emulatorBootTimeout);
+        await waitForEmulatorConsole(port);
+        await adb(port, `shell input keyevent 82`);
+
+        if (disableAnimations) {
+          console.log('Disabling animations.');
+          await adb(port, `shell settings put global window_animation_scale 0.0`);
+          await adb(port, `shell settings put global transition_animation_scale 0.0`);
+          await adb(port, `shell settings put global animator_duration_scale 0.0`);
+        }
+        if (disableSpellChecker) {
+          await adb(port, `shell settings put secure spell_checker_enabled 0`);
+        }
+        if (enableHardwareKeyboard) {
+          await adb(port, `shell settings put secure show_ime_with_hard_keyboard 0`);
+        }
+        return;
+      } catch (error) {
+        if (attempt >= emulatorStartupRetries || isInvalidCommandLineParameterError(error)) {
+          throw error;
+        }
+
+        console.warn(error instanceof Error ? error.message : error);
+        console.warn(`Emulator startup failed. Retrying.`);
+        await killEmulator(port);
+        await delay(5000);
+      }
     }
   } finally {
     console.log(`::endgroup::`);
+  }
+}
+
+function isInvalidCommandLineParameterError(error: unknown): boolean {
+  return error instanceof Error && error.message.includes('invalid command-line parameter');
+}
+
+async function waitForEmulatorConsole(port: number): Promise<void> {
+  const retryInterval = 2;
+  const maxAttempts = 15;
+  for (let attempt = 0; attempt <= maxAttempts; attempt++) {
+    try {
+      await adb(port, `emu avd name`);
+      console.log('Emulator console ready.');
+      return;
+    } catch (error) {
+      if (attempt >= maxAttempts) {
+        throw new Error(`Timeout waiting for emulator console.`);
+      }
+
+      console.warn(error instanceof Error ? error.message : error);
+      await delay(retryInterval * 1000);
+    }
   }
 }
 

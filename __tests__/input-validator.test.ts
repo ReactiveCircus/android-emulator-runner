@@ -213,6 +213,32 @@ describe('emulator-build validator tests', () => {
   });
 });
 
+describe('emulator-startup-retries validator tests', () => {
+  it('Throws if emulator-startup-retries is negative', () => {
+    const func = () => {
+      validator.checkEmulatorStartupRetries(-1);
+    };
+    expect(func).toThrowError(`Emulator startup retries must be a non-negative integer, was -1`);
+  });
+
+  it('Throws if emulator-startup-retries is not an integer', () => {
+    const func = () => {
+      validator.checkEmulatorStartupRetries(1.5);
+    };
+    expect(func).toThrowError(`Emulator startup retries must be a non-negative integer, was 1.5`);
+  });
+
+  it('Validates successfully if emulator-startup-retries is a non-negative integer', () => {
+    expect(() => {
+      validator.checkEmulatorStartupRetries(0);
+    }).not.toThrow();
+
+    expect(() => {
+      validator.checkEmulatorStartupRetries(1);
+    }).not.toThrow();
+  });
+});
+
 describe('checkDiskSize validator tests', () => {
   it('Empty size is acceptable, means default', () => {
     const func = () => {

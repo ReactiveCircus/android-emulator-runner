@@ -69,6 +69,12 @@ export function checkEmulatorBuild(emulatorBuild: string): void {
   }
 }
 
+export function checkEmulatorStartupRetries(emulatorStartupRetries: number): void {
+  if (emulatorStartupRetries < 0 || !Number.isInteger(emulatorStartupRetries)) {
+    throw new Error(`Emulator startup retries must be a non-negative integer, was ${emulatorStartupRetries}`);
+  }
+}
+
 function isValidBoolean(value: string): boolean {
   return value === 'true' || value === 'false';
 }

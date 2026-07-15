@@ -39,6 +39,9 @@ inputs:
   emulator-boot-timeout:
     description: 'Emulator boot timeout in seconds. If it takes longer to boot, the action would fail - e.g. `300` for 5 minutes'
     default: '600'
+  emulator-startup-retries:
+    description: 'Number of times to retry emulator startup before running the script. This retries emulator launch, boot and readiness checks, but not the script itself.'
+    default: '0'
   emulator-port:
     description: 'Port to run emulator on, allows to run multiple emulators on the same physical machine'
     default: '5554'

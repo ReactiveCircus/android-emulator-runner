@@ -42,6 +42,8 @@ inputs:
    type: boolean
   emulator-boot-timeout:
    type: integer
+  emulator-startup-retries:
+   type: integer
   emulator-port:
     type: integer
   emulator-options:

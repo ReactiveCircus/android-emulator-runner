@@ -10,6 +10,7 @@ import {
   checkChannel,
   checkEnableHardwareKeyboard,
   checkDiskSize,
+  checkEmulatorStartupRetries,
   checkPort,
   playstoreTargetSubstitution,
   MIN_PORT,
@@ -97,6 +98,11 @@ async function run() {
     // Emulator boot timeout seconds
     const emulatorBootTimeout = parseInt(core.getInput('emulator-boot-timeout'), 10);
     console.log(`Emulator boot timeout: ${emulatorBootTimeout}`);
+
+    // Emulator startup retries
+    const emulatorStartupRetries = parseInt(core.getInput('emulator-startup-retries'), 10);
+    checkEmulatorStartupRetries(emulatorStartupRetries);
+    console.log(`Emulator startup retries: ${emulatorStartupRetries}`);
 
     // Emulator port to use
     port = parseInt(core.getInput('emulator-port'), 10);
@@ -210,7 +216,17 @@ async function run() {
     }
 
     // launch an emulator
-    await launchEmulator(avdName, disableAnimations, disableLinuxHardwareAcceleration, disableSpellchecker, emulatorBootTimeout, emulatorOptions, enableHardwareKeyboard, port);
+    await launchEmulator(
+      avdName,
+      disableAnimations,
+      disableLinuxHardwareAcceleration,
+      disableSpellchecker,
+      emulatorBootTimeout,
+      emulatorOptions,
+      emulatorStartupRetries,
+      enableHardwareKeyboard,
+      port,
+    );
 
     // execute the custom script
     try {
