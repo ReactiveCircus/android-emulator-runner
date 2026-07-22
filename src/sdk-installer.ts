@@ -7,7 +7,7 @@ import * as fs from 'fs';
 const BUILD_TOOLS_VERSION = '37.0.0';
 // SDK command-line tools 22.0
 const CMDLINE_TOOLS_VERSION = '15859902';
-const CMDLINE_TOOLS_URL_MAC = `https://dl.google.com/android/repository/commandlinetools-mac-${CMDLINE_TOOLS_VERSION}_latest.zip`;
+const CMDLINE_TOOLS_URL_MAC = `https://dl.google.com/android/repository/commandlinetools-mac_x86_64-${CMDLINE_TOOLS_VERSION}_latest.zip`;
 const CMDLINE_TOOLS_URL_LINUX = `https://dl.google.com/android/repository/commandlinetools-linux-${CMDLINE_TOOLS_VERSION}_latest.zip`;
 
 /**
