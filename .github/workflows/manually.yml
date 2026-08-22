@@ -41,7 +41,7 @@ jobs:
     
     steps:
     - name: checkout
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
 
     - name: build, test and lint
       run: |
@@ -55,7 +55,7 @@ jobs:
         distribution: 'zulu'
         java-version: 25
 
-    - uses: gradle/actions/setup-gradle@v5
+    - uses: gradle/actions/setup-gradle@v6
 
     - name: enable KVM for linux runners
       if: runner.os == 'Linux'
