@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+* Update SDK command-line tools to `23.0`. - [#492](https://github.com/ReactiveCircus/android-emulator-runner/pull/492)
+
 ## v2.38.0
 
 * Update SDK build tools to `37.0.0`. - [#475](https://github.com/ReactiveCircus/android-emulator-runner/pull/475)
