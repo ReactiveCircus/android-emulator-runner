@@ -41,7 +41,7 @@ export async function createAvd(
         configEntries.push(`hw.ramSize=${ramSize}`);
       }
       if (heapSize) {
-        configEntries.push(`hw.heapSize=${heapSize}`);
+        configEntries.push(`vm.heapSize=${heapSize}`);
       }
       if (enableHardwareKeyboard) {
         configEntries.push('hw.keyboard=yes');
