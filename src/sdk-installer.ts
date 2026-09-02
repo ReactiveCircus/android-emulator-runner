@@ -9,6 +9,16 @@ const BUILD_TOOLS_VERSION = '37.0.0';
 const CMDLINE_TOOLS_VERSION = '16111833';
 const CMDLINE_TOOLS_URL_MAC = `https://dl.google.com/android/repository/commandlinetools-mac_x86_64-${CMDLINE_TOOLS_VERSION}_latest.zip`;
 const CMDLINE_TOOLS_URL_LINUX = `https://dl.google.com/android/repository/commandlinetools-linux-${CMDLINE_TOOLS_VERSION}_latest.zip`;
+// keep in sync with CMDLINE_TOOLS_VERSION
+const CMDLINE_TOOLS_MIN_MAJOR_REVISION = 23;
+
+/**
+ * Returns the major revision of an installed cmdline-tools package from the content of its `source.properties`, or `null` if the revision cannot be determined.
+ */
+export function parseCmdlineToolsMajorRevision(sourceProperties: string): number | null {
+  const match = /^Pkg\.Revision=(\d+)/m.exec(sourceProperties);
+  return match ? Number(match[1]) : null;
+}
 
 /**
  * Installs & updates the Android SDK for the macOS platform, including SDK platform for the chosen API level, latest build tools, platform tools, Android Emulator,
@@ -30,10 +40,18 @@ export async function installAndroidSdk(
     const isArm = process.arch === 'arm64';
 
     const cmdlineToolsPath = `${process.env.ANDROID_HOME}/cmdline-tools`;
-    if (!fs.existsSync(cmdlineToolsPath)) {
-      console.log('Installing new cmdline-tools.');
+    const sourcePropertiesPath = `${cmdlineToolsPath}/latest/source.properties`;
+    // a preinstalled cmdline-tools too old to parse minor API levels such as android-37.1 must be replaced, not kept
+    const installedRevision = fs.existsSync(sourcePropertiesPath) ? parseCmdlineToolsMajorRevision(fs.readFileSync(sourcePropertiesPath, 'utf8')) : null;
+    if (installedRevision === null || installedRevision < CMDLINE_TOOLS_MIN_MAJOR_REVISION) {
+      if (installedRevision === null) {
+        console.log('Installing new cmdline-tools.');
+      } else {
+        console.log(`Replacing cmdline-tools revision ${installedRevision} with revision ${CMDLINE_TOOLS_MIN_MAJOR_REVISION}.`);
+      }
       const sdkUrl = isOnMac ? CMDLINE_TOOLS_URL_MAC : CMDLINE_TOOLS_URL_LINUX;
       const downloadPath = await tc.downloadTool(sdkUrl);
+      await io.rmRF(`${cmdlineToolsPath}/latest`);
       await tc.extractZip(downloadPath, cmdlineToolsPath);
       await io.mv(`${cmdlineToolsPath}/cmdline-tools`, `${cmdlineToolsPath}/latest`);
     }
