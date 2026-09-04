@@ -15,7 +15,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
       JAVA_TOOL_OPTIONS: -Xmx4g
-    timeout-minutes: 15
+    timeout-minutes: ${{ matrix.timeout-minutes || 15 }}
     strategy:
       matrix:
         include:
@@ -31,6 +31,7 @@ jobs:
             api-level: 31
             target: default
             arch: x86_64
+            timeout-minutes: 20
           - os: ubuntu-24.04
             api-level: 34
             target: aosp_atd
