@@ -97,6 +97,9 @@ export async function launchEmulator(
 
     // wait for emulator to complete booting
     await waitForDevice(port, emulatorBootTimeout);
+
+    // boot_completed doesn't guarantee every service is registered yet (#432)
+    await waitForService(port, 'input');
     await adb(port, `shell input keyevent 82`);
 
     if (disableAnimations) {
@@ -167,6 +170,35 @@ async function waitForDevice(port: number, emulatorBootTimeout: number): Promise
       throw new Error(`Timeout waiting for emulator to boot.`);
     }
     attempts++;
+  }
+}
+
+/**
+ * Wait for a ServiceManager-registered service (e.g. 'input') to be available.
+ */
+async function waitForService(port: number, serviceName: string, maxAttempts = 15, retryIntervalSeconds = 1): Promise<void> {
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    let result = '';
+    try {
+      await exec.exec(`adb -s emulator-${port} shell service check ${serviceName}`, [], {
+        listeners: {
+          stdout: (data: Buffer) => {
+            result += data.toString();
+          },
+        },
+      });
+    } catch (error) {
+      console.warn(error instanceof Error ? error.message : error);
+    }
+
+    if (result.includes('found') && !result.includes('not found')) {
+      return;
+    }
+
+    if (attempt === maxAttempts) {
+      throw new Error(`Timeout waiting for the '${serviceName}' service to become available.`);
+    }
+    await delay(retryIntervalSeconds * 1000);
   }
 }
 
