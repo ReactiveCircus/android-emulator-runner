@@ -1,4 +1,5 @@
 import * as exec from '@actions/exec';
+import { ChildProcessWithoutNullStreams, spawn } from 'child_process';
 import * as fs from 'fs';
 
 /**
@@ -72,7 +73,7 @@ export async function launchEmulator(
   emulatorOptions: string,
   enableHardwareKeyboard: boolean,
   port: number,
-): Promise<void> {
+): Promise<ChildProcessWithoutNullStreams> {
   try {
     console.log(`::group::Launch Emulator`);
 
@@ -85,49 +86,111 @@ export async function launchEmulator(
     // start emulator
     console.log('Starting emulator.');
 
-    await exec.exec(`sh -c \\"${process.env.ANDROID_HOME}/emulator/emulator -port ${port} -avd "${avdName}" ${emulatorOptions} &"`, [], {
-      listeners: {
-        stderr: (data: Buffer) => {
-          if (data.toString().includes('invalid command-line parameter')) {
-            throw new Error(data.toString());
-          }
-        },
-      },
+    const command = `${process.env.ANDROID_HOME}/emulator/emulator -port ${port} -avd "${avdName}" ${emulatorOptions}`;
+    console.log(`[command]${command}`);
+    // detached, so the emulator leads a process group of its own and stopEmulator can kill it with the processes it starts
+    const emulator = spawn('sh', ['-c', `exec ${command}`], { detached: true });
+    emulator.stdout.on('data', (data: Buffer) => process.stdout.write(data));
+    emulator.stderr.on('data', (data: Buffer) => {
+      process.stderr.write(data);
+      if (data.toString().includes('invalid command-line parameter')) {
+        throw new Error(data.toString());
+      }
     });
 
-    // wait for emulator to complete booting
-    await waitForDevice(port, emulatorBootTimeout);
-    await adb(port, `shell input keyevent 82`);
+    try {
+      // wait for emulator to complete booting
+      await waitForDevice(port, emulatorBootTimeout);
+      await adb(port, `shell input keyevent 82`);
 
-    if (disableAnimations) {
-      console.log('Disabling animations.');
-      await adb(port, `shell settings put global window_animation_scale 0.0`);
-      await adb(port, `shell settings put global transition_animation_scale 0.0`);
-      await adb(port, `shell settings put global animator_duration_scale 0.0`);
+      if (disableAnimations) {
+        console.log('Disabling animations.');
+        await adb(port, `shell settings put global window_animation_scale 0.0`);
+        await adb(port, `shell settings put global transition_animation_scale 0.0`);
+        await adb(port, `shell settings put global animator_duration_scale 0.0`);
+      }
+      if (disableSpellChecker) {
+        await adb(port, `shell settings put secure spell_checker_enabled 0`);
+      }
+      if (enableHardwareKeyboard) {
+        await adb(port, `shell settings put secure show_ime_with_hard_keyboard 0`);
+      }
+    } catch (error) {
+      await stopEmulator(emulator, port);
+      throw error;
     }
-    if (disableSpellChecker) {
-      await adb(port, `shell settings put secure spell_checker_enabled 0`);
-    }
-    if (enableHardwareKeyboard) {
-      await adb(port, `shell settings put secure show_ime_with_hard_keyboard 0`);
-    }
+    return emulator;
   } finally {
     console.log(`::endgroup::`);
   }
 }
 
 /**
- * Kills the running emulator on the default port.
+ * Kills the emulator started by launchEmulator and waits for it to exit.
  */
-export async function killEmulator(port: number): Promise<void> {
+export async function killEmulator(emulator: ChildProcessWithoutNullStreams, port: number): Promise<void> {
   try {
     console.log(`::group::Terminate Emulator`);
-    await adb(port, `emu kill`);
-  } catch (error) {
-    console.log(error instanceof Error ? error.message : error);
+    await stopEmulator(emulator, port);
   } finally {
     console.log(`::endgroup::`);
   }
+}
+
+/**
+ * Asks the emulator to shut down, and kills its process group if it is still running once the
+ * emulator's own shutdown wait has passed: ANDROID_EMULATOR_WAIT_TIME_BEFORE_KILL seconds, 20 by default.
+ */
+async function stopEmulator(emulator: ChildProcessWithoutNullStreams, port: number): Promise<void> {
+  try {
+    await adb(port, `emu kill`);
+  } catch (error) {
+    console.log(error instanceof Error ? error.message : error);
+  }
+
+  const shutdownWaitSeconds = getEmulatorShutdownWaitSeconds();
+  if (!(await waitForExit(emulator, shutdownWaitSeconds * 1000)) && emulator.pid !== undefined) {
+    console.log(`The emulator is still running ${shutdownWaitSeconds} seconds after it was asked to shut down, killing it.`);
+    try {
+      process.kill(-emulator.pid, 'SIGKILL');
+    } catch (error) {
+      console.log(error instanceof Error ? error.message : error);
+    }
+    await waitForExit(emulator);
+  }
+
+  // processes the emulator starts in a session of their own, such as crashpad_handler, can outlive it holding its output
+  emulator.stdout.destroy();
+  emulator.stderr.destroy();
+}
+
+function getEmulatorShutdownWaitSeconds(): number {
+  const seconds = parseInt(process.env.ANDROID_EMULATOR_WAIT_TIME_BEFORE_KILL ?? '', 10);
+  return seconds >= 0 ? seconds : 20;
+}
+
+/**
+ * Resolves true once the emulator has exited, or false when timeoutMs passes first.
+ */
+function waitForExit(emulator: ChildProcessWithoutNullStreams, timeoutMs?: number): Promise<boolean> {
+  return new Promise((resolve) => {
+    if (emulator.exitCode !== null || emulator.signalCode !== null) {
+      resolve(true);
+      return;
+    }
+    let timeout: NodeJS.Timeout | undefined;
+    const onExit = () => {
+      clearTimeout(timeout);
+      resolve(true);
+    };
+    emulator.once('exit', onExit);
+    if (timeoutMs !== undefined) {
+      timeout = setTimeout(() => {
+        emulator.off('exit', onExit);
+        resolve(false);
+      }, timeoutMs);
+    }
+  });
 }
 
 async function adb(port: number, command: string): Promise<number> {

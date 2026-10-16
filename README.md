@@ -37,7 +37,7 @@ This action helps automate and configure the process of setting up an emulator a
 - Launch a new Emulator with the provided [configurations](#configurations).
 - Wait until the Emulator is booted and ready for use.
 - Run a custom script provided by user once the Emulator is up and running - e.g. `./gradlew connectedCheck`.
-- Kill the Emulator and finish the action.
+- Kill the Emulator, wait for it to exit and finish the action. An Emulator still running once its own shutdown wait has passed (`ANDROID_EMULATOR_WAIT_TIME_BEFORE_KILL` seconds, 20 by default) is killed.
 
 ## Usage & Examples
 
