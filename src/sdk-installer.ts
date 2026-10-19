@@ -50,10 +50,10 @@ export async function installAndroidSdk(
 
     console.log('Installing latest build tools, platform tools, and platform.');
 
-    await exec.exec(`sh -c \\"sdkmanager --install 'build-tools;${BUILD_TOOLS_VERSION}' platform-tools 'platforms;android-${apiLevel}'> /dev/null"`);
+    await runSdkManager(['--install', `build-tools;${BUILD_TOOLS_VERSION}`, 'platform-tools', `platforms;android-${apiLevel}`]);
 
     console.log('Installing latest emulator.');
-    await exec.exec(`sh -c \\"sdkmanager --install emulator --channel=${channelId} > /dev/null"`);
+    await runSdkManager(['--install', 'emulator', `--channel=${channelId}`]);
 
     if (emulatorBuild) {
       console.log(`Installing emulator build ${emulatorBuild}.`);
@@ -76,17 +76,36 @@ export async function installAndroidSdk(
       await io.rmRF('emulator.zip');
     }
     console.log('Installing system images.');
-    await exec.exec(`sh -c \\"sdkmanager --install 'system-images;android-${systemImageApiLevel};${target};${arch}' --channel=${channelId} > /dev/null"`);
+    await runSdkManager(['--install', `system-images;android-${systemImageApiLevel};${target};${arch}`, `--channel=${channelId}`]);
 
     if (ndkVersion) {
       console.log(`Installing NDK ${ndkVersion}.`);
-      await exec.exec(`sh -c \\"sdkmanager --install 'ndk;${ndkVersion}' --channel=${channelId} > /dev/null"`);
+      await runSdkManager(['--install', `ndk;${ndkVersion}`, `--channel=${channelId}`]);
     }
     if (cmakeVersion) {
       console.log(`Installing CMake ${cmakeVersion}.`);
-      await exec.exec(`sh -c \\"sdkmanager --install 'cmake;${cmakeVersion}' --channel=${channelId} > /dev/null"`);
+      await runSdkManager(['--install', `cmake;${cmakeVersion}`, `--channel=${channelId}`]);
     }
   } finally {
     console.log(`::endgroup::`);
+  }
+}
+
+async function runSdkManager(args: string[]): Promise<void> {
+  const debug = core.isDebug();
+  const { exitCode, stdout, stderr } = await exec.getExecOutput('sdkmanager', debug ? ['--verbose', ...args] : args, {
+    silent: !debug,
+    ignoreReturnCode: true,
+  });
+
+  if (!debug) {
+    if (exitCode !== 0) {
+      process.stdout.write(stdout);
+    }
+    process.stderr.write(stderr);
+  }
+
+  if (exitCode !== 0) {
+    throw new Error(`sdkmanager ${args.join(' ')} failed with exit code ${exitCode}`);
   }
 }
