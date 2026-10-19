@@ -30,16 +30,20 @@ export async function installAndroidSdk(
     const isArm = process.arch === 'arm64';
 
     const cmdlineToolsPath = `${process.env.ANDROID_HOME}/cmdline-tools`;
-    if (!fs.existsSync(cmdlineToolsPath)) {
-      console.log('Installing new cmdline-tools.');
-      const sdkUrl = isOnMac ? CMDLINE_TOOLS_URL_MAC : CMDLINE_TOOLS_URL_LINUX;
-      const downloadPath = await tc.downloadTool(sdkUrl);
-      await tc.extractZip(downloadPath, cmdlineToolsPath);
-      await io.mv(`${cmdlineToolsPath}/cmdline-tools`, `${cmdlineToolsPath}/latest`);
+    const sdkmanager = await io.which('sdkmanager');
+    const avdmanager = await io.which('avdmanager');
+    if (!sdkmanager || !avdmanager) {
+      if (!fs.existsSync(cmdlineToolsPath)) {
+        console.log('Installing new cmdline-tools.');
+        const sdkUrl = isOnMac ? CMDLINE_TOOLS_URL_MAC : CMDLINE_TOOLS_URL_LINUX;
+        const downloadPath = await tc.downloadTool(sdkUrl);
+        await tc.extractZip(downloadPath, cmdlineToolsPath);
+        await io.mv(`${cmdlineToolsPath}/cmdline-tools`, `${cmdlineToolsPath}/latest`);
+      }
+      core.addPath(`${cmdlineToolsPath}/latest/bin`);
     }
 
-    // add paths for commandline-tools and platform-tools
-    core.addPath(`${cmdlineToolsPath}/latest:${cmdlineToolsPath}/latest/bin:${process.env.ANDROID_HOME}/platform-tools`);
+    core.addPath(`${process.env.ANDROID_HOME}/platform-tools`);
 
     // set standard AVD path
     await io.mkdirP(`${process.env.HOME}/.android/avd`);
