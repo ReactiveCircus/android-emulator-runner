@@ -12,6 +12,7 @@ describe('SDK command-line tools selection', () => {
   const originalEnv = { ...process.env };
   const mkdirP = io.mkdirP;
   const run = exec.exec;
+  const getOutput = exec.getExecOutput;
   let tempDir: string;
   let sdkRoot: string;
   let commandLog: string;
@@ -42,6 +43,7 @@ describe('SDK command-line tools selection', () => {
     });
     // Child processes need Jest's isolated environment, including the test PATH.
     jest.spyOn(exec, 'exec').mockImplementation((command, args, options) => run(command, args, { ...options, env: process.env as Record<string, string> }));
+    jest.spyOn(exec, 'getExecOutput').mockImplementation((command, args, options) => getOutput(command, args, { ...options, env: process.env as Record<string, string> }));
     jest.mocked(tc.downloadTool).mockRejectedValue(new Error('Unexpected SDK download'));
   });
 
